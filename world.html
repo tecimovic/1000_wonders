@@ -8,7 +8,11 @@
       }
       .place-name {
         fill: black;
-        font-size: xxx-large;
+        font-size: 50pt;
+      }
+      .place-coord {
+        fill: black;
+        font-size: 30pt;
       }
     </style>
     <script>
@@ -22,7 +26,7 @@ function afterMapLoad(wm) {
       var circle = document.createElementNS(svgns, 'circle');
       circle.setAttributeNS(null, 'cx', x);
       circle.setAttributeNS(null, 'cy', z);
-      circle.setAttributeNS(null, 'r', 5);
+      circle.setAttributeNS(null, 'r', 10);
       circle.setAttributeNS(null, 'fill', 'green')
       wm.appendChild(circle);
 
@@ -30,8 +34,15 @@ function afterMapLoad(wm) {
       text.setAttributeNS(null, 'x', x+10)
       text.setAttributeNS(null, 'y', z)
       text.classList.add('place-name')
-      text.textContent = `${place.name} [${place.x},${place.z}]`
+      text.textContent = `${place.name}`
       wm.appendChild(text)
+
+      var coord = document.createElementNS(svgns, 'text');
+      coord.setAttributeNS(null, 'x', x+10)
+      coord.setAttributeNS(null, 'y', z+40)
+      coord.classList.add('place-coord')
+      coord.textContent = `(${place.x},${place.z})`
+      wm.appendChild(coord)
     });
   })
 }
