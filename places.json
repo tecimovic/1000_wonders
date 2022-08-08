@@ -1,0 +1,353 @@
+[
+  {
+    "name": "The Origin",
+    "type": [
+      "house"
+    ],
+    "x": 30,
+    "y": 63,
+    "z": -53
+  },
+  {
+    "name": "Hoverbee Mining Base",
+    "type": [
+      "house"
+    ],
+    "x": 141,
+    "y": 64,
+    "z": -2
+  },
+  {
+    "name": "Unnamed Portal",
+    "type": [
+      "portal"
+    ],
+    "x": 296,
+    "y": 69,
+    "z": -30
+  },
+  {
+    "name": "Burj House",
+    "type": [
+      "house"
+    ],
+    "x": 669,
+    "y": 72,
+    "z": -246
+  },
+  {
+    "name": "Old Taiga House",
+    "type": [
+      "house"
+    ],
+    "x": 931,
+    "y": 71,
+    "z": -329
+  },
+  {
+    "name": "The Hung Portal",
+    "type": [
+      "house",
+      "portal"
+    ],
+    "x": 831,
+    "y": 63,
+    "z": 2
+  },
+  {
+    "name": "Station House",
+    "type": [
+      "house"
+    ],
+    "x": 918,
+    "y": 64,
+    "z": 605
+  },
+  {
+    "name": "The Ice Box",
+    "type": [
+      "house"
+    ],
+    "x": 943,
+    "y": 63,
+    "z": 869
+  },
+  {
+    "name": "The Cliff House",
+    "type": [
+      "house",
+      "portal"
+    ],
+    "x": 238,
+    "y": 75,
+    "z": 205
+  },
+  {
+    "name": "House by the Berry Meadow",
+    "type": [
+      "house"
+    ],
+    "x": 61,
+    "y": 66,
+    "z": 861
+  },
+  {
+    "name": "The Mushroom House",
+    "type": [
+      "house"
+    ],
+    "x": -393,
+    "y": 68,
+    "z": 480
+  },
+  {
+    "name": "Trading Station",
+    "type": [
+      "house"
+    ],
+    "x": -70,
+    "y": 72,
+    "z": -685
+  },
+  {
+    "name": "Bridge House",
+    "type": [
+      "house",
+      "mine"
+    ],
+    "x": -130,
+    "y": 81,
+    "z": -1511
+  },
+  {
+    "name": "Guard Chicken Research Station",
+    "type": [
+      "house"
+    ],
+    "x": -280,
+    "y": 71,
+    "z": -1403
+  },
+  {
+    "name": "Vacay House",
+    "type": [
+      "house"
+    ],
+    "x": -51,
+    "y": 66,
+    "z": -1686
+  },
+  {
+    "name": "Shiphouse at the Bunnies",
+    "type": [
+      "house",
+      "mine"
+    ],
+    "x": -251,
+    "y": 62,
+    "z": -1797
+  },
+  {
+    "name": "Forbidden Scute Research Station",
+    "type": [
+      "house"
+    ],
+    "x": -279,
+    "y": 64,
+    "z": -1895
+  },
+  {
+    "name": "Panda House",
+    "type": [
+      "house"
+    ],
+    "x": -390,
+    "y": 63,
+    "z": -2340
+  },
+  {
+    "name": "Coral Cliff Trading Post",
+    "type": [
+      "house"
+    ],
+    "x": -835,
+    "y": 74,
+    "z": -1692
+  },
+  {
+    "name": "Coral Outpost",
+    "type": [
+      "house"
+    ],
+    "x": -1239,
+    "y": 63,
+    "z": -1729
+  },
+  {
+    "name": "Dylan's Shiphouse",
+    "type": [
+      "house"
+    ],
+    "x": 650,
+    "y": 68,
+    "z": -2046
+  },
+  {
+    "name": "Riquezas Island hotel",
+    "type": [
+      "house"
+    ],
+    "x": 734,
+    "y": 72,
+    "z": -1906
+  },
+  {
+    "name": "Cunucu House",
+    "type": [
+      "house",
+      "cave",
+      "mine"
+    ],
+    "x": 1216,
+    "y": 64,
+    "z": -2354
+  },
+  {
+    "name": "Doom Portal Village",
+    "type": [
+      "house",
+      "portal"
+    ],
+    "x": 784,
+    "y": 76,
+    "z": -2602
+  },
+  {
+    "name": "Jungle Frontier Encampment",
+    "type": [
+      "house"
+    ],
+    "x": 1124,
+    "y": 63,
+    "z": -1890
+  },
+  {
+    "name": "Jungle Outcrop House",
+    "type": [
+      "house"
+    ],
+    "x": 1231,
+    "y": 91,
+    "z": -1919
+  },
+  {
+    "name": "Julias's Treehouse",
+    "type": [
+      "house"
+    ],
+    "x": 1234,
+    "y": 97,
+    "z": -1807
+  },
+  {
+    "name": "Parrot Island Trading Post",
+    "type": [
+      "house"
+    ],
+    "x": 1300,
+    "y": 64,
+    "z": -1494
+  },
+  {
+    "name": "Null (no dog)",
+    "type": [
+      "house"
+    ],
+    "x": 93,
+    "y": 66,
+    "z": -2036
+  },
+  {
+    "name": "Sandy Bank Waypoint",
+    "type": [
+      "house"
+    ],
+    "x": 273,
+    "y": 63,
+    "z": -2328
+  },
+  {
+    "name": "Worlds End Cliff House",
+    "type": [
+      "house"
+    ],
+    "x": 222,
+    "y": 72,
+    "z": -2651
+  },
+  {
+    "name": "Floating Portal Restricted Area",
+    "type": [
+      "house"
+    ],
+    "x": -347,
+    "y": 63,
+    "z": -2837
+  },
+  {
+    "name": "Floating Portal",
+    "type": [
+      "portal"
+    ],
+    "x": -432,
+    "y": 63,
+    "z": -2843
+  },
+  {
+    "name": "Crazy Country",
+    "type": [
+      "house"
+    ],
+    "x": -177,
+    "y": 64,
+    "z": -3317
+  },
+  {
+    "name": "Turtle Island",
+    "type": [
+      "house"
+    ],
+    "x": -486,
+    "y": 64,
+    "z": 59
+  },
+  {
+    "name": "Lush Cave Mining Base",
+    "type": [
+      "house",
+      "cave"
+    ],
+    "x": -486,
+    "y": 39,
+    "z": 398
+  },
+  {
+    "name": "Nowhere Portal",
+    "type": [
+      "portal"
+    ],
+    "x": -642,
+    "y": 65,
+    "z": 260
+  },
+  {
+    "name": "Floating Portal Encampement",
+    "type": [
+      "house",
+      "portal"
+    ],
+    "x": -1050,
+    "y": 73,
+    "z": 128
+  }
+]

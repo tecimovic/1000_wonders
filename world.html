@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <style>
+      .map-boundary {
+        border-style: solid;
+        border-width: thick;
+        border-color: blue;
+      }
+      .place-name {
+        fill: black;
+        font-size: xxx-large;
+      }
+    </style>
+    <script>
+function afterMapLoad(wm) {
+  fetch('places.json').then((response) => response.json()).then((json) => {
+    let svgns = "http://www.w3.org/2000/svg";
+    let mapsize = 8000
+    json.forEach(place => {
+      let x = mapsize/2+place.x
+      let z = mapsize/2+place.z
+      var circle = document.createElementNS(svgns, 'circle');
+      circle.setAttributeNS(null, 'cx', x);
+      circle.setAttributeNS(null, 'cy', z);
+      circle.setAttributeNS(null, 'r', 5);
+      circle.setAttributeNS(null, 'fill', 'green')
+      wm.appendChild(circle);
+
+      var text = document.createElementNS(svgns, 'text');
+      text.setAttributeNS(null, 'x', x+10)
+      text.setAttributeNS(null, 'y', z)
+      text.classList.add('place-name')
+      text.textContent = `${place.name} [${place.x},${place.z}]`
+      wm.appendChild(text)
+    });
+  })
+}
+
+function onload() {
+  console.log('window onload')
+  let map = document.getElementById('map')
+  console.log(`Map:`)
+  console.log(map)
+  afterMapLoad(map)
+}
+    </script>
+  </head>
+
+  <body onload="onload();">
+    <h1>World of 1000 wonders</h1>
+    <div class="map-boundary">
+    <svg viewbox="0 0 8000 8000" id="map">
+      <use href="world.svg#svg5"></use>
+    </svg>
+  </div>
+  </body>
+
+</html>
