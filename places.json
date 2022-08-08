@@ -313,6 +313,60 @@
     "z": -3317
   },
   {
+    "name": "Death spot",
+    "type": [
+      "monument"
+    ],
+    "x": -295,
+    "y": 62,
+    "z": -3062
+  },
+  {
+    "name": "Mesa Verde Parrot House",
+    "type": [
+      "house"
+    ],
+    "x": -1038,
+    "y": 87,
+    "z": -2423
+  },
+  {
+    "name": "Lava River Portal",
+    "type": [
+      "portal"
+    ],
+    "x": -1199,
+    "y": 63,
+    "z": -2189
+  },
+  {
+    "name": "Panda Portal",
+    "type": [
+      "portal"
+    ],
+    "x": -412,
+    "y": 64,
+    "z": -2394
+  },
+  {
+    "name": "The Lonely Wreck",
+    "type": [
+      "house"
+    ],
+    "x": 626,
+    "y": 67,
+    "z": -925
+  },
+  {
+    "name": "Point Shackleton",
+    "type": [
+      "house"
+    ],
+    "x": 750,
+    "y": 67,
+    "z": 2532
+  },
+  {
     "name": "Turtle Island",
     "type": [
       "house"
