@@ -120,7 +120,7 @@
     "z": -1511
   },
   {
-    "name": "Guard Chicken Research Station",
+    "name": "Thugeesville",
     "type": [
       "house"
     ],
@@ -367,6 +367,45 @@
     "z": 2532
   },
   {
+    "name": "Shallow Lake Mining Outpost",
+    "type": [
+      "house",
+      "mine"
+    ],
+    "x": 500,
+    "y": 60,
+    "z": 2273
+  },
+  {
+    "name": "Forrest River Outpost",
+    "type": [
+      "house",
+      "village"
+    ],
+    "x": -166,
+    "y": 70,
+    "z": 2068
+  },
+  {
+    "name": "YAHP Guardhouse",
+    "type": [
+      "house",
+      "portal"
+    ],
+    "x": -305,
+    "y": 62,
+    "z": 1026
+  },
+  {
+    "name": "Rock Island Shelter",
+    "type": [
+      "house"
+    ],
+    "x": -243,
+    "y": 65,
+    "z": 1406
+  },
+  {
     "name": "Turtle Island",
     "type": [
       "house"
@@ -395,7 +434,7 @@
     "z": 260
   },
   {
-    "name": "Floating Portal Encampement",
+    "name": "Floating Portal Encampment",
     "type": [
       "house",
       "portal"
