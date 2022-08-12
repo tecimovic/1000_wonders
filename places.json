@@ -268,7 +268,7 @@
     "z": -2036
   },
   {
-    "name": "Sandy Bank Waypoint",
+    "name": "Burried Treasure Waypoint",
     "type": [
       "house"
     ],
@@ -404,6 +404,15 @@
     "x": -243,
     "y": 65,
     "z": 1406
+  },
+  {
+    "name": "Cape Rock",
+    "type": [
+      "house"
+    ],
+    "x": 256,
+    "y": 63,
+    "z": 1611
   },
   {
     "name": "Turtle Island",
