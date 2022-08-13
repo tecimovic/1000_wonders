@@ -129,6 +129,24 @@
     "z": -1403
   },
   {
+    "name": "Mesa Proving Grounds",
+    "type": [
+      "house"
+    ],
+    "x": -273,
+    "y": 70,
+    "z": -1065
+  },
+  {
+    "name": "Sunshine Village",
+    "type": [
+      "house"
+    ],
+    "x": -735,
+    "y": 63,
+    "z": -491
+  },
+  {
     "name": "Vacay House",
     "type": [
       "house"
@@ -441,6 +459,25 @@
     "x": -642,
     "y": 65,
     "z": 260
+  },
+  {
+    "name": "Gates to the West",
+    "type": [
+      "house"
+    ],
+    "x": -1453,
+    "y": 69,
+    "z": -54
+  },
+  {
+    "name": "Olive Leaf Pillager Outreach",
+    "type": [
+      "house",
+      "portal"
+    ],
+    "x": -1744,
+    "y": 71,
+    "z": 200
   },
   {
     "name": "Floating Portal Encampment",
