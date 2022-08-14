@@ -12,7 +12,7 @@
       }
       .place-coord {
         fill: red;
-        font-size: 30pt;
+        font-size: 35pt;
       } 
       body {
         background-color: black;
@@ -42,7 +42,7 @@ function afterMapLoad(wm) {
 
       var coord = document.createElementNS(svgns, 'text');
       coord.setAttributeNS(null, 'x', x+10)
-      coord.setAttributeNS(null, 'y', z+40)
+      coord.setAttributeNS(null, 'y', z+45)
       coord.classList.add('place-coord')
       coord.textContent = `(${place.x},${place.z})`
       wm.appendChild(coord)
