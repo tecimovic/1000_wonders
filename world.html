@@ -16,14 +16,20 @@
       } 
       body {
         background-color: black;
+        color: aquamarine;
       }
     </style>
     <script>
-function afterMapLoad(wm) {
+function afterMapLoad(wm, isNether=false) {
   fetch('places.json').then((response) => response.json()).then((json) => {
     let svgns = "http://www.w3.org/2000/svg";
     let mapsize = 8000
     json.forEach(place => {
+      if ( isNether ) {
+        if (!place.nether) return
+      } else {
+        if (place.nether) return
+      }
       let x = mapsize/2+place.x
       let z = mapsize/2+place.z
       var circle = document.createElementNS(svgns, 'circle');
@@ -51,22 +57,28 @@ function afterMapLoad(wm) {
 }
 
 function onload() {
-  console.log('window onload')
-  let map = document.getElementById('map')
-  console.log(`Map:`)
-  console.log(map)
-  afterMapLoad(map)
+  let ow = document.getElementById('overworld_map')
+  afterMapLoad(ow, false)
+  let nt = document.getElementById('nether_map')
+  afterMapLoad(nt, true)
 }
     </script>
   </head>
 
   <body onload="onload();">
     <h1>World of 1000 wonders</h1>
+    <h2>Overworld</h2>
     <div class="map-boundary">
-    <svg viewbox="0 0 8000 8000" id="map">
-      <use href="world.svg#svg5"></use>
+    <svg viewbox="0 0 8000 8000" id="overworld_map">
+      <use href="overworld.svg#svg5"></use>
     </svg>
-  </div>
+    </div>
+    <h2>Nether</h2>
+    <div class="map-boundary">
+      <svg viewbox="0 0 8000 8000" id="nether_map">
+        <use href="nether.svg#svg5"></use>
+      </svg>
+      </div>
   </body>
 
 </html>
