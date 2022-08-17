@@ -27,6 +27,16 @@
     "z": -30
   },
   {
+    "name": "Unnamed Portal",
+    "type": [
+      "portal"
+    ],
+    "x": 37,
+    "y": 64,
+    "z": -3,
+    "nether": true
+  },
+  {
     "name": "Burj House",
     "type": [
       "house"
@@ -62,6 +72,16 @@
     "x": 831,
     "y": 63,
     "z": 2
+  },
+  {
+    "name": "The Hung Portal",
+    "type": [
+      "portal"
+    ],
+    "x": 103,
+    "y": 58,
+    "z": -10,
+    "nether": true
   },
   {
     "name": "Station House",
@@ -250,6 +270,16 @@
     "z": -2602
   },
   {
+    "name": "Doom Portal",
+    "type": [
+      "portal"
+    ],
+    "x": 108,
+    "y": 69,
+    "z": -309,
+    "nether": true
+  },
+  {
     "name": "Jungle Frontier Encampment",
     "type": [
       "house"
@@ -329,6 +359,16 @@
     "x": -432,
     "y": 63,
     "z": -2843
+  },
+  {
+    "name": "Floating Portal",
+    "type": [
+      "portal"
+    ],
+    "x": -52,
+    "y": 59,
+    "z": -345,
+    "nether": true
   },
   {
     "name": "Crazy Country",
