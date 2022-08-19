@@ -1,22 +1,35 @@
 <html>
   <head>
     <style>
-      .map-boundary {
+      .map-overworld {
         border-style: solid;
         border-width: thick;
-        border-color: blue;
+        border-color: green;
+        background-color: aquamarine;
+      }
+      .map-nether {
+        border-style: solid;
+        border-width: thick;
+        border-color: purple;
+        background-color: orange;
+      }
+      .map-end {
+        border-style: solid;
+        border-width: thick;
+        border-color: black;
+        background-color: darkgray;
       }
       .place-name {
-        fill: yellowgreen;
+        fill: black;
         font-size: 50pt;
       }
       .place-coord {
-        fill: red;
+        fill: darkred;
         font-size: 35pt;
       } 
       body {
-        background-color: black;
-        color: aquamarine;
+        background-color: white;
+        color: black;
       }
     </style>
     <script>
@@ -68,19 +81,19 @@ function onload() {
   <body onload="onload();">
     <h1>World of 1000 wonders</h1>
     <h2>Overworld</h2>
-    <div class="map-boundary">
+    <div class="map-overworld">
     <svg viewbox="0 0 8000 8000" id="overworld_map">
       <use href="overworld.svg#svg5"></use>
     </svg>
     </div>
     <h2>The Nether</h2>
-    <div class="map-boundary">
+    <div class="map-nether">
       <svg viewbox="0 0 8000 8000" id="nether_map">
         <use href="nether.svg#svg5"></use>
       </svg>
       </div>
       <h2>The End</h2>
-      <div class="map-boundary">
+      <div class="map-end">
         <svg viewbox="0 0 8000 8000" id="end_map">
           <use href="end.svg#svg5"></use>
         </svg>
