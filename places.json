@@ -557,5 +557,43 @@
     "y": 65,
     "z": 31,
     "nether": true
+  },
+  {
+    "name": "Far East Embassy",
+    "type": [
+      "house"
+    ],
+    "x": 2220,
+    "y": 64,
+    "z": 606
+  },
+  {
+    "name": "Stonecutting School",
+    "type": [
+      "house",
+      "portal"
+    ],
+    "x": 2248,
+    "y": 64,
+    "z": 961
+  },
+  {
+    "name": "Stonecutters Portal",
+    "type": [
+      "portal"
+    ],
+    "x": 289,
+    "y": 47,
+    "z": 126,
+    "nether": true
+  },
+  {
+    "name": "Impossible Forrest",
+    "type": [
+      "house"
+    ],
+    "x": 1716,
+    "y": 64,
+    "z": 722
   }
 ]
