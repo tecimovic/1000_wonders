@@ -1,599 +1,405 @@
-[
-  {
-    "name": "The Origin",
-    "type": [
-      "house"
-    ],
-    "x": 30,
-    "y": 63,
-    "z": -53
-  },
-  {
-    "name": "Hoverbee Mining Base",
-    "type": [
-      "house"
-    ],
-    "x": 141,
-    "y": 64,
-    "z": -2
-  },
-  {
-    "name": "Unnamed Portal",
-    "type": [
+{
+  "nether": {
+    "Unnamed Portal": [
+      37,
+      64,
+      -3,
       "portal"
     ],
-    "x": 296,
-    "y": 69,
-    "z": -30
+    "The Hung Portal": [
+      103,
+      58,
+      -10,
+      "portal"
+    ],
+    "Doom Portal": [
+      108,
+      69,
+      -309,
+      "portal"
+    ],
+    "Floating Portal": [
+      -52,
+      59,
+      -345,
+      "portal"
+    ],
+    "Lava Beach Portal": [
+      245,
+      65,
+      31,
+      "portal"
+    ],
+    "Stonecutters Portal": [
+      289,
+      47,
+      126,
+      "portal"
+    ]
   },
-  {
-    "name": "Burj House",
-    "type": [
+  "overworld": {
+    "The Origin": [
+      30,
+      63,
+      -53,
       "house"
     ],
-    "x": 669,
-    "y": 72,
-    "z": -246
-  },
-  {
-    "name": "Old Taiga House",
-    "type": [
+    "Hoverbee Mining Base": [
+      141,
+      64,
+      -2,
       "house"
     ],
-    "x": 931,
-    "y": 71,
-    "z": -329
-  },
-  {
-    "name": "New Forrest Bay Shelter",
-    "type": [
+    "Unnamed Portal": [
+      296,
+      69,
+      -30,
+      "portal"
+    ],
+    "Burj House": [
+      669,
+      72,
+      -246,
       "house"
     ],
-    "x": 1679,
-    "y": 63,
-    "z": -281
-  },
-  {
-    "name": "The Hung Portal",
-    "type": [
+    "Old Taiga House": [
+      931,
+      71,
+      -329,
+      "house"
+    ],
+    "New Forrest Bay Shelter": [
+      1679,
+      63,
+      -281,
+      "house"
+    ],
+    "The Hung Portal": [
+      831,
+      63,
+      2,
       "house",
       "portal"
     ],
-    "x": 831,
-    "y": 63,
-    "z": 2
-  },
-  {
-    "name": "Station House",
-    "type": [
+    "Station House": [
+      918,
+      64,
+      605,
       "house"
     ],
-    "x": 918,
-    "y": 64,
-    "z": 605
-  },
-  {
-    "name": "The Ice Box",
-    "type": [
+    "The Ice Box": [
+      943,
+      63,
+      869,
       "house"
     ],
-    "x": 943,
-    "y": 63,
-    "z": 869
-  },
-  {
-    "name": "The Cliff House",
-    "type": [
+    "The Cliff House": [
+      238,
+      75,
+      205,
       "house",
       "portal"
     ],
-    "x": 238,
-    "y": 75,
-    "z": 205
-  },
-  {
-    "name": "House by the Berry Meadow",
-    "type": [
+    "House by the Berry Meadow": [
+      61,
+      66,
+      861,
       "house"
     ],
-    "x": 61,
-    "y": 66,
-    "z": 861
-  },
-  {
-    "name": "The Mushroom House",
-    "type": [
+    "The Mushroom House": [
+      -393,
+      68,
+      480,
       "house"
     ],
-    "x": -393,
-    "y": 68,
-    "z": 480
-  },
-  {
-    "name": "Trading Station",
-    "type": [
+    "Trading Station": [
+      -70,
+      72,
+      -685,
       "house"
     ],
-    "x": -70,
-    "y": 72,
-    "z": -685
-  },
-  {
-    "name": "Bridge House",
-    "type": [
+    "Bridge House": [
+      -130,
+      81,
+      -1511,
       "house",
       "mine"
     ],
-    "x": -130,
-    "y": 81,
-    "z": -1511
-  },
-  {
-    "name": "Thugeesville",
-    "type": [
+    "Thugeesville": [
+      -280,
+      71,
+      -1403,
       "house"
     ],
-    "x": -280,
-    "y": 71,
-    "z": -1403
-  },
-  {
-    "name": "Mesa Proving Grounds",
-    "type": [
+    "Mesa Proving Grounds": [
+      -273,
+      70,
+      -1065,
       "house"
     ],
-    "x": -273,
-    "y": 70,
-    "z": -1065
-  },
-  {
-    "name": "Sunshine Village",
-    "type": [
+    "Sunshine Village": [
+      -735,
+      63,
+      -491,
       "house"
     ],
-    "x": -735,
-    "y": 63,
-    "z": -491
-  },
-  {
-    "name": "Vacay House",
-    "type": [
+    "Vacay House": [
+      -51,
+      66,
+      -1686,
       "house"
     ],
-    "x": -51,
-    "y": 66,
-    "z": -1686
-  },
-  {
-    "name": "Shiphouse at the Bunnies",
-    "type": [
+    "Shiphouse at the Bunnies": [
+      -251,
+      62,
+      -1797,
       "house",
       "mine"
     ],
-    "x": -251,
-    "y": 62,
-    "z": -1797
-  },
-  {
-    "name": "Forbidden Scute Research Station",
-    "type": [
+    "Forbidden Scute Research Station": [
+      -279,
+      64,
+      -1895,
       "house"
     ],
-    "x": -279,
-    "y": 64,
-    "z": -1895
-  },
-  {
-    "name": "Panda House",
-    "type": [
+    "Panda House": [
+      -390,
+      63,
+      -2340,
       "house"
     ],
-    "x": -390,
-    "y": 63,
-    "z": -2340
-  },
-  {
-    "name": "Coral Cliff Trading Post",
-    "type": [
+    "Coral Cliff Trading Post": [
+      -835,
+      74,
+      -1692,
       "house"
     ],
-    "x": -835,
-    "y": 74,
-    "z": -1692
-  },
-  {
-    "name": "Coral Outpost",
-    "type": [
+    "Coral Outpost": [
+      -1239,
+      63,
+      -1729,
       "house"
     ],
-    "x": -1239,
-    "y": 63,
-    "z": -1729
-  },
-  {
-    "name": "Dylan's Shiphouse",
-    "type": [
+    "Dylan's Shiphouse": [
+      650,
+      68,
+      -2046,
       "house"
     ],
-    "x": 650,
-    "y": 68,
-    "z": -2046
-  },
-  {
-    "name": "Riquezas Island hotel",
-    "type": [
+    "Riquezas Island hotel": [
+      734,
+      72,
+      -1906,
       "house"
     ],
-    "x": 734,
-    "y": 72,
-    "z": -1906
-  },
-  {
-    "name": "Cunucu House",
-    "type": [
+    "Cunucu House": [
+      1216,
+      64,
+      -2354,
       "house",
       "cave",
       "mine"
     ],
-    "x": 1216,
-    "y": 64,
-    "z": -2354
-  },
-  {
-    "name": "Doom Portal Village",
-    "type": [
+    "Doom Portal Village": [
+      784,
+      76,
+      -2602,
       "house",
       "portal"
     ],
-    "x": 784,
-    "y": 76,
-    "z": -2602
-  },
-  {
-    "name": "Jungle Frontier Encampment",
-    "type": [
+    "Jungle Frontier Encampment": [
+      1124,
+      63,
+      -1890,
       "house"
     ],
-    "x": 1124,
-    "y": 63,
-    "z": -1890
-  },
-  {
-    "name": "Jungle Outcrop House",
-    "type": [
+    "Jungle Outcrop House": [
+      1231,
+      91,
+      -1919,
       "house"
     ],
-    "x": 1231,
-    "y": 91,
-    "z": -1919
-  },
-  {
-    "name": "Julias's Treehouse",
-    "type": [
+    "Julias's Treehouse": [
+      1234,
+      97,
+      -1807,
       "house"
     ],
-    "x": 1234,
-    "y": 97,
-    "z": -1807
-  },
-  {
-    "name": "Parrot Island Trading Post",
-    "type": [
+    "Parrot Island Trading Post": [
+      1300,
+      64,
+      -1494,
       "house"
     ],
-    "x": 1300,
-    "y": 64,
-    "z": -1494
-  },
-  {
-    "name": "Null (no dog)",
-    "type": [
+    "Null (no dog)": [
+      93,
+      66,
+      -2036,
       "house"
     ],
-    "x": 93,
-    "y": 66,
-    "z": -2036
-  },
-  {
-    "name": "Burried Treasure Waypoint",
-    "type": [
+    "Burried Treasure Waypoint": [
+      273,
+      63,
+      -2328,
       "house"
     ],
-    "x": 273,
-    "y": 63,
-    "z": -2328
-  },
-  {
-    "name": "Worlds End Cliff House",
-    "type": [
+    "Worlds End Cliff House": [
+      222,
+      72,
+      -2651,
       "house"
     ],
-    "x": 222,
-    "y": 72,
-    "z": -2651
-  },
-  {
-    "name": "Floating Portal Restricted Area",
-    "type": [
+    "Floating Portal Restricted Area": [
+      -347,
+      63,
+      -2837,
       "house"
     ],
-    "x": -347,
-    "y": 63,
-    "z": -2837
-  },
-  {
-    "name": "Floating Portal",
-    "type": [
+    "Floating Portal": [
+      -432,
+      63,
+      -2843,
       "portal"
     ],
-    "x": -432,
-    "y": 63,
-    "z": -2843
-  },
-  {
-    "name": "Crazy Country",
-    "type": [
+    "Crazy Country": [
+      -177,
+      64,
+      -3317,
       "house"
     ],
-    "x": -177,
-    "y": 64,
-    "z": -3317
-  },
-  {
-    "name": "Death spot",
-    "type": [
+    "Death spot": [
+      -295,
+      62,
+      -3062,
       "monument"
     ],
-    "x": -295,
-    "y": 62,
-    "z": -3062
-  },
-  {
-    "name": "Mesa Verde Parrot House",
-    "type": [
+    "Mesa Verde Parrot House": [
+      -1038,
+      87,
+      -2423,
       "house"
     ],
-    "x": -1038,
-    "y": 87,
-    "z": -2423
-  },
-  {
-    "name": "Lava River Portal",
-    "type": [
+    "Lava River Portal": [
+      -1199,
+      63,
+      -2189,
       "portal"
     ],
-    "x": -1199,
-    "y": 63,
-    "z": -2189
-  },
-  {
-    "name": "Panda Portal",
-    "type": [
+    "Panda Portal": [
+      -412,
+      64,
+      -2394,
       "portal"
     ],
-    "x": -412,
-    "y": 64,
-    "z": -2394
-  },
-  {
-    "name": "The Lonely Wreck",
-    "type": [
+    "The Lonely Wreck": [
+      626,
+      67,
+      -925,
       "house"
     ],
-    "x": 626,
-    "y": 67,
-    "z": -925
-  },
-  {
-    "name": "Point Shackleton",
-    "type": [
+    "Point Shackleton": [
+      750,
+      67,
+      2532,
       "house"
     ],
-    "x": 750,
-    "y": 67,
-    "z": 2532
-  },
-  {
-    "name": "Shallow Lake Mining Outpost",
-    "type": [
+    "Shallow Lake Mining Outpost": [
+      500,
+      60,
+      2273,
       "house",
       "mine"
     ],
-    "x": 500,
-    "y": 60,
-    "z": 2273
-  },
-  {
-    "name": "Forrest River Outpost",
-    "type": [
+    "Forrest River Outpost": [
+      -166,
+      70,
+      2068,
       "house",
       "village"
     ],
-    "x": -166,
-    "y": 70,
-    "z": 2068
-  },
-  {
-    "name": "YAHP Guardhouse",
-    "type": [
+    "YAHP Guardhouse": [
+      -305,
+      62,
+      1026,
       "house",
       "portal"
     ],
-    "x": -305,
-    "y": 62,
-    "z": 1026
-  },
-  {
-    "name": "Rock Island Shelter",
-    "type": [
+    "Rock Island Shelter": [
+      -243,
+      65,
+      1406,
       "house"
     ],
-    "x": -243,
-    "y": 65,
-    "z": 1406
-  },
-  {
-    "name": "Cape Rock",
-    "type": [
+    "Cape Rock": [
+      256,
+      63,
+      1611,
       "house"
     ],
-    "x": 256,
-    "y": 63,
-    "z": 1611
-  },
-  {
-    "name": "Turtle Island",
-    "type": [
+    "Turtle Island": [
+      -486,
+      64,
+      59,
       "house"
     ],
-    "x": -486,
-    "y": 64,
-    "z": 59
-  },
-  {
-    "name": "Lush Cave Mining Base",
-    "type": [
+    "Lush Cave Mining Base": [
+      -486,
+      39,
+      398,
       "house",
       "cave"
     ],
-    "x": -486,
-    "y": 39,
-    "z": 398
-  },
-  {
-    "name": "Nowhere Portal",
-    "type": [
+    "Nowhere Portal": [
+      -642,
+      65,
+      260,
       "portal"
     ],
-    "x": -642,
-    "y": 65,
-    "z": 260
-  },
-  {
-    "name": "Gates to the West",
-    "type": [
+    "Gates to the West": [
+      -1453,
+      69,
+      -54,
       "house"
     ],
-    "x": -1453,
-    "y": 69,
-    "z": -54
-  },
-  {
-    "name": "Olive Leaf Pillager Outreach",
-    "type": [
+    "Olive Leaf Pillager Outreach": [
+      -1744,
+      71,
+      200,
       "house",
       "portal"
     ],
-    "x": -1744,
-    "y": 71,
-    "z": 200
-  },
-  {
-    "name": "Floating Portal Encampment",
-    "type": [
+    "Floating Portal Encampment": [
+      -1050,
+      73,
+      128,
       "house",
       "portal"
     ],
-    "x": -1050,
-    "y": 73,
-    "z": 128
-  },
-  {
-    "name": "Lava Beach Cottage",
-    "type": [
+    "Lava Beach Cottage": [
+      1992,
+      64,
+      260,
       "house",
       "portal"
     ],
-    "x": 1992,
-    "y": 64,
-    "z": 260
-  },
-  {
-    "name": "Unnamed Portal",
-    "type": [
-      "portal"
-    ],
-    "x": 37,
-    "y": 64,
-    "z": -3,
-    "nether": true
-  },
-  {
-    "name": "The Hung Portal",
-    "type": [
-      "portal"
-    ],
-    "x": 103,
-    "y": 58,
-    "z": -10,
-    "nether": true
-  },
-  {
-    "name": "Doom Portal",
-    "type": [
-      "portal"
-    ],
-    "x": 108,
-    "y": 69,
-    "z": -309,
-    "nether": true
-  },
-  {
-    "name": "Floating Portal",
-    "type": [
-      "portal"
-    ],
-    "x": -52,
-    "y": 59,
-    "z": -345,
-    "nether": true
-  },
-  {
-    "name": "Lava Beach Portal",
-    "type": [
-      "portal"
-    ],
-    "x": 245,
-    "y": 65,
-    "z": 31,
-    "nether": true
-  },
-  {
-    "name": "Far East Embassy",
-    "type": [
+    "Far East Embassy": [
+      2220,
+      64,
+      606,
       "house"
     ],
-    "x": 2220,
-    "y": 64,
-    "z": 606
-  },
-  {
-    "name": "Stonecutting School",
-    "type": [
+    "Stonecutting School": [
+      2248,
+      64,
+      961,
       "house",
       "portal"
     ],
-    "x": 2248,
-    "y": 64,
-    "z": 961
-  },
-  {
-    "name": "Stonecutters Portal",
-    "type": [
-      "portal"
-    ],
-    "x": 289,
-    "y": 47,
-    "z": 126,
-    "nether": true
-  },
-  {
-    "name": "Impossible Forrest",
-    "type": [
+    "Impossible Forrest": [
+      1716,
+      64,
+      722,
       "house"
-    ],
-    "x": 1716,
-    "y": 64,
-    "z": 722
+    ]
   }
-]
+}

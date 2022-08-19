@@ -20,18 +20,16 @@
       }
     </style>
     <script>
-function afterMapLoad(wm, isNether=false) {
+function afterMapLoad(wm, dimension) {
   fetch('places.json').then((response) => response.json()).then((json) => {
     let svgns = "http://www.w3.org/2000/svg";
     let mapsize = 8000
-    json.forEach(place => {
-      if ( isNether ) {
-        if (!place.nether) return
-      } else {
-        if (place.nether) return
-      }
-      let x = mapsize/2+place.x
-      let z = mapsize/2+place.z
+    let data = json[dimension]
+
+    Object.keys(data).forEach(name => {
+      let a = data[name]
+      let x = mapsize/2+a[0]
+      let z = mapsize/2+a[2]
       var circle = document.createElementNS(svgns, 'circle');
       circle.setAttributeNS(null, 'cx', x);
       circle.setAttributeNS(null, 'cy', z);
@@ -43,14 +41,14 @@ function afterMapLoad(wm, isNether=false) {
       text.setAttributeNS(null, 'x', x+10)
       text.setAttributeNS(null, 'y', z)
       text.classList.add('place-name')
-      text.textContent = `${place.name}`
+      text.textContent = `${name}`
       wm.appendChild(text)
 
       var coord = document.createElementNS(svgns, 'text');
       coord.setAttributeNS(null, 'x', x+10)
       coord.setAttributeNS(null, 'y', z+45)
       coord.classList.add('place-coord')
-      coord.textContent = `(${place.x},${place.z})`
+      coord.textContent = `(${a[0]},${a[2]})`
       wm.appendChild(coord)
     });
   })
@@ -58,9 +56,11 @@ function afterMapLoad(wm, isNether=false) {
 
 function onload() {
   let ow = document.getElementById('overworld_map')
-  afterMapLoad(ow, false)
+  afterMapLoad(ow, 'overworld')
   let nt = document.getElementById('nether_map')
-  afterMapLoad(nt, true)
+  afterMapLoad(nt, 'nether')
+  let en = document.getElementById('end_map')
+  afterMapLoad(nt, 'end')
 }
     </script>
   </head>
@@ -73,12 +73,18 @@ function onload() {
       <use href="overworld.svg#svg5"></use>
     </svg>
     </div>
-    <h2>Nether</h2>
+    <h2>The Nether</h2>
     <div class="map-boundary">
       <svg viewbox="0 0 8000 8000" id="nether_map">
         <use href="nether.svg#svg5"></use>
       </svg>
       </div>
-  </body>
+      <h2>The End</h2>
+      <div class="map-boundary">
+        <svg viewbox="0 0 8000 8000" id="end_map">
+          <use href="end.svg#svg5"></use>
+        </svg>
+        </div>
+    </body>
 
 </html>
