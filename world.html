@@ -20,7 +20,7 @@
       }
     </style>
     <script>
-function afterMapLoad(wm, dimension) {
+function afterMapLoad(wm, dimension, factor=1) {
   fetch('places.json').then((response) => response.json()).then((json) => {
     let svgns = "http://www.w3.org/2000/svg";
     let mapsize = 8000
@@ -28,8 +28,8 @@ function afterMapLoad(wm, dimension) {
 
     Object.keys(data).forEach(name => {
       let a = data[name]
-      let x = mapsize/2+a[0]
-      let z = mapsize/2+a[2]
+      let x = mapsize/2+(a[0]*factor)
+      let z = mapsize/2+(a[2]*factor)
       var circle = document.createElementNS(svgns, 'circle');
       circle.setAttributeNS(null, 'cx', x);
       circle.setAttributeNS(null, 'cy', z);
@@ -56,11 +56,11 @@ function afterMapLoad(wm, dimension) {
 
 function onload() {
   let ow = document.getElementById('overworld_map')
-  afterMapLoad(ow, 'overworld')
+  afterMapLoad(ow, 'overworld', 1)
   let nt = document.getElementById('nether_map')
-  afterMapLoad(nt, 'nether')
+  afterMapLoad(nt, 'nether', 8)
   let en = document.getElementById('end_map')
-  afterMapLoad(nt, 'end')
+  afterMapLoad(nt, 'end', 8)
 }
     </script>
   </head>
