@@ -400,6 +400,30 @@
       64,
       722,
       "house"
+    ],
+    "Peaceful Village": [
+      2968,
+      76,
+      613,
+      "house"
+    ],
+    "Mercy of St. Lightning": [
+      -463,
+      62,
+      1439,
+      "house"
+    ],
+    "Southwest Channel": [
+      -767,
+      64,
+      1099,
+      "house"
+    ],
+    "Dripstone Cave House": [
+      -1050,
+      70,
+      1003,
+      "house"
     ]
   }
 }

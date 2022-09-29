@@ -1,2 +1,0 @@
-google-chrome http://localhost:9458/world.html
-npx http-server . --log-ip true -p 9458
