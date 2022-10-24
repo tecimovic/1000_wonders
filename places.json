@@ -443,10 +443,34 @@
       -1439,
       "house"
     ],
-    "Cloudtop Shelter": [
+    "Eagle's Nest": [
       2380,
       217,
       -1383,
+      "house"
+    ],
+    "Shelter #1": [
+      2460,
+      183,
+      -1275,
+      "house"
+    ],
+    "Shelter #2": [
+      2583,
+      176,
+      -1443,
+      "house"
+    ],
+    "Lake Cave Shelter": [
+      2671,
+      67,
+      -817,
+      "house"
+    ],
+    "Van Gogh Meadow": [
+      2556,
+      64,
+      -572,
       "house"
     ],
     "Dripstone Cave House": [
