@@ -368,6 +368,12 @@
       "house",
       "portal"
     ],
+    "White Dove Pillager Outreach": [
+      1672,
+      63,
+      -2614,
+      "house"
+    ],
     "Floating Portal Encampment": [
       -1050,
       73,
@@ -479,10 +485,16 @@
       -222,
       "house"
     ],
-    "Mangrove House": [
+    "Mangrove Swamp Hut": [
       1851,
       62,
       -3492,
+      "house"
+    ],
+    "Mangel Halto Beachfront Resort": [
+      1820,
+      64,
+      -3807,
       "house"
     ],
     "Dripstone Cave House": [
