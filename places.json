@@ -581,10 +581,28 @@
       1003,
       "house"
     ],
+    "Oghwy Point": [
+      1064,
+      70,
+      2734,
+      "house"
+    ],
+    "Stubborn Village": [
+      778,
+      69,
+      3382,
+      "village"
+    ],
     "Stronghold waypoint One": [
       -477,
       119,
       1829,
+      "house"
+    ],
+    "Stronghold waypoint Two": [
+      -808,
+      124,
+      1987,
       "house"
     ],
     "Cherry House": [
