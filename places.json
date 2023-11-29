@@ -628,6 +628,24 @@
       -19,
       2062,
       "stronghold"
+    ],
+    "Paradise Lake Resort": [
+      -1135,
+      64,
+      2265,
+      "resort"
+    ],
+    "PL teleport": [
+      -1909,
+      77,
+      1114,
+      "portal"
+    ],
+    "The Temple": [
+      -1916,
+      102,
+      1099,
+      "house"
     ]
   }
 }
