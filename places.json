@@ -650,12 +650,32 @@
     "Livetshule": [
       1685,
       74,
-      -4302
+      -4302,
+      "house"
     ],
     "Wonderland": [
       3769,
       101,
-      -2104
+      -2104,
+     "house"
+    ],
+    "Ancient City of Lightning": [
+      2426,
+      -41,
+      -944,
+      "city"
+    ],
+    "The Warp House": [
+      3544,
+      70,
+      -628,
+      "house"
+    ],
+    "The Allmighty Warp": [
+      3609,
+      79,
+      -416,
+      "warp"
     ]
   }
 }
