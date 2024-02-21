@@ -688,6 +688,36 @@
       65,
       -1500,
       "house"
+    ],
+    "Farewell Bay": [
+      3930,
+      64,
+      -2468,
+      "house"
+    ],
+    "Terra Occidentalis": [
+      5211,
+      64,
+      -2581,
+      "house"
+    ],
+    "HMS Bounty": [
+      4366,
+      66,
+      -1760,
+      "ship"
+    ],
+    "Ding Dong The Wicked Witch House": [
+      6723,
+      70,
+      -1323,
+      "house"
+    ],
+    "The Midland Farm": [
+      3800,
+      95,
+      -2378,
+      "house"
     ]
   }
 }
