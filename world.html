@@ -21,11 +21,11 @@
       }
       .place-name {
         fill: black;
-        font-size: 50pt;
+        font-size: 30pt;
       }
       .place-coord {
         fill: darkred;
-        font-size: 35pt;
+        font-size: 25pt;
       } 
       body {
         background-color: white;
@@ -69,7 +69,7 @@ function afterMapLoad(wm, dimension, factor=1) {
 
 function onload() {
   let ow = document.getElementById('overworld_map')
-  afterMapLoad(ow, 'overworld', 0.6)
+  afterMapLoad(ow, 'overworld', 0.5)
   let nt = document.getElementById('nether_map')
   afterMapLoad(nt, 'nether', 8)
   let en = document.getElementById('end_map')
