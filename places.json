@@ -725,11 +725,29 @@
       -1323,
       "house"
     ],
+    "The Jump House": [
+      6646,
+      195,
+      -1432,
+      "house"
+    ],
     "The Midland Farm": [
       3800,
       95,
       -2378,
       "house"
+    ],
+    "High Mesa Waypoint": [
+      2553,
+      119,
+      -2279,
+      "house"
+    ],
+    "Barkand Dulgur Outpost": [
+      3655,
+      24,
+      -2295,
+      "cave"
     ]
   }
 }
