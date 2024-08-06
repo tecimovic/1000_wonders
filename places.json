@@ -748,6 +748,48 @@
       24,
       -2295,
       "cave"
+    ],
+    "Osaka": [
+      20239,
+      63,
+      -891,
+      "village"
+    ],
+    "Tokyo": [
+      19238,
+      63,
+      -709,
+      "village"
+    ],
+    "Zombie Hoard Village": [
+      17631,
+      105,
+      -494,
+      "village"
+    ],
+    "Morogwin": [
+      16657,
+      71,
+      -342,
+      "village"
+    ],
+    "Snoozlia Julia Hole": [
+      16193,
+      71,
+      -401,
+      "hole"
+    ],
+    "Lou Reed Hole and Pit of Doom": [
+      14462,
+      69,
+      -229,
+      "hole"
+    ],
+    "Null Island and Null Hole": [
+      12543,
+      66,
+      59,
+      "hole"
     ]
   }
 }
