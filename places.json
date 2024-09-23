@@ -587,6 +587,24 @@
       2734,
       "house"
     ],
+    "Inuit Embassy Village": [
+      1423,
+      75,
+      6157,
+      "village"
+    ],
+    "Lone Mountain Shelter": [
+      1516,
+      124,
+      5594,
+      "house"
+    ],
+    "Iglu of Salvation": [
+      1203,
+      63,
+      4328,
+      "iglu"
+    ],
     "Stubborn Village": [
       778,
       69,
@@ -796,6 +814,12 @@
       66,
       59,
       "hole"
+    ],
+    "Trial Chamber Rest Stop": [
+      -2114,
+      82,
+      -1419,
+      "shelter"
     ]
   }
 }
