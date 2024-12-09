@@ -1,4 +1,5 @@
 {
+  "end": {},
   "nether": {
     "Unnamed Portal": [
       37,
@@ -675,7 +676,7 @@
       3769,
       101,
       -2104,
-     "house"
+      "house"
     ],
     "Ancient City of Lightning": [
       2426,

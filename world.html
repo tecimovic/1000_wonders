@@ -21,45 +21,97 @@
       }
       .place-name {
         fill: black;
-        font-size: 30pt;
+        font-size: 4000pt;
       }
       .place-coord {
         fill: darkred;
-        font-size: 25pt;
+        font-size: 3000pt;
       } 
+      .axis {
+        stroke: black;
+        stroke-width: 5;
+      }
       body {
         background-color: white;
         color: black;
       }
     </style>
     <script>
-function afterMapLoad(wm, dimension, factor=1) {
+// passing in the svg element and the dimension, which is a string index.
+function afterMapLoad(wm, dimension) {
   fetch('places.json').then((response) => response.json()).then((json) => {
     let svgns = "http://www.w3.org/2000/svg";
-    let mapsize = 8000
+    let mapsize = 1000000
     let data = json[dimension]
+
+    let maxX = 0
+    let maxY = 0
+    let minX = 0
+    let minY = 0
 
     Object.keys(data).forEach(name => {
       let a = data[name]
-      let x = mapsize/2+(a[0]*factor)
-      let z = mapsize/2+(a[2]*factor)
+      let x = a[0]
+      let y = a[2]
+
+      if (x > maxX) {
+        maxX = x
+      }
+      if (x < minX) {
+        minX = x
+      }
+      if (y > maxY) {
+        maxY = y
+      }
+      if (y < minY) {
+        minY = y
+      }
+    });
+
+    let factorX = mapsize/(maxX - minX) * 0.9
+    let factorY = mapsize/(maxY - minY) * 0.9
+    let originX = (mapsize * (0-minX))/(maxX - minX)
+    let originY = (mapsize * (0-minY))/(maxY - minY)
+
+    Object.keys(data).forEach(name => {
+      let a = data[name]
+      let x = originX + factorX*a[0]
+      let z = originY + factorY*a[2]
+
+      var axisX = document.createElementNS(svgns, 'line');
+      axisX.setAttributeNS(null, 'x1', 0);
+      axisX.setAttributeNS(null, 'y1', originY);
+      axisX.setAttributeNS(null, 'x2', mapsize);
+      axisX.setAttributeNS(null, 'y2', originY);
+      axisX.classList.add('axis')
+      wm.appendChild(axisX);
+
+      var axisY = document.createElementNS(svgns, 'line');
+      axisY.setAttributeNS(null, 'x1', originX);
+      axisY.setAttributeNS(null, 'y1', 0);
+      axisY.setAttributeNS(null, 'x2', originX);
+      axisY.setAttributeNS(null, 'y2', mapsize);
+      axisY.classList.add('axis')
+      wm.appendChild(axisY);
+
       var circle = document.createElementNS(svgns, 'circle');
       circle.setAttributeNS(null, 'cx', x);
       circle.setAttributeNS(null, 'cy', z);
-      circle.setAttributeNS(null, 'r', 10);
-      circle.setAttributeNS(null, 'fill', 'green')
+      circle.setAttributeNS(null, 'r', 2500);
+      circle.setAttributeNS(null, 'fill', 'blue')
       wm.appendChild(circle);
 
       var text = document.createElementNS(svgns, 'text');
-      text.setAttributeNS(null, 'x', x+10)
-      text.setAttributeNS(null, 'y', z)
+      text.setAttributeNS(null, 'x', x)
+      text.setAttributeNS(null, 'y', z+5000)
+      text.setAttributeNS(null, 'font-size', '5000px')
       text.classList.add('place-name')
       text.textContent = `${name}`
       wm.appendChild(text)
 
       var coord = document.createElementNS(svgns, 'text');
-      coord.setAttributeNS(null, 'x', x+10)
-      coord.setAttributeNS(null, 'y', z+45)
+      coord.setAttributeNS(null, 'x', x)
+      coord.setAttributeNS(null, 'y', z+10000)
       coord.classList.add('place-coord')
       coord.textContent = `(${a[0]},${a[2]})`
       wm.appendChild(coord)
@@ -69,11 +121,11 @@ function afterMapLoad(wm, dimension, factor=1) {
 
 function onload() {
   let ow = document.getElementById('overworld_map')
-  afterMapLoad(ow, 'overworld', 0.5)
+  afterMapLoad(ow, 'overworld')
   let nt = document.getElementById('nether_map')
-  afterMapLoad(nt, 'nether', 8)
+  afterMapLoad(nt, 'nether')
   let en = document.getElementById('end_map')
-  afterMapLoad(nt, 'end', 8)
+  afterMapLoad(nt, 'end')
 }
     </script>
   </head>
@@ -82,19 +134,19 @@ function onload() {
     <h1>World of 1000 wonders</h1>
     <h2>Overworld</h2>
     <div class="map-overworld">
-    <svg viewbox="0 0 8000 8000" id="overworld_map">
+    <svg viewbox="0 0 1000000 1000000" id="overworld_map">
       <use href="overworld.svg#svg5"></use>
     </svg>
     </div>
     <h2>The Nether</h2>
     <div class="map-nether">
-      <svg viewbox="0 0 8000 8000" id="nether_map">
+      <svg viewbox="0 0 1000000 1000000" id="nether_map">
         <use href="nether.svg#svg5"></use>
       </svg>
       </div>
       <h2>The End</h2>
       <div class="map-end">
-        <svg viewbox="0 0 8000 8000" id="end_map">
+        <svg viewbox="0 0 1000000 1000000" id="end_map">
           <use href="end.svg#svg5"></use>
         </svg>
         </div>
