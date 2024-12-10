@@ -38,7 +38,31 @@
     </style>
     <script>
 // passing in the svg element and the dimension, which is a string index.
-function afterMapLoad(wm, dimension) {
+function afterMapLoad(wm, dimension, zoom = 1.0, shiftX = 0, shiftY = 0) {
+  wm.innerHTML = "";
+  wm.onwheel = function(event) {
+    event.preventDefault();
+    let d = 10000
+    if ( event.deltaY < 0 ) {
+      if ( event.shiftKey ) {
+        afterMapLoad(wm, dimension, zoom, shiftX+d, shiftY)
+      } else if ( event.ctrlKey ) {
+        afterMapLoad(wm, dimension, zoom, shiftX, shiftY+d)
+      } else {
+        afterMapLoad(wm, dimension, zoom * 1.1, shiftX, shiftY)
+      }
+    } else {
+      if ( event.shiftKey ) {
+        afterMapLoad(wm, dimension, zoom, shiftX-d, shiftY)
+      } else if ( event.ctrlKey ) {
+        afterMapLoad(wm, dimension, zoom, shiftX, shiftY-d)
+      }  else {
+        afterMapLoad(wm, dimension, zoom * 0.9, shiftX, shiftY)
+      }
+    }
+  }
+
+
   fetch('places.json').then((response) => response.json()).then((json) => {
     let svgns = "http://www.w3.org/2000/svg";
     let mapsize = 1000000
@@ -68,10 +92,10 @@ function afterMapLoad(wm, dimension) {
       }
     });
 
-    let factorX = mapsize/(maxX - minX) * 0.9
-    let factorY = mapsize/(maxY - minY) * 0.9
-    let originX = (mapsize * (0-minX))/(maxX - minX)
-    let originY = (mapsize * (0-minY))/(maxY - minY)
+    let factorX = (mapsize * 0.9 * zoom)/(maxX - minX)
+    let factorY = (mapsize * 0.9 * zoom)/(maxY - minY) 
+    let originX = (mapsize * (0-minX))/(maxX - minX) + shiftX
+    let originY = (mapsize * (0-minY))/(maxY - minY) + shiftY
 
     Object.keys(data).forEach(name => {
       let a = data[name]
@@ -127,11 +151,13 @@ function onload() {
   let en = document.getElementById('end_map')
   afterMapLoad(nt, 'end')
 }
+
     </script>
   </head>
 
   <body onload="onload();">
     <h1>World of 1000 wonders</h1>
+    Use the mouse wheel to zoom in and out. Use the shift key to move horizontally and the ctrl key to move vertically.
     <h2>Overworld</h2>
     <div class="map-overworld">
     <svg viewbox="0 0 1000000 1000000" id="overworld_map">
