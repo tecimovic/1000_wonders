@@ -140,7 +140,9 @@ function afterMapLoad(wm, dimension, zoom = 1.0, shiftX = 0, shiftY = 0) {
       coord.textContent = `(${a[0]},${a[2]})`
       wm.appendChild(coord)
     });
-  })
+  }).catch((error) => {
+    console.error('Error refreshing the map:', error);
+  });
 }
 
 function onload() {
