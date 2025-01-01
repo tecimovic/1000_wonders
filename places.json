@@ -42,6 +42,12 @@
             82,
             -676,
             "portal"
+        ],
+        "Portalis Magnus": [
+            583,
+            68,
+            -626,
+            "portal"
         ]
     },
     "overworld": {
@@ -904,6 +910,12 @@
             4305,
             64,
             -15791,
+            "house"
+        ],
+        "Portalis Magnus Guardhouse": [
+            4698,
+            64,
+            -4998,
             "house"
         ],
         "Sunny Coral Rest Stop": [
