@@ -894,6 +894,12 @@
             -7400,
             "house"
         ],
+        "Aurora": [
+            4063,
+            63,
+            -7843,
+            "house"
+        ],
         "Lonely Iglu": [
             4324,
             66,
@@ -928,6 +934,60 @@
             4080,
             64,
             -6857,
+            "house"
+        ],
+        "Western Sands Portal": [
+            2563,
+            69,
+            -7011,
+            "house"
+        ],
+        "The Most Naturally Lonely Mushroom": [
+            1532,
+            63,
+            -6923,
+            "bed"
+        ],
+        "Western Coral Cliffs": [
+            7,
+            68,
+            -6901,
+            "house"
+        ],
+        "The Hidden Valley": [
+            -133,
+            68,
+            -4084,
+            "house"
+        ],
+        "Waterfall Village": [
+            -2284,
+            86,
+            -882,
+            "village"
+        ],
+        "Optimism Village": [
+            -1952,
+            63,
+            28,
+            "village"
+        ],
+        "Pesimism Village": [
+            -1806,
+            66,
+            -364,
+            "village"
+        ],
+        "Grotton": [
+            -2552,
+            67,
+            244,
+            "village"
+        ],
+        "Stalag M": [
+            -1826,
+            101,
+            781,
             "house"
         ],
         "Sunny Coral Rest Stop": [
