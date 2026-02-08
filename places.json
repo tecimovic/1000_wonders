@@ -995,6 +995,12 @@
             63,
             -800,
             "shelter"
+        ],
+        "Altaris Welcome Center": [
+            -2671,
+            78,
+            2436,
+            "house"
         ]
     }
 }
