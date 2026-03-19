@@ -35,123 +35,217 @@
         background-color: white;
         color: black;
       }
+      .map-overworld svg,
+      .map-nether svg,
+      .map-end svg {
+        display: block;
+        width: 100%;
+        min-height: 400px;
+      }
+      .tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid #333;
+        margin-bottom: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .tabs button {
+        padding: 0.75em 1.5em;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        border-radius: 6px 6px 0 0;
+        margin-bottom: -2px;
+        background: #eee;
+        cursor: pointer;
+        color: #333;
+      }
+      .tabs button:hover {
+        background: #ddd;
+      }
+      .tabs button.active {
+        background: white;
+        font-weight: bold;
+        border-color: #333;
+        border-bottom: 2px solid white;
+      }
+      .tab-panel {
+        display: none;
+        border: 1px solid #ccc;
+        border-top: none;
+        padding: 0;
+      }
+      .tab-panel.active {
+        display: block;
+      }
     </style>
     <script>
-// passing in the svg element and the dimension, which is a string index.
-function afterMapLoad(wm, dimension, zoom = 1.0, shiftX = 0, shiftY = 0) {
-  wm.innerHTML = "";
-  wm.onwheel = function(event) {
-    event.preventDefault();
-    let d = 10000
-    if ( event.deltaY < 0 ) {
-      if ( event.shiftKey ) {
-        afterMapLoad(wm, dimension, zoom, shiftX+d, shiftY)
-      } else if ( event.ctrlKey ) {
-        afterMapLoad(wm, dimension, zoom, shiftX, shiftY+d)
-      } else {
-        afterMapLoad(wm, dimension, zoom * 1.1, shiftX, shiftY)
-      }
-    } else {
-      if ( event.shiftKey ) {
-        afterMapLoad(wm, dimension, zoom, shiftX-d, shiftY)
-      } else if ( event.ctrlKey ) {
-        afterMapLoad(wm, dimension, zoom, shiftX, shiftY-d)
-      }  else {
-        afterMapLoad(wm, dimension, zoom * 0.9, shiftX, shiftY)
-      }
-    }
-  }
-
-
+function afterMapLoad(wm, dimension) {
   fetch('places.json').then((response) => response.json()).then((json) => {
     let svgns = "http://www.w3.org/2000/svg";
-    let mapsize = 1000000
-    let data = json[dimension]
+    let mapsize = 1000000;
+    let data = json[dimension] || {};
+    let names = Object.keys(data);
 
-    let maxX = 0
-    let maxY = 0
-    let minX = 0
-    let minY = 0
-
-    Object.keys(data).forEach(name => {
-      let a = data[name]
-      let x = a[0]
-      let y = a[2]
-
-      if (x > maxX) {
-        maxX = x
-      }
-      if (x < minX) {
-        minX = x
-      }
-      if (y > maxY) {
-        maxY = y
-      }
-      if (y < minY) {
-        minY = y
-      }
+    let maxX = 0, maxY = 0, minX = 0, minY = 0;
+    names.forEach(name => {
+      let a = data[name];
+      let x = a[0], z = a[2];
+      if (x > maxX) maxX = x;
+      if (x < minX) minX = x;
+      if (z > maxY) maxY = z;
+      if (z < minY) minY = z;
     });
 
-    let factorX = (mapsize * 0.9 * zoom)/(maxX - minX)
-    let factorY = (mapsize * 0.9 * zoom)/(maxY - minY) 
-    let originX = (mapsize * (0-minX))/(maxX - minX) + shiftX
-    let originY = (mapsize * (0-minY))/(maxY - minY) + shiftY
+    let rangeX = maxX - minX || 1;
+    let rangeY = maxY - minY || 1;
+    let factorX = (mapsize * 0.9) / rangeX;
+    let factorY = (mapsize * 0.9) / rangeY;
+    let originX = (mapsize * (0 - minX)) / rangeX;
+    let originY = (mapsize * (0 - minY)) / rangeY;
 
-    Object.keys(data).forEach(name => {
-      let a = data[name]
-      let x = originX + factorX*a[0]
-      let z = originY + factorY*a[2]
+    wm.innerHTML = "";
 
-      var axisX = document.createElementNS(svgns, 'line');
-      axisX.setAttributeNS(null, 'x1', 0);
-      axisX.setAttributeNS(null, 'y1', originY);
-      axisX.setAttributeNS(null, 'x2', mapsize);
-      axisX.setAttributeNS(null, 'y2', originY);
-      axisX.classList.add('axis')
-      wm.appendChild(axisX);
+    // Draw axes once
+    var axisX = document.createElementNS(svgns, 'line');
+    axisX.setAttributeNS(null, 'x1', 0);
+    axisX.setAttributeNS(null, 'y1', originY);
+    axisX.setAttributeNS(null, 'x2', mapsize);
+    axisX.setAttributeNS(null, 'y2', originY);
+    axisX.classList.add('axis');
+    wm.appendChild(axisX);
 
-      var axisY = document.createElementNS(svgns, 'line');
-      axisY.setAttributeNS(null, 'x1', originX);
-      axisY.setAttributeNS(null, 'y1', 0);
-      axisY.setAttributeNS(null, 'x2', originX);
-      axisY.setAttributeNS(null, 'y2', mapsize);
-      axisY.classList.add('axis')
-      wm.appendChild(axisY);
+    var axisY = document.createElementNS(svgns, 'line');
+    axisY.setAttributeNS(null, 'x1', originX);
+    axisY.setAttributeNS(null, 'y1', 0);
+    axisY.setAttributeNS(null, 'x2', originX);
+    axisY.setAttributeNS(null, 'y2', mapsize);
+    axisY.classList.add('axis');
+    wm.appendChild(axisY);
+
+    // Draw places
+    names.forEach(name => {
+      let a = data[name];
+      let x = originX + factorX * a[0];
+      let z = originY + factorY * a[2];
 
       var circle = document.createElementNS(svgns, 'circle');
       circle.setAttributeNS(null, 'cx', x);
       circle.setAttributeNS(null, 'cy', z);
       circle.setAttributeNS(null, 'r', 2500);
-      circle.setAttributeNS(null, 'fill', 'blue')
+      circle.setAttributeNS(null, 'fill', 'blue');
       wm.appendChild(circle);
 
       var text = document.createElementNS(svgns, 'text');
-      text.setAttributeNS(null, 'x', x)
-      text.setAttributeNS(null, 'y', z+5000)
-      text.setAttributeNS(null, 'font-size', '5000px')
-      text.classList.add('place-name')
-      text.textContent = `${name}`
-      wm.appendChild(text)
+      text.setAttributeNS(null, 'x', x);
+      text.setAttributeNS(null, 'y', z + 5000);
+      text.setAttributeNS(null, 'font-size', '5000px');
+      text.classList.add('place-name');
+      text.textContent = name;
+      wm.appendChild(text);
 
       var coord = document.createElementNS(svgns, 'text');
-      coord.setAttributeNS(null, 'x', x)
-      coord.setAttributeNS(null, 'y', z+10000)
-      coord.classList.add('place-coord')
-      coord.textContent = `(${a[0]},${a[2]})`
-      wm.appendChild(coord)
+      coord.setAttributeNS(null, 'x', x);
+      coord.setAttributeNS(null, 'y', z + 10000);
+      coord.classList.add('place-coord');
+      coord.textContent = `(${a[0]},${a[2]})`;
+      wm.appendChild(coord);
     });
+
+    // Zoom/pan state and viewBox update (no redraw)
+    wm._mapsize = mapsize;
+    wm._mapState = { zoom: 1, shiftX: 0, shiftY: 0 };
+
+    function updateViewBox() {
+      let s = wm._mapState;
+      let w = wm._mapsize / s.zoom;
+      let h = wm._mapsize / s.zoom;
+      wm.setAttribute('viewBox', s.shiftX + ' ' + s.shiftY + ' ' + w + ' ' + h);
+    }
+    updateViewBox();
+
+    wm.onwheel = function(event) {
+      event.preventDefault();
+      let s = wm._mapState;
+      let panStep = 15000 * (wm._mapsize / 1000000) / s.zoom;
+      if (event.deltaY < 0) {
+        if (event.shiftKey) {
+          s.shiftX -= panStep;
+        } else if (event.ctrlKey) {
+          s.shiftY -= panStep;
+        } else {
+          s.zoom = Math.min(s.zoom * 1.15, 20);
+        }
+      } else {
+        if (event.shiftKey) {
+          s.shiftX += panStep;
+        } else if (event.ctrlKey) {
+          s.shiftY += panStep;
+        } else {
+          s.zoom = Math.max(s.zoom / 1.15, 0.2);
+        }
+      }
+      updateViewBox();
+    };
+
+    // Drag to pan
+    wm.style.cursor = 'grab';
+    wm._drag = null;
+
+    wm.onmousedown = function(event) {
+      if (event.button !== 0) return;
+      let s = wm._mapState;
+      let w = wm._mapsize / s.zoom;
+      let h = wm._mapsize / s.zoom;
+      wm._drag = {
+        startX: event.clientX,
+        startY: event.clientY,
+        startShiftX: s.shiftX,
+        startShiftY: s.shiftY,
+        scaleX: w / wm.clientWidth,
+        scaleY: h / wm.clientHeight
+      };
+      wm.style.cursor = 'grabbing';
+      event.preventDefault();
+      document.addEventListener('mouseup', function onUp() {
+        document.removeEventListener('mouseup', onUp);
+        wm._drag = null;
+        wm.style.cursor = 'grab';
+      });
+    };
+
+    wm.onmousemove = function(event) {
+      if (!wm._drag) return;
+      let d = wm._drag;
+      wm._mapState.shiftX = d.startShiftX - (event.clientX - d.startX) * d.scaleX;
+      wm._mapState.shiftY = d.startShiftY - (event.clientY - d.startY) * d.scaleY;
+      updateViewBox();
+    };
+
   }).catch((error) => {
-    console.error('Error refreshing the map:', error);
+    console.error('Error loading the map:', error);
   });
 }
 
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-panel').forEach(function(panel) {
+    panel.classList.remove('active');
+  });
+  document.querySelectorAll('.tabs button').forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  var panel = document.getElementById('panel-' + tabName);
+  var btn = document.getElementById('tab-' + tabName);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
 function onload() {
-  let ow = document.getElementById('overworld_map')
-  afterMapLoad(ow, 'overworld')
-  let nt = document.getElementById('nether_map')
-  afterMapLoad(nt, 'nether')
-  let en = document.getElementById('end_map')
-  afterMapLoad(nt, 'end')
+  afterMapLoad(document.getElementById('overworld_map'), 'overworld');
+  afterMapLoad(document.getElementById('nether_map'), 'nether');
+  afterMapLoad(document.getElementById('end_map'), 'end');
+  switchTab('overworld');
 }
 
     </script>
@@ -159,25 +253,27 @@ function onload() {
 
   <body onload="onload();">
     <h1>World of 1000 wonders</h1>
-    Use the mouse wheel to zoom in and out. Use the shift key to move horizontally and the ctrl key to move vertically.
-    <h2>Overworld</h2>
-    <div class="map-overworld">
-    <svg viewbox="0 0 1000000 1000000" id="overworld_map">
-      <use href="overworld.svg#svg5"></use>
-    </svg>
+    <p>Use the mouse wheel to zoom in and out. Use the shift key to move horizontally and the ctrl key to move vertically.</p>
+    <div class="tabs">
+      <button type="button" id="tab-overworld" onclick="switchTab('overworld')">Overworld</button>
+      <button type="button" id="tab-nether" onclick="switchTab('nether')">The Nether</button>
+      <button type="button" id="tab-end" onclick="switchTab('end')">The End</button>
     </div>
-    <h2>The Nether</h2>
-    <div class="map-nether">
+    <div id="panel-overworld" class="tab-panel map-overworld">
+      <svg viewbox="0 0 1000000 1000000" id="overworld_map">
+        <use href="overworld.svg#svg5"></use>
+      </svg>
+    </div>
+    <div id="panel-nether" class="tab-panel map-nether">
       <svg viewbox="0 0 1000000 1000000" id="nether_map">
         <use href="nether.svg#svg5"></use>
       </svg>
-      </div>
-      <h2>The End</h2>
-      <div class="map-end">
-        <svg viewbox="0 0 1000000 1000000" id="end_map">
-          <use href="end.svg#svg5"></use>
-        </svg>
-        </div>
-    </body>
+    </div>
+    <div id="panel-end" class="tab-panel map-end">
+      <svg viewbox="0 0 1000000 1000000" id="end_map">
+        <use href="end.svg#svg5"></use>
+      </svg>
+    </div>
+  </body>
 
 </html>
