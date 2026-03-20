@@ -1025,6 +1025,36 @@
             85,
             7374,
             "village"
+        ],
+        "Lands End Tiny House": [
+            -5974,
+            69,
+            7809,
+            "tiny house"
+        ],
+        "Lost Portal Shelter": [
+            -6687,
+            93,
+            8415,
+            "shelter"
+        ],
+        "Australis Incognitae": [
+            -7059,
+            79,
+            8511,
+            "village"
+        ],
+        "Flowering Cactus Shelter": [
+            -7985,
+            67,
+            9189,
+            "shelter"
+        ],
+        "South Barrier Reef Shelter": [
+            -8619,
+            65,
+            11187,
+            "shelter"
         ]
     }
 }
