@@ -1,6 +1,12 @@
 {
     "end": {},
     "nether": {
+        "The Hexabastion": [
+            -1042,
+            44,
+            1503,
+            "bastion remnant"
+        ],
         "Unnamed Portal": [
             37,
             64,
@@ -1073,6 +1079,12 @@
             73,
             12691,
             "village"
+        ],
+        "Sietch Tabr": [
+            -7979,
+            -58,
+            9174,
+            "sietch"
         ]
     }
 }
