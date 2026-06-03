@@ -1,6 +1,18 @@
 {
     "end": {},
     "nether": {
+        "Pancho portal": [
+            -979,
+            62,
+            1061,
+            "portal"
+        ],
+        "Australis Integralis portal": [
+            -877,
+            61,
+            1060,
+            "portal"
+        ],
         "The Hexabastion": [
             -1042,
             44,
@@ -1091,6 +1103,18 @@
             71,
             8792,
             "house"
+        ],
+        "Pancho Village": [
+            -7836,
+            74,
+            8375,
+            "village"
+        ],
+        "Pancho Beach": [
+            -8652,
+            63,
+            8493,
+            "beack shack"
         ]
     }
 }
