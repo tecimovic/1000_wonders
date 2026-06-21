@@ -3,7 +3,8 @@ import { ref, computed, onUnmounted } from 'vue'
 
 const props = defineProps({
   places: { type: Object, required: true },
-  markerColor: { type: String, default: '#60a5fa' }
+  markerColor: { type: String, default: '#60a5fa' },
+  gridColor:   { type: String, default: '#60a5fa' }
 })
 
 const MAPSIZE = 1_000_000
@@ -15,7 +16,7 @@ let dragData = null
 const layout = computed(() => {
   const entries = Object.entries(props.places)
   if (entries.length === 0) {
-    return { factorX: 1, factorZ: 1, originX: MAPSIZE / 2, originZ: MAPSIZE / 2 }
+    return { factorX: 1, factorZ: 1, originX: MAPSIZE / 2, originZ: MAPSIZE / 2, minX: -1, maxX: 1, minZ: -1, maxZ: 1 }
   }
 
   let maxX = -Infinity, minX = Infinity, maxZ = -Infinity, minZ = Infinity
@@ -34,7 +35,8 @@ const layout = computed(() => {
     factorX: (MAPSIZE * 0.9) / rangeX,
     factorZ: (MAPSIZE * 0.9) / rangeZ,
     originX: (MAPSIZE * -minX) / rangeX,
-    originZ: (MAPSIZE * -minZ) / rangeZ
+    originZ: (MAPSIZE * -minZ) / rangeZ,
+    minX, maxX, minZ, maxZ
   }
 })
 
@@ -47,6 +49,30 @@ const markers = computed(() => {
     wx: coords[0],
     wz: coords[2]
   }))
+})
+
+const gridLines = computed(() => {
+  const { factorX, factorZ, originX, originZ, minX, maxX, minZ, maxZ } = layout.value
+  const step = 100
+  const x0 = Math.floor(minX / step) * step
+  const x1 = Math.ceil(maxX / step) * step
+  const z0 = Math.floor(minZ / step) * step
+  const z1 = Math.ceil(maxZ / step) * step
+
+  const svgX0 = originX + factorX * x0
+  const svgX1 = originX + factorX * x1
+  const svgZ0 = originZ + factorZ * z0
+  const svgZ1 = originZ + factorZ * z1
+
+  const verticals = []
+  for (let wx = x0; wx <= x1; wx += step) {
+    verticals.push({ svgX: originX + factorX * wx, major: wx % 1000 === 0, zero: wx === 0 })
+  }
+  const horizontals = []
+  for (let wz = z0; wz <= z1; wz += step) {
+    horizontals.push({ svgZ: originZ + factorZ * wz, major: wz % 1000 === 0, zero: wz === 0 })
+  }
+  return { verticals, horizontals, svgX0, svgX1, svgZ0, svgZ1 }
 })
 
 // Render hovered marker last so it paints on top of all others.
@@ -135,6 +161,27 @@ onUnmounted(() => {
     @wheel.prevent="onWheel"
     @mousedown="onMousedown"
   >
+    <!-- Grid -->
+    <line
+      v-for="(vl, i) in gridLines.verticals"
+      :key="'gv' + i"
+      :x1="vl.svgX" :y1="gridLines.svgZ0"
+      :x2="vl.svgX" :y2="gridLines.svgZ1"
+      :stroke="gridColor"
+      :stroke-width="(vl.zero ? 2500 : vl.major ? 1250 : 800) * labelScale"
+      :opacity="vl.zero ? 0.65 : vl.major ? 0.45 : 0.18"
+    />
+    <line
+      v-for="(hl, i) in gridLines.horizontals"
+      :key="'gh' + i"
+      :x1="gridLines.svgX0" :y1="hl.svgZ"
+      :x2="gridLines.svgX1" :y2="hl.svgZ"
+      :stroke="gridColor"
+      :stroke-width="(hl.zero ? 2500 : hl.major ? 1250 : 800) * labelScale"
+      :opacity="hl.zero ? 0.65 : hl.major ? 0.45 : 0.18"
+    />
+
+    <!-- Axes -->
     <line
       class="axis"
       :x1="0" :y1="layout.originZ"

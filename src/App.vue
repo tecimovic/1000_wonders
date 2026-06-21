@@ -4,9 +4,9 @@ import WorldMap from './components/WorldMap.vue'
 import places from '../places.json'
 
 const tabs = [
-  { id: 'overworld', label: 'Overworld',  panelClass: 'map-overworld', markerColor: '#4ade80' },
-  { id: 'nether',    label: 'The Nether', panelClass: 'map-nether',    markerColor: '#fb923c' },
-  { id: 'end',       label: 'The End',    panelClass: 'map-end',       markerColor: '#c084fc' }
+  { id: 'overworld', label: 'Overworld',  panelClass: 'map-overworld', markerColor: '#4ade80', gridColor: '#22c55e' },
+  { id: 'nether',    label: 'The Nether', panelClass: 'map-nether',    markerColor: '#fb923c', gridColor: '#f97316' },
+  { id: 'end',       label: 'The End',    panelClass: 'map-end',       markerColor: '#c084fc', gridColor: '#a855f7' }
 ]
 
 const activeTab = ref('overworld')
@@ -35,7 +35,7 @@ const activeTab = ref('overworld')
     class="tab-panel"
     :class="tab.panelClass"
   >
-    <WorldMap :places="places[tab.id] ?? {}" :markerColor="tab.markerColor" />
+    <WorldMap :places="places[tab.id] ?? {}" :markerColor="tab.markerColor" :gridColor="tab.gridColor" />
   </div>
 </template>
 
