@@ -47,7 +47,8 @@ const markers = computed(() => {
     x: originX + factorX * coords[0],
     z: originZ + factorZ * coords[2],
     wx: coords[0],
-    wz: coords[2]
+    wz: coords[2],
+    description: typeof coords[3] === 'string' ? coords[3] : null
   }))
 })
 
@@ -218,8 +219,8 @@ onUnmounted(() => {
         <rect
           :x="m.x - 2000 * labelScale"
           :y="m.z - 2000 * labelScale"
-          :width="(m.name.length * 4400 + 4000) * labelScale"
-          :height="16000 * labelScale"
+          :width="Math.max(m.name.length * 4400, (m.description || '').length * 3200 + 2000, 8000) * labelScale + 4000 * labelScale"
+          :height="(m.description ? 22000 : 16000) * labelScale"
           fill="#0a0a18"
           fill-opacity="0.92"
           :stroke="markerColor"
@@ -240,6 +241,13 @@ onUnmounted(() => {
         class="place-coord"
         pointer-events="none"
       >({{ m.wx }},{{ m.wz }})</text>
+      <text
+        v-if="hoveredName === m.name && m.description"
+        :x="m.x" :y="m.z + 19000 * labelScale"
+        :font-size="6000 * labelScale"
+        class="place-desc"
+        pointer-events="none"
+      >{{ m.description }}</text>
     </g>
   </svg>
 </template>
@@ -262,6 +270,9 @@ onUnmounted(() => {
 }
 .place-coord {
   fill: #94a3b8;
+}
+.place-desc {
+  fill: #c4b5fd;
 }
 circle {
   transition: r 0.15s ease-out;
