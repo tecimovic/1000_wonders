@@ -14,30 +14,30 @@ const activeTab = ref('overworld')
 
 <template>
   <div class="app-root">
-  <header>
-    <h1>World of 1000 wonders</h1>
-    <p>Scroll to zoom &middot; Shift+scroll to pan horizontally &middot; Ctrl+scroll to pan vertically &middot; Drag to pan</p>
-  </header>
+    <div class="tabs">
+      <button
+        v-for="tab in tabs"
+        :key="tab.id"
+        type="button"
+        :class="['tab-btn', tab.id, { active: activeTab === tab.id }]"
+        @click="activeTab = tab.id"
+      >{{ tab.label }}</button>
+      <span class="site-title">World of 1000 wonders</span>
+    </div>
 
-  <div class="tabs">
-    <button
+    <div
       v-for="tab in tabs"
       :key="tab.id"
-      type="button"
-      :class="['tab-btn', tab.id, { active: activeTab === tab.id }]"
-      @click="activeTab = tab.id"
-    >{{ tab.label }}</button>
-  </div>
-
-  <div
-    v-for="tab in tabs"
-    :key="tab.id"
-    v-show="activeTab === tab.id"
-    class="tab-panel"
-    :class="tab.panelClass"
-  >
-    <WorldMap :places="places[tab.id] ?? {}" :markerColor="tab.markerColor" :gridColor="tab.gridColor" />
-  </div>
+      v-show="activeTab === tab.id"
+      class="tab-panel"
+      :class="tab.panelClass"
+    >
+      <WorldMap
+        :places="places[tab.id] ?? {}"
+        :markerColor="tab.markerColor"
+        :gridColor="tab.gridColor"
+      />
+    </div>
   </div>
 </template>
 
@@ -53,7 +53,7 @@ html, body {
 
 body {
   margin: 0;
-  padding: 1.5em;
+  padding: 0;
   display: flex;
   flex-direction: column;
   background-color: #08080f;
@@ -64,33 +64,35 @@ body {
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-header {
-  margin-bottom: 1.25em;
-}
-
-h1 {
-  margin: 0 0 0.2em;
-  font-size: 2.4em;
-  letter-spacing: -0.02em;
-  background: linear-gradient(100deg, #a78bfa 0%, #60a5fa 45%, #34d399 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-p {
-  margin: 0;
-  font-size: 0.88em;
-  color: #6060a0;
-}
-
 /* ── Tabs ── */
 .tabs {
   display: flex;
   gap: 3px;
+  align-items: flex-end;
   border-bottom: 2px solid #22223a;
-  padding: 0;
+  padding: 6px 12px 0;
   margin-bottom: 0;
+}
+
+.site-title {
+  margin-left: auto;
+  padding-bottom: 0.4em;
+  font-size: 1.2em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #a855f7, #4ade80, #f97316, #a855f7, #4ade80, #f97316, #a855f7);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: title-flow 6s linear infinite;
+  white-space: nowrap;
+  user-select: none;
+}
+
+@keyframes title-flow {
+  0%   { background-position: 0% center; }
+  100% { background-position: 50% center; }
 }
 
 .tab-btn {
@@ -150,25 +152,20 @@ p {
 .tab-panel {
   flex: 1;
   min-height: 0;
-  border-radius: 0 0 10px 10px;
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
 }
 
 .map-overworld {
-  border: 2px solid #16a34a;
   background: linear-gradient(145deg, #030f07 0%, #071a0c 40%, #0d2e18 100%);
 }
 
 .map-nether {
-  border: 2px solid #c2410c;
   background: linear-gradient(145deg, #130200 0%, #2e0800 40%, #5a1200 100%);
 }
 
 .map-end {
-  border: 2px solid #7e22ce;
   background: linear-gradient(145deg, #06020e 0%, #0e0420 40%, #1e0842 100%);
 }
 </style>

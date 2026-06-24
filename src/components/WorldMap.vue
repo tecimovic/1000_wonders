@@ -2,7 +2,7 @@
 import { ref, computed, onUnmounted } from 'vue'
 
 const props = defineProps({
-  places: { type: Object, required: true },
+  places:      { type: Object, required: true },
   markerColor: { type: String, default: '#60a5fa' },
   gridColor:   { type: String, default: '#60a5fa' }
 })
@@ -182,7 +182,7 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
   <div class="map-wrapper">
     <svg
       :viewBox="viewBox"
-      :style="{ cursor: isDragging ? 'grabbing' : 'grab' }"
+      :style="{ cursor: isDragging ? 'grabbing' : 'default' }"
       class="world-map"
       @wheel.prevent="onWheel"
       @mousedown="onMousedown"
