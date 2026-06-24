@@ -13,6 +13,7 @@ const activeTab = ref('overworld')
 </script>
 
 <template>
+  <div class="app-root">
   <header>
     <h1>World of 1000 wonders</h1>
     <p>Scroll to zoom &middot; Shift+scroll to pan horizontally &middot; Ctrl+scroll to pan vertically &middot; Drag to pan</p>
@@ -37,6 +38,7 @@ const activeTab = ref('overworld')
   >
     <WorldMap :places="places[tab.id] ?? {}" :markerColor="tab.markerColor" :gridColor="tab.gridColor" />
   </div>
+  </div>
 </template>
 
 <style>
@@ -44,10 +46,16 @@ const activeTab = ref('overworld')
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   padding: 1.5em;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #08080f;
   background-image:
     radial-gradient(ellipse 60% 40% at 15% 0%,   #1a0840 0%, transparent 60%),
@@ -126,10 +134,27 @@ p {
 }
 
 /* ── Map panels ── */
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#app {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .tab-panel {
+  flex: 1;
+  min-height: 0;
   border-radius: 0 0 10px 10px;
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
 }
 
 .map-overworld {
