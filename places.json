@@ -1,6 +1,12 @@
 {
     "end": {},
     "nether": {
+        "Ice Cherry portal": [
+            -775,
+            51,
+            894,
+            "portal"
+        ],
         "Pancho portal": [
             -979,
             62,
