@@ -10,6 +10,8 @@ const tabs = [
 ]
 
 const activeTab = ref('overworld')
+const showNames  = ref(true)
+const showCoords = ref(true)
 </script>
 
 <template>
@@ -36,6 +38,8 @@ const activeTab = ref('overworld')
         :places="places[tab.id] ?? {}"
         :markerColor="tab.markerColor"
         :gridColor="tab.gridColor"
+        v-model:showNames="showNames"
+        v-model:showCoords="showCoords"
       />
     </div>
   </div>

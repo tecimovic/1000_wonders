@@ -4,8 +4,12 @@ import { ref, computed, onUnmounted } from 'vue'
 const props = defineProps({
   places:      { type: Object, required: true },
   markerColor: { type: String, default: '#60a5fa' },
-  gridColor:   { type: String, default: '#60a5fa' }
+  gridColor:   { type: String, default: '#60a5fa' },
+  showNames:   { type: Boolean, default: true },
+  showCoords:  { type: Boolean, default: true },
 })
+
+const emit = defineEmits(['update:showNames', 'update:showCoords'])
 
 const MAPSIZE = 1_000_000
 const hoveredName = ref(null)
@@ -88,7 +92,19 @@ const sortedMarkers = computed(() => {
 })
 
 // Keep dots/text at constant visual pixel size when zoomed in past 1×.
-const labelScale = computed(() => 4.5 / Math.max(1.5, mapState.value.zoom))
+const labelScale = computed(() => {
+  const zoom = mapState.value.zoom
+  if (zoom >= 1.5) return 4.5 / zoom
+  // Below zoom 1.5, interpolate from 3 (at zoom 1.5) down to 1.5 (at zoom 0.2).
+  return 1.5 + (zoom - 0.2) * (1.5 / 1.3)
+})
+
+// Circles shrink twice as fast when zoomed out: half of labelScale at min zoom.
+const dotScale = computed(() => {
+  const zoom = mapState.value.zoom
+  if (zoom >= 1.5) return 4.5 / zoom
+  return 0.75 + (zoom - 0.2) * (2.25 / 1.3)
+})
 
 const viewBox = computed(() => {
   const { zoom, shiftX, shiftY } = mapState.value
@@ -228,14 +244,14 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
         <circle
           v-if="hoveredName === m.name"
           :cx="m.x" :cy="m.z"
-          :r="7000 * labelScale"
+          :r="7000 * dotScale"
           :fill="markerColor"
           opacity="0.15"
           pointer-events="none"
         />
         <circle
           :cx="m.x" :cy="m.z"
-          :r="(hoveredName === m.name ? 4000 : 2500) * labelScale"
+          :r="(hoveredName === m.name ? 4000 : 2500) * dotScale"
           :fill="markerColor"
           @mouseenter="hoveredName = m.name"
           @mouseleave="hoveredName = null"
@@ -255,12 +271,14 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
           />
         </template>
         <text
+          v-if="showNames || hoveredName === m.name"
           :x="m.x" :y="m.z + 5000 * labelScale"
           :font-size="(hoveredName === m.name ? 7500 : 5000) * labelScale"
           class="place-name"
           pointer-events="none"
         >{{ m.name }}</text>
         <text
+          v-if="showCoords || hoveredName === m.name"
           :x="m.x" :y="m.z + 12000 * labelScale"
           :font-size="(hoveredName === m.name ? 6000 : 4000) * labelScale"
           class="place-coord"
@@ -278,21 +296,33 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
 
     <!-- ── HUD ── -->
     <div class="map-hud">
-      <!-- Zoom panel -->
-      <div class="hud-panel zoom-panel">
-        <button class="hud-btn" title="Zoom in"    @click="zoomIn">+</button>
-        <button class="hud-btn" title="Reset zoom" @click="zoomReset">1</button>
-        <button class="hud-btn" title="Zoom out"   @click="zoomOut">&minus;</button>
+      <div class="hud-controls">
+        <!-- Zoom panel -->
+        <div class="hud-panel zoom-panel">
+          <button class="hud-btn" title="Zoom in"    @click="zoomIn">+</button>
+          <button class="hud-btn" title="Reset zoom" @click="zoomReset">1</button>
+          <button class="hud-btn" title="Zoom out"   @click="zoomOut">&minus;</button>
+        </div>
+
+        <!-- D-pad panel -->
+        <div class="hud-panel dpad-panel">
+          <button class="hud-btn dpad-up"     title="Pan up"    @click="pan('up')">&#9650;</button>
+          <button class="hud-btn dpad-left"   title="Pan left"  @click="pan('left')">&#9664;</button>
+          <button class="hud-btn dpad-center" title="Center on 0,0" @click="centerMap">&#8853;</button>
+          <button class="hud-btn dpad-right"  title="Pan right" @click="pan('right')">&#9654;</button>
+          <button class="hud-btn dpad-down"   title="Pan down"  @click="pan('down')">&#9660;</button>
+        </div>
       </div>
 
-      <!-- D-pad panel -->
-      <div class="hud-panel dpad-panel">
-        <button class="hud-btn dpad-up"     title="Pan up"    @click="pan('up')">&#9650;</button>
-        <button class="hud-btn dpad-left"   title="Pan left"  @click="pan('left')">&#9664;</button>
-        <button class="hud-btn dpad-center" title="Center on 0,0" @click="centerMap">&#8853;</button>
-        <button class="hud-btn dpad-right"  title="Pan right" @click="pan('right')">&#9654;</button>
-        <button class="hud-btn dpad-down"   title="Pan down"  @click="pan('down')">&#9660;</button>
-      </div>
+      <!-- Toggles -->
+      <label class="coord-toggle">
+        <input type="checkbox" :checked="showNames"  @change="emit('update:showNames',  $event.target.checked)" />
+        <span>Location name</span>
+      </label>
+      <label class="coord-toggle">
+        <input type="checkbox" :checked="showCoords" @change="emit('update:showCoords', $event.target.checked)" />
+        <span>Coordinates</span>
+      </label>
     </div>
   </div>
 </template>
@@ -335,9 +365,16 @@ text   { transition: font-size 0.15s ease-out; }
   top: 12px;
   right: 12px;
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.hud-controls {
+  display: flex;
   gap: 8px;
   align-items: flex-start;
-  pointer-events: none;
 }
 
 .hud-panel {
@@ -396,5 +433,33 @@ text   { transition: font-size 0.15s ease-out; }
 
 .hud-btn:active {
   background: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Coord toggle ── */
+.coord-toggle {
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(8, 8, 20, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 6px 10px;
+  backdrop-filter: blur(6px);
+  color: #b0b0d8;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+}
+
+.coord-toggle:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.coord-toggle input[type="checkbox"] {
+  accent-color: #60a5fa;
+  cursor: pointer;
 }
 </style>
