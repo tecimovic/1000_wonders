@@ -2,20 +2,22 @@
 import { ref, computed, onUnmounted } from 'vue'
 
 const props = defineProps({
-  places:      { type: Object, required: true },
-  markerColor: { type: String, default: '#60a5fa' },
-  gridColor:   { type: String, default: '#60a5fa' },
-  showNames:   { type: Boolean, default: true },
-  showCoords:  { type: Boolean, default: true },
+  places:        { type: Object,  required: true },
+  markerColor:   { type: String,  default: '#60a5fa' },
+  gridColor:     { type: String,  default: '#60a5fa' },
+  showNames:     { type: Boolean, default: true },
+  showCoords:    { type: Boolean, default: true },
+  selectedCoords: { type: Object, default: null },
 })
 
-const emit = defineEmits(['update:showNames', 'update:showCoords'])
+const emit = defineEmits(['update:showNames', 'update:showCoords', 'update:selectedCoords'])
 
 const MAPSIZE = 1_000_000
 const hoveredName = ref(null)
 const mapState = ref({ zoom: 1, shiftX: 0, shiftY: 0 })
 const isDragging = ref(false)
 let dragData = null
+let didDrag = false
 
 const layout = computed(() => {
   const entries = Object.entries(props.places)
@@ -80,14 +82,21 @@ const gridLines = computed(() => {
   return { verticals, horizontals, svgX0, svgX1, svgZ0, svgZ1 }
 })
 
-// Render hovered marker last so it paints on top of all others.
+function isSelected(m) {
+  const s = props.selectedCoords
+  return s !== null && s.wx === m.wx && s.wz === m.wz
+}
+
+// Render selected marker second-to-last, hovered marker last, so they paint on top.
 const sortedMarkers = computed(() => {
   const h = hoveredName.value
-  if (!h) return markers.value
-  const idx = markers.value.findIndex(m => m.name === h)
-  if (idx === -1) return markers.value
   const copy = [...markers.value]
-  copy.push(copy.splice(idx, 1)[0])
+  const selIdx = copy.findIndex(m => isSelected(m))
+  if (selIdx !== -1 && copy[selIdx].name !== h) copy.push(copy.splice(selIdx, 1)[0])
+  if (h) {
+    const idx = copy.findIndex(m => m.name === h)
+    if (idx !== -1) copy.push(copy.splice(idx, 1)[0])
+  }
   return copy
 })
 
@@ -131,6 +140,7 @@ function onWheel(event) {
 function onMousedown(event) {
   if (event.button !== 0) return
   event.preventDefault()
+  didDrag = false
   const s = mapState.value
   const size = MAPSIZE / s.zoom
   const svgEl = event.currentTarget
@@ -149,12 +159,21 @@ function onMousedown(event) {
 
 function onMousemove(event) {
   if (!dragData) return
+  const dx = event.clientX - dragData.startX
+  const dy = event.clientY - dragData.startY
+  if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true
   const d = dragData
   mapState.value = {
     ...mapState.value,
-    shiftX: d.startShiftX - (event.clientX - d.startX) * d.scaleX,
-    shiftY: d.startShiftY - (event.clientY - d.startY) * d.scaleY
+    shiftX: d.startShiftX - dx * d.scaleX,
+    shiftY: d.startShiftY - dy * d.scaleY
   }
+}
+
+function selectMarker(m) {
+  if (didDrag) return
+  const already = isSelected(m)
+  emit('update:selectedCoords', already ? null : { wx: m.wx, wz: m.wz })
 }
 
 function onMouseup() {
@@ -249,12 +268,25 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
           opacity="0.15"
           pointer-events="none"
         />
+        <!-- selection halo -->
+        <circle
+          v-if="isSelected(m)"
+          :cx="m.x" :cy="m.z"
+          :r="5500 * dotScale"
+          fill="none"
+          stroke="#facc15"
+          :stroke-width="900 * dotScale"
+          opacity="0.9"
+          pointer-events="none"
+        />
         <circle
           :cx="m.x" :cy="m.z"
           :r="(hoveredName === m.name ? 4000 : 2500) * dotScale"
           :fill="markerColor"
+          style="cursor: pointer"
           @mouseenter="hoveredName = m.name"
           @mouseleave="hoveredName = null"
+          @click="selectMarker(m)"
         />
         <template v-if="hoveredName === m.name">
           <rect

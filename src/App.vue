@@ -9,9 +9,10 @@ const tabs = [
   { id: 'end',       label: 'The End',    panelClass: 'map-end',       markerColor: '#c084fc', gridColor: '#a855f7' }
 ]
 
-const activeTab = ref('overworld')
-const showNames  = ref(true)
-const showCoords = ref(true)
+const activeTab      = ref('overworld')
+const showNames      = ref(true)
+const showCoords     = ref(true)
+const selectedCoords = ref(null)
 </script>
 
 <template>
@@ -40,6 +41,7 @@ const showCoords = ref(true)
         :gridColor="tab.gridColor"
         v-model:showNames="showNames"
         v-model:showCoords="showCoords"
+        v-model:selectedCoords="selectedCoords"
       />
     </div>
   </div>
