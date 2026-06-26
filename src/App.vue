@@ -9,10 +9,26 @@ const tabs = [
   { id: 'end',       label: 'The End',    panelClass: 'map-end',       markerColor: '#c084fc', gridColor: '#a855f7' }
 ]
 
-const activeTab      = ref('overworld')
+const validMapIds = tabs.map(t => t.id)
+
+function parseInitialSelection() {
+  const p = new URLSearchParams(window.location.search)
+  const mapId = p.get('map')
+  const xStr  = p.get('x')
+  const yStr  = p.get('y')
+  if (!mapId || xStr === null || yStr === null) return null
+  if (!validMapIds.includes(mapId)) return null
+  const wx = parseInt(xStr, 10)
+  const wz = parseInt(yStr, 10)
+  if (isNaN(wx) || isNaN(wz)) return null
+  return { mapId, wx, wz }
+}
+
+const initial        = parseInitialSelection()
+const activeTab      = ref(initial?.mapId ?? 'overworld')
 const showNames      = ref(true)
 const showCoords     = ref(true)
-const selectedCoords = ref(null)
+const selectedCoords = ref(initial)
 
 watch(selectedCoords, (val) => {
   if (val) {
