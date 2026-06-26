@@ -184,6 +184,38 @@ function onMouseup() {
   document.removeEventListener('mouseup', onMouseup)
 }
 
+function onMapClick(event) {
+  if (didDrag) return
+  const svgEl = event.currentTarget
+  const pt = svgEl.createSVGPoint()
+  pt.x = event.clientX
+  pt.y = event.clientY
+  const svgPt = pt.matrixTransform(svgEl.getScreenCTM().inverse())
+  const svgX = svgPt.x
+  const svgZ = svgPt.y
+  const { factorX, factorZ, originX, originZ } = layout.value
+  const wx = Math.round((svgX - originX) / factorX)
+  const wz = Math.round((svgZ - originZ) / factorZ)
+  const s = props.selectedCoords
+  const isCustomLocation = !markers.value.some(m => m.wx === wx && m.wz === wz)
+  if (s && s.mapId === props.mapId && s.wx === wx && s.wz === wz && isCustomLocation) {
+    emit('update:selectedCoords', null)
+  } else {
+    emit('update:selectedCoords', { mapId: props.mapId, wx, wz })
+  }
+}
+
+const customSelectionSvg = computed(() => {
+  const s = props.selectedCoords
+  if (!s || s.mapId !== props.mapId) return null
+  if (markers.value.some(m => m.wx === s.wx && m.wz === s.wz)) return null
+  const { factorX, factorZ, originX, originZ } = layout.value
+  return {
+    x: originX + factorX * s.wx,
+    z: originZ + factorZ * s.wz
+  }
+})
+
 onUnmounted(() => {
   document.removeEventListener('mousemove', onMousemove)
   document.removeEventListener('mouseup', onMouseup)
@@ -218,10 +250,11 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
   <div class="map-wrapper">
     <svg
       :viewBox="viewBox"
-      :style="{ cursor: isDragging ? 'grabbing' : 'default' }"
+      :style="{ cursor: isDragging ? 'grabbing' : 'crosshair' }"
       class="world-map"
       @wheel.prevent="onWheel"
       @mousedown="onMousedown"
+      @click="onMapClick"
     >
       <!-- Grid -->
       <line
@@ -287,7 +320,7 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
           style="cursor: pointer"
           @mouseenter="hoveredName = m.name"
           @mouseleave="hoveredName = null"
-          @click="selectMarker(m)"
+          @click.stop="selectMarker(m)"
         />
         <template v-if="hoveredName === m.name">
           <rect
@@ -324,6 +357,28 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
           class="place-desc"
           pointer-events="none"
         >{{ m.description }}</text>
+      </g>
+
+      <!-- Custom selection cross (click on empty map) -->
+      <g v-if="customSelectionSvg">
+        <line
+          :x1="customSelectionSvg.x - 3500 * dotScale"
+          :y1="customSelectionSvg.z"
+          :x2="customSelectionSvg.x + 3500 * dotScale"
+          :y2="customSelectionSvg.z"
+          stroke="#facc15"
+          :stroke-width="700 * dotScale"
+          pointer-events="none"
+        />
+        <line
+          :x1="customSelectionSvg.x"
+          :y1="customSelectionSvg.z - 3500 * dotScale"
+          :x2="customSelectionSvg.x"
+          :y2="customSelectionSvg.z + 3500 * dotScale"
+          stroke="#facc15"
+          :stroke-width="700 * dotScale"
+          pointer-events="none"
+        />
       </g>
     </svg>
 
