@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import WorldMap from './components/WorldMap.vue'
 import places from '../places.json'
 
@@ -13,6 +13,18 @@ const activeTab      = ref('overworld')
 const showNames      = ref(true)
 const showCoords     = ref(true)
 const selectedCoords = ref(null)
+
+watch(selectedCoords, (val) => {
+  if (val) {
+    const url = new URL(window.location.href)
+    url.searchParams.set('map', val.mapId)
+    url.searchParams.set('x', val.wx)
+    url.searchParams.set('y', val.wz)
+    history.replaceState(null, '', url)
+  } else {
+    history.replaceState(null, '', window.location.pathname)
+  }
+})
 </script>
 
 <template>
@@ -37,6 +49,7 @@ const selectedCoords = ref(null)
     >
       <WorldMap
         :places="places[tab.id] ?? {}"
+        :mapId="tab.id"
         :markerColor="tab.markerColor"
         :gridColor="tab.gridColor"
         v-model:showNames="showNames"

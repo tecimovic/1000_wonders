@@ -8,6 +8,7 @@ const props = defineProps({
   showNames:     { type: Boolean, default: true },
   showCoords:    { type: Boolean, default: true },
   selectedCoords: { type: Object, default: null },
+  mapId:          { type: String, required: true },
 })
 
 const emit = defineEmits(['update:showNames', 'update:showCoords', 'update:selectedCoords'])
@@ -84,7 +85,7 @@ const gridLines = computed(() => {
 
 function isSelected(m) {
   const s = props.selectedCoords
-  return s !== null && s.wx === m.wx && s.wz === m.wz
+  return s !== null && s.mapId === props.mapId && s.wx === m.wx && s.wz === m.wz
 }
 
 // Render selected marker second-to-last, hovered marker last, so they paint on top.
@@ -173,7 +174,7 @@ function onMousemove(event) {
 function selectMarker(m) {
   if (didDrag) return
   const already = isSelected(m)
-  emit('update:selectedCoords', already ? null : { wx: m.wx, wz: m.wz })
+  emit('update:selectedCoords', already ? null : { mapId: props.mapId, wx: m.wx, wz: m.wz })
 }
 
 function onMouseup() {
