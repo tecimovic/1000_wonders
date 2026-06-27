@@ -1,6 +1,12 @@
 {
     "end": {},
     "nether": {
+        "Firefly portal": [
+            -370,
+            64,
+            442,
+            "portal"
+        ],
         "Ice Cherry portal": [
             -775,
             51,
@@ -684,6 +690,12 @@
             2062,
             "stronghold"
         ],
+        "Paradise Village": [
+            -1586,
+            62,
+            2333,
+            "village"
+        ],
         "Paradise Lake Resort": [
             -1135,
             64,
@@ -1156,6 +1168,12 @@
             -2948,
             64,
             4434,
+            "village"
+        ],
+        "Nowhere": [
+            -2618,
+            78,
+            4252,
             "village"
         ]
     }
