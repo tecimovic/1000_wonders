@@ -1,6 +1,49 @@
 {
-    "end": {},
+    "end": {
+        "St. Enderling": [
+            1019,
+            60,
+            1674,
+            "end city"
+        ],
+        "End House": [
+            119,
+            58,
+            7,
+            "house"
+        ],
+        "End Shrine": [
+            118,
+            58,
+            3,
+            "shrine"
+        ],
+        "Return Portal": [
+            5,
+            63,
+            1,
+            "portal"
+        ],
+        "Far Out Outgoing Portal": [
+            54,
+            74,
+            75,
+            "portal"
+        ],
+        "Far Out Incoming Portal": [
+            589,
+            71,
+            799,
+            "portal"
+        ]
+    },
     "nether": {
+        "Stronghold portal": [
+            -107,
+            32,
+            270,
+            "portal"
+        ],
         "Firefly portal": [
             -370,
             64,
