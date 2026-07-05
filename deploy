@@ -19,7 +19,7 @@ quote PASS $PASSWORD
 prompt
 bin
 cd website_ac401764
-put index.html
+mput * 
 cd assets 
 lcd assets 
 mput *
