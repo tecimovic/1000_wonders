@@ -53,6 +53,10 @@ watch(selectedCoords, (val) => {
         :class="['tab-btn', tab.id, { active: activeTab === tab.id }]"
         @click="activeTab = tab.id"
       >{{ tab.label }}</button>
+      <span v-if="selectedCoords" class="selected-coords">
+        Location: {{ selectedCoords.wx }} {{ selectedCoords.wz }}
+      </span>
+      <span v-else class="selected-coords selected-coords--empty"></span>
       <span class="site-title">World of 1000 wonders</span>
     </div>
 
@@ -109,8 +113,23 @@ body {
   margin-bottom: 0;
 }
 
+.selected-coords {
+  flex: 1;
+  text-align: center;
+  padding-bottom: 0.4em;
+  font-size: 0.95em;
+  font-weight: 600;
+  color: #facc15;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.selected-coords--empty {
+  color: transparent;
+}
+
 .site-title {
-  margin-left: auto;
   padding-bottom: 0.4em;
   font-size: 1.2em;
   font-weight: 700;
