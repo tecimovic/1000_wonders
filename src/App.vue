@@ -57,7 +57,13 @@ watch(selectedCoords, (val) => {
         Location: {{ selectedCoords.wx }} {{ selectedCoords.wz }}
       </span>
       <span v-else class="selected-coords selected-coords--empty"></span>
-      <span class="site-title">World of 1000 wonders</span>
+      <div class="site-title-block">
+        <div class="site-title-text">
+          <span class="site-title">World of 1000 wonders</span>
+          <span class="site-subtitle">- by the grace of the Lighthing God</span>
+        </div>
+        <img src="/hexarod.png" class="site-logo" alt="" title="Holy hexarod, by the grace of L.G.!" />
+      </div>
     </div>
 
     <div
@@ -129,8 +135,24 @@ body {
   color: transparent;
 }
 
+.site-title-block {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  margin-left: auto;
+  margin-right: -12px;
+}
+
+.site-title-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 0.2em;
+}
+
 .site-title {
-  padding-bottom: 0.4em;
+  padding-bottom: 0;
   font-size: 1.2em;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -142,6 +164,23 @@ body {
   animation: title-flow 6s linear infinite;
   white-space: nowrap;
   user-select: none;
+}
+
+.site-subtitle {
+  font-size: 0.7em;
+  font-weight: 400;
+  color: #6b6b9a;
+  white-space: nowrap;
+  user-select: none;
+  letter-spacing: 0.01em;
+}
+
+.site-logo {
+  width: 40px;
+  height: 40px;
+  display: block;
+  object-fit: contain;
+  margin-left: 20px;
 }
 
 @keyframes title-flow {
