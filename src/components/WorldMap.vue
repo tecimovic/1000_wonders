@@ -174,7 +174,7 @@ function onMousemove(event) {
 function selectMarker(m) {
   if (didDrag) return
   const already = isSelected(m)
-  emit('update:selectedCoords', already ? null : { mapId: props.mapId, wx: m.wx, wz: m.wz })
+  emit('update:selectedCoords', already ? null : { mapId: props.mapId, wx: m.wx, wz: m.wz, name: m.name, type: m.description })
 }
 
 function onMouseup() {

@@ -54,7 +54,8 @@ watch(selectedCoords, (val) => {
         @click="activeTab = tab.id"
       >{{ tab.label }}</button>
       <span v-if="selectedCoords" class="selected-coords">
-        Location: {{ selectedCoords.wx }} {{ selectedCoords.wz }}
+        <template v-if="selectedCoords.name">{{ selectedCoords.name }}: {{ selectedCoords.wx }}, {{ selectedCoords.wz }}   -   ({{ selectedCoords.type }})</template>
+        <template v-else>Coordinates: {{ selectedCoords.wx }}, {{ selectedCoords.wz }}</template>
       </span>
       <span v-else class="selected-coords selected-coords--empty"></span>
       <div class="site-title-block">
