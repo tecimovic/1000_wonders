@@ -28,6 +28,7 @@ const initial        = parseInitialSelection()
 const activeTab      = ref(initial?.mapId ?? 'overworld')
 const showNames      = ref(true)
 const showCoords     = ref(true)
+const showHeight     = ref(true)
 const selectedCoords = ref(initial)
 
 watch(selectedCoords, (val) => {
@@ -54,8 +55,8 @@ watch(selectedCoords, (val) => {
         @click="activeTab = tab.id"
       >{{ tab.label }}</button>
       <span v-if="selectedCoords" class="selected-coords">
-        <template v-if="selectedCoords.name">{{ selectedCoords.name }}: {{ selectedCoords.wx }}, {{ selectedCoords.wz }}   -   ({{ selectedCoords.type }})</template>
-        <template v-else>Coordinates: {{ selectedCoords.wx }}, {{ selectedCoords.wz }}</template>
+        <template v-if="selectedCoords.name">{{ selectedCoords.name }}: (X:{{ selectedCoords.wx }}, Z:{{ selectedCoords.wz }}<template v-if="selectedCoords.wy !== undefined">, Y:{{ selectedCoords.wy }}</template>)   -   ({{ selectedCoords.type }})</template>
+        <template v-else>Coordinates: (X:{{ selectedCoords.wx }}, Z:{{ selectedCoords.wz }})</template>
       </span>
       <span v-else class="selected-coords selected-coords--empty"></span>
       <div class="site-title-block">
@@ -81,6 +82,7 @@ watch(selectedCoords, (val) => {
         :gridColor="tab.gridColor"
         v-model:showNames="showNames"
         v-model:showCoords="showCoords"
+        v-model:showHeight="showHeight"
         v-model:selectedCoords="selectedCoords"
       />
     </div>

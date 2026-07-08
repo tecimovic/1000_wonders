@@ -7,11 +7,12 @@ const props = defineProps({
   gridColor:     { type: String,  default: '#60a5fa' },
   showNames:     { type: Boolean, default: true },
   showCoords:    { type: Boolean, default: true },
+  showHeight:    { type: Boolean, default: true },
   selectedCoords: { type: Object, default: null },
   mapId:          { type: String, required: true },
 })
 
-const emit = defineEmits(['update:showNames', 'update:showCoords', 'update:selectedCoords'])
+const emit = defineEmits(['update:showNames', 'update:showCoords', 'update:showHeight', 'update:selectedCoords'])
 
 const MAPSIZE = 1_000_000
 const hoveredName = ref(null)
@@ -54,6 +55,7 @@ const markers = computed(() => {
     x: originX + factorX * coords[0],
     z: originZ + factorZ * coords[2],
     wx: coords[0],
+    wy: coords[1],
     wz: coords[2],
     description: typeof coords[3] === 'string' ? coords[3] : null
   }))
@@ -174,7 +176,7 @@ function onMousemove(event) {
 function selectMarker(m) {
   if (didDrag) return
   const already = isSelected(m)
-  emit('update:selectedCoords', already ? null : { mapId: props.mapId, wx: m.wx, wz: m.wz, name: m.name, type: m.description })
+  emit('update:selectedCoords', already ? null : { mapId: props.mapId, wx: m.wx, wy: m.wy, wz: m.wz, name: m.name, type: m.description })
 }
 
 function onMouseup() {
@@ -349,7 +351,7 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
           :font-size="(hoveredName === m.name ? 6000 : 4000) * labelScale"
           class="place-coord"
           pointer-events="none"
-        >({{ m.wx }},{{ m.wz }})</text>
+        >(X:{{ m.wx }}, Z:{{ m.wz }}<template v-if="showHeight">, Y:{{ m.wy }}</template>)</text>
         <text
           v-if="hoveredName === m.name && m.description"
           :x="m.x" :y="m.z + 19000 * labelScale"
@@ -410,6 +412,10 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
       <label class="coord-toggle">
         <input type="checkbox" :checked="showCoords" @change="emit('update:showCoords', $event.target.checked)" />
         <span>Coordinates</span>
+      </label>
+      <label class="coord-toggle" :class="{ disabled: !showCoords }">
+        <input type="checkbox" :checked="showHeight" :disabled="!showCoords" @change="emit('update:showHeight', $event.target.checked)" />
+        <span>Height</span>
       </label>
     </div>
   </div>
@@ -549,5 +555,19 @@ text   { transition: font-size 0.15s ease-out; }
 .coord-toggle input[type="checkbox"] {
   accent-color: #60a5fa;
   cursor: pointer;
+}
+
+.coord-toggle.disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.coord-toggle.disabled:hover {
+  color: #b0b0d8;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.coord-toggle.disabled input[type="checkbox"] {
+  cursor: default;
 }
 </style>
