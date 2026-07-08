@@ -85,6 +85,73 @@ const gridLines = computed(() => {
   return { verticals, horizontals, svgX0, svgX1, svgZ0, svgZ1 }
 })
 
+// Pentagon "house" silhouette (roof peak + straight walls) — the church's nave
+// without its tower, scaled down to read as a small standalone house.
+const HOUSE_SHAPE = [
+  [0, -0.55], [0.65, 0.05], [0.65, 1], [-0.65, 1], [-0.65, 0.05]
+]
+
+// A tiny doorway centered under the roof peak.
+const HOUSE_DOOR = { x: -0.13, y: 0.65, w: 0.26, h: 0.35 }
+
+function housePoints(cx, cz, r) {
+  return HOUSE_SHAPE.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+function houseDoorRect(cx, cz, r) {
+  return {
+    x: cx + HOUSE_DOOR.x * r,
+    y: cz + HOUSE_DOOR.y * r,
+    width: HOUSE_DOOR.w * r,
+    height: HOUSE_DOOR.h * r
+  }
+}
+
+// "Village" silhouette: a low nave with a peaked roof, joined to a taller spired
+// tower on the right, in [-1, 1] unit space. Outline traced clockwise from the
+// nave's roof peak.
+const CHURCH_SHAPE = [
+  [-0.45, -0.5],  // nave roof peak
+  [0.1, 0.05],    // nave/tower shared wall, top
+  [0.1, -0.5],    // tower left wall, up to spire base
+  [0.4, -1],      // tower spire peak
+  [0.7, -0.5],    // tower right wall, spire base
+  [0.7, 1],       // tower right wall, base
+  [0.1, 1],       // nave/tower shared wall, base
+  [-1, 1],        // nave left wall, base
+  [-1, 0.05],     // nave left wall, top
+]
+
+// A large doorway cut into the nave, centered under the roof peak.
+const CHURCH_DOOR = { x: -0.62, y: 0.35, w: 0.35, h: 0.65 }
+
+function churchPoints(cx, cz, r) {
+  return CHURCH_SHAPE.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+function churchDoorRect(cx, cz, r) {
+  return {
+    x: cx + CHURCH_DOOR.x * r,
+    y: cz + CHURCH_DOOR.y * r,
+    width: CHURCH_DOOR.w * r,
+    height: CHURCH_DOOR.h * r
+  }
+}
+
+// "Portal" icon: a picture-frame square — a solid square with a smaller square
+// hole cut out of its center. Drawn at 80% of the usual icon size.
+const PORTAL_SCALE = 0.8
+
+function portalFrameRect(cx, cz, r) {
+  const s = r * PORTAL_SCALE
+  return { x: cx - s, y: cz - s, width: 2 * s, height: 2 * s }
+}
+
+function portalHoleRect(cx, cz, r) {
+  const hole = r * PORTAL_SCALE * 0.5
+  return { x: cx - hole, y: cz - hole, width: 2 * hole, height: 2 * hole }
+}
+
 function isSelected(m) {
   const s = props.selectedCoords
   return s !== null && s.mapId === props.mapId && s.wx === m.wx && s.wz === m.wz
@@ -111,12 +178,25 @@ const labelScale = computed(() => {
   return 1.5 + (zoom - 0.2) * (1.5 / 1.3)
 })
 
+// User-adjustable multiplier for location name/coordinate text. Follows zoom
+// continuously (no floor/ceiling) times the manual font-size preference.
+// Default/reset value is half the original 1x baseline.
+const DEFAULT_FONT_SCALE = 0.5
+const fontScale = ref(DEFAULT_FONT_SCALE)
+const textScale = computed(() => (4.5 / mapState.value.zoom) * fontScale.value)
+
 // Circles shrink twice as fast when zoomed out: half of labelScale at min zoom.
 const dotScale = computed(() => {
   const zoom = mapState.value.zoom
   if (zoom >= 1.5) return 4.5 / zoom
   return 0.75 + (zoom - 0.2) * (2.25 / 1.3)
 })
+
+// Matches the radius used to draw a marker's icon, so the label can anchor to its corner.
+function iconRadius(m) {
+  const r = (hoveredName.value === m.name ? 4000 : 2500) * dotScale.value
+  return m.description === 'portal' ? r * PORTAL_SCALE : r
+}
 
 const viewBox = computed(() => {
   const { zoom, shiftX, shiftY } = mapState.value
@@ -246,6 +326,10 @@ function centerMap() {
 function zoomIn()    { mapState.value = { ...mapState.value, zoom: Math.min(mapState.value.zoom * 1.5, 20) } }
 function zoomOut()   { mapState.value = { ...mapState.value, zoom: Math.max(mapState.value.zoom / 1.5, 0.2) } }
 function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
+
+function fontIncrease() { fontScale.value *= 1.2 }
+function fontDecrease() { fontScale.value /= 1.2 }
+function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
 </script>
 
 <template>
@@ -315,7 +399,53 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
           opacity="0.9"
           pointer-events="none"
         />
+        <template v-if="m.description === 'house'">
+          <polygon
+            :points="housePoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            style="cursor: pointer"
+            @mouseenter="hoveredName = m.name"
+            @mouseleave="hoveredName = null"
+            @click.stop="selectMarker(m)"
+          />
+          <rect
+            v-bind="houseDoorRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+        </template>
+        <template v-else-if="m.description === 'village'">
+          <polygon
+            :points="churchPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            style="cursor: pointer"
+            @mouseenter="hoveredName = m.name"
+            @mouseleave="hoveredName = null"
+            @click.stop="selectMarker(m)"
+          />
+          <rect
+            v-bind="churchDoorRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+        </template>
+        <template v-else-if="m.description === 'portal'">
+          <rect
+            v-bind="portalFrameRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            style="cursor: pointer"
+            @mouseenter="hoveredName = m.name"
+            @mouseleave="hoveredName = null"
+            @click.stop="selectMarker(m)"
+          />
+          <rect
+            v-bind="portalHoleRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+        </template>
         <circle
+          v-else
           :cx="m.x" :cy="m.z"
           :r="(hoveredName === m.name ? 4000 : 2500) * dotScale"
           :fill="markerColor"
@@ -324,41 +454,55 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
           @mouseleave="hoveredName = null"
           @click.stop="selectMarker(m)"
         />
-        <template v-if="hoveredName === m.name">
+        <!--
+          Text grows via a geometric `scale` transform rather than by scaling the
+          `font-size` attribute directly: Chromium clamps the *used* value of
+          font-size to 10000 (in local units), so pushing textScale into font-size
+          silently stops growing glyphs past that point even though the attribute
+          keeps climbing. A transform has no such ceiling.
+
+          The group is anchored at the icon's top-right corner (not the marker
+          center), and text uses a "hanging" baseline, so the label's top-left
+          corner lands on that corner instead of overlapping the icon.
+        -->
+        <g
+          :transform="`translate(${m.x + iconRadius(m)} ${m.z - iconRadius(m)}) scale(${textScale})`"
+          pointer-events="none"
+        >
           <rect
-            :x="m.x - 2000 * labelScale"
-            :y="m.z - 2000 * labelScale"
-            :width="Math.max(m.name.length * 4400, (m.description || '').length * 3200 + 2000, 8000) * labelScale + 4000 * labelScale"
-            :height="(m.description ? 22000 : 16000) * labelScale"
+            v-if="hoveredName === m.name"
+            :x="-2000"
+            :y="-2000"
+            :width="Math.max(m.name.length * 4400, (m.description || '').length * 3200 + 2000, 8000) + 4000"
+            :height="m.description ? 22000 : 16000"
             fill="#0a0a18"
             fill-opacity="0.92"
             :stroke="markerColor"
-            :stroke-width="600 * labelScale"
-            :rx="2000 * labelScale"
-            pointer-events="none"
+            stroke-width="600"
+            rx="2000"
           />
-        </template>
-        <text
-          v-if="showNames || hoveredName === m.name"
-          :x="m.x" :y="m.z + 5000 * labelScale"
-          :font-size="(hoveredName === m.name ? 7500 : 5000) * labelScale"
-          class="place-name"
-          pointer-events="none"
-        >{{ m.name }}</text>
-        <text
-          v-if="showCoords || hoveredName === m.name"
-          :x="m.x" :y="m.z + 12000 * labelScale"
-          :font-size="(hoveredName === m.name ? 6000 : 4000) * labelScale"
-          class="place-coord"
-          pointer-events="none"
-        >(X:{{ m.wx }}, Z:{{ m.wz }}<template v-if="showHeight">, Y:{{ m.wy }}</template>)</text>
-        <text
-          v-if="hoveredName === m.name && m.description"
-          :x="m.x" :y="m.z + 19000 * labelScale"
-          :font-size="6000 * labelScale"
-          class="place-desc"
-          pointer-events="none"
-        >{{ m.description }}</text>
+          <text
+            v-if="showNames || hoveredName === m.name"
+            x="0" y="0"
+            dominant-baseline="hanging"
+            :font-size="hoveredName === m.name ? 7500 : 5000"
+            class="place-name"
+          >{{ m.name }}</text>
+          <text
+            v-if="showCoords || hoveredName === m.name"
+            x="0" y="7000"
+            dominant-baseline="hanging"
+            :font-size="hoveredName === m.name ? 6000 : 4000"
+            class="place-coord"
+          >(X:{{ m.wx }}, Z:{{ m.wz }}<template v-if="showHeight">, Y:{{ m.wy }}</template>)</text>
+          <text
+            v-if="hoveredName === m.name && m.description"
+            x="0" y="14000"
+            dominant-baseline="hanging"
+            font-size="6000"
+            class="place-desc"
+          >{{ m.description }}</text>
+        </g>
       </g>
 
       <!-- Custom selection cross (click on empty map) -->
@@ -387,6 +531,13 @@ function zoomReset() { mapState.value = { zoom: 1, shiftX: 0, shiftY: 0 } }
     <!-- ── HUD ── -->
     <div class="map-hud">
       <div class="hud-controls">
+        <!-- Font size panel -->
+        <div class="hud-panel font-panel">
+          <button class="hud-btn" title="Increase font size" @click="fontIncrease">+</button>
+          <button class="hud-btn hud-btn-abc" title="Reset font size" @click="fontReset">Abc</button>
+          <button class="hud-btn" title="Decrease font size" @click="fontDecrease">&minus;</button>
+        </div>
+
         <!-- Zoom panel -->
         <div class="hud-panel zoom-panel">
           <button class="hud-btn" title="Zoom in"    @click="zoomIn">+</button>
@@ -480,11 +631,16 @@ text   { transition: font-size 0.15s ease-out; }
   pointer-events: all;
 }
 
-/* Zoom: vertical stack */
-.zoom-panel {
+/* Zoom / font size: vertical stack */
+.zoom-panel,
+.font-panel {
   display: flex;
   flex-direction: column;
   gap: 3px;
+}
+
+.hud-btn-abc {
+  font-size: 11px;
 }
 
 /* D-pad: sparse 3×3 grid */
