@@ -107,6 +107,89 @@ function houseDoorRect(cx, cz, r) {
   }
 }
 
+// "Woodland mansion" silhouette: a hip roof (flat ridge) over walls twice the
+// width of a plain house, in [-1, 1]-ish unit space.
+const MANSION_SHAPE = [
+  [-0.5, -0.75], [0.5, -0.75], [1.3, 0.05], [1.3, 1], [-1.3, 1], [-1.3, 0.05]
+]
+
+// A doorway centered under the roof, same proportions as the house's.
+const MANSION_DOOR = { x: -0.13, y: 0.65, w: 0.26, h: 0.35 }
+
+// 2 windows flanking the door on the ground floor, 3 windows above on the
+// upper floor (outer two aligned with the ground-floor windows, one centered
+// over the door).
+const MANSION_WINDOWS = [
+  { x: -1.0,  y: 0.55, w: 0.32, h: 0.3 },
+  { x: 0.68,  y: 0.55, w: 0.32, h: 0.3 },
+  { x: -1.0,  y: 0.15, w: 0.3,  h: 0.28 },
+  { x: -0.15, y: 0.15, w: 0.3,  h: 0.28 },
+  { x: 0.68,  y: 0.15, w: 0.3,  h: 0.28 },
+]
+
+function mansionPoints(cx, cz, r) {
+  return MANSION_SHAPE.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+function mansionDoorRect(cx, cz, r) {
+  return {
+    x: cx + MANSION_DOOR.x * r,
+    y: cz + MANSION_DOOR.y * r,
+    width: MANSION_DOOR.w * r,
+    height: MANSION_DOOR.h * r
+  }
+}
+
+function mansionWindowRects(cx, cz, r) {
+  return MANSION_WINDOWS.map(w => ({
+    x: cx + w.x * r,
+    y: cz + w.y * r,
+    width: w.w * r,
+    height: w.h * r
+  }))
+}
+
+// "Monument" silhouette: a Washington-Monument-style obelisk — a narrow shaft
+// topped by a pyramidion — in [-1, 1]-ish unit space.
+const MONUMENT_SHAPE = [
+  [0, -1.6], [0.25, -1], [0.25, 1], [-0.25, 1], [-0.25, -1]
+]
+
+function monumentPoints(cx, cz, r) {
+  return MONUMENT_SHAPE.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+// "Ship" silhouette: an old sailing ship — a curved hull with a mast and yard
+// sticking up from its center — in [-1, 1]-ish unit space.
+const SHIP_HULL = [
+  [-1, 0.1], [1, 0.1], [0.7, 0.55], [0.3, 1], [-0.3, 1], [-0.7, 0.55]
+]
+
+const SHIP_MAST = { x: -0.06, y: -1, w: 0.12, h: 1.1 }
+const SHIP_YARD = { x: -0.4, y: -0.7, w: 0.8, h: 0.1 }
+
+function shipHullPoints(cx, cz, r) {
+  return SHIP_HULL.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+function shipMastRect(cx, cz, r) {
+  return {
+    x: cx + SHIP_MAST.x * r,
+    y: cz + SHIP_MAST.y * r,
+    width: SHIP_MAST.w * r,
+    height: SHIP_MAST.h * r
+  }
+}
+
+function shipYardRect(cx, cz, r) {
+  return {
+    x: cx + SHIP_YARD.x * r,
+    y: cz + SHIP_YARD.y * r,
+    width: SHIP_YARD.w * r,
+    height: SHIP_YARD.h * r
+  }
+}
+
 // "Village" silhouette: a low nave with a peaked roof, joined to a taller spired
 // tower on the right, in [-1, 1] unit space. Outline traced clockwise from the
 // nave's roof peak.
@@ -150,6 +233,22 @@ function portalFrameRect(cx, cz, r) {
 function portalHoleRect(cx, cz, r) {
   const hole = r * PORTAL_SCALE * 0.5
   return { x: cx - hole, y: cz - hole, width: 2 * hole, height: 2 * hole }
+}
+
+// "Hole" icon: a jagged rocky mound with a dark cave mouth cut into its base,
+// in [-1, 1] unit space. Outline traced clockwise from the bottom-left.
+const CAVE_SHAPE = [
+  [-1, 1], [-0.9, 0.25], [-0.6, -0.25], [-0.3, -0.7],
+  [0, -0.9], [0.3, -0.65], [0.6, -0.15], [0.85, 0.35], [1, 1]
+]
+
+function cavePoints(cx, cz, r) {
+  return CAVE_SHAPE.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+// The cave mouth: an arch sitting on the mound's base, centered near the bottom.
+function caveMouthEllipse(cx, cz, r) {
+  return { cx, cy: cz + 0.55 * r, rx: 0.4 * r, ry: 0.45 * r }
 }
 
 function isSelected(m) {
@@ -196,6 +295,11 @@ const dotScale = computed(() => {
 function iconRadius(m) {
   const r = (hoveredName.value === m.name ? 4000 : 2500) * dotScale.value
   return m.description === 'portal' ? r * PORTAL_SCALE : r
+}
+
+function coordText(m) {
+  const height = props.showHeight ? `, Y:${m.wy}` : ''
+  return `(X:${m.wx}, Z:${m.wz}${height})`
 }
 
 const viewBox = computed(() => {
@@ -437,6 +541,57 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
             pointer-events="none"
           />
         </template>
+        <template v-else-if="m.description === 'woodland mansion'">
+          <polygon
+            :points="mansionPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            style="cursor: pointer"
+            @mouseenter="hoveredName = m.name"
+            @mouseleave="hoveredName = null"
+            @click.stop="selectMarker(m)"
+          />
+          <rect
+            v-bind="mansionDoorRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+          <rect
+            v-for="(win, i) in mansionWindowRects(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :key="'win' + i"
+            v-bind="win"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+        </template>
+        <polygon
+          v-else-if="m.description === 'monument'"
+          :points="monumentPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+          :fill="markerColor"
+          style="cursor: pointer"
+          @mouseenter="hoveredName = m.name"
+          @mouseleave="hoveredName = null"
+          @click.stop="selectMarker(m)"
+        />
+        <template v-else-if="m.description === 'ship'">
+          <polygon
+            :points="shipHullPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            style="cursor: pointer"
+            @mouseenter="hoveredName = m.name"
+            @mouseleave="hoveredName = null"
+            @click.stop="selectMarker(m)"
+          />
+          <rect
+            v-bind="shipMastRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            pointer-events="none"
+          />
+          <rect
+            v-bind="shipYardRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            pointer-events="none"
+          />
+        </template>
         <template v-else-if="m.description === 'village'">
           <polygon
             :points="churchPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
@@ -463,6 +618,21 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
           />
           <rect
             v-bind="portalHoleRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+        </template>
+        <template v-else-if="m.description === 'hole'">
+          <polygon
+            :points="cavePoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            style="cursor: pointer"
+            @mouseenter="hoveredName = m.name"
+            @mouseleave="hoveredName = null"
+            @click.stop="selectMarker(m)"
+          />
+          <ellipse
+            v-bind="caveMouthEllipse(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
             fill="#0a0a18"
             pointer-events="none"
           />
@@ -496,8 +666,8 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
             v-if="hoveredName === m.name"
             :x="-2000"
             :y="-2000"
-            :width="Math.max(m.name.length * 4400, (m.description || '').length * 3200 + 2000, 8000) + 4000"
-            :height="m.description ? 22000 : 16000"
+            :width="Math.max(m.name.length * 4400, coordText(m).length * 3200, (m.description || '').length * 3200 + 2000, 8000) + 4000"
+            :height="m.description ? 23600 : 16000"
             fill="#0a0a18"
             fill-opacity="0.92"
             :stroke="markerColor"
@@ -513,14 +683,14 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
           >{{ m.name }}</text>
           <text
             v-if="showCoords || hoveredName === m.name"
-            x="0" y="7000"
+            x="0" y="7800"
             dominant-baseline="hanging"
             :font-size="hoveredName === m.name ? 6000 : 4000"
             class="place-coord"
-          >(X:{{ m.wx }}, Z:{{ m.wz }}<template v-if="showHeight">, Y:{{ m.wy }}</template>)</text>
+          >{{ coordText(m) }}</text>
           <text
             v-if="hoveredName === m.name && m.description"
-            x="0" y="14000"
+            x="0" y="15600"
             dominant-baseline="hanging"
             font-size="6000"
             class="place-desc"

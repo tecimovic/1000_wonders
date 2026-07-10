@@ -16,7 +16,7 @@
             118,
             58,
             3,
-            "shrine"
+            "monument"
         ],
         "Return Portal": [
             5,
@@ -306,9 +306,7 @@
             1216,
             64,
             -2354,
-            "house",
-            "cave",
-            "mine"
+            "house"
         ],
         "Doom Portal Village": [
             784,
@@ -456,8 +454,7 @@
             -486,
             39,
             398,
-            "house",
-            "cave"
+            "house"
         ],
         "Nowhere Portal": [
             -642,
@@ -713,7 +710,7 @@
             1203,
             63,
             4328,
-            "iglu"
+            "house"
         ],
         "Stubborn Village": [
             778,
@@ -797,7 +794,7 @@
             2426,
             -41,
             -944,
-            "city"
+            "ancient city"
         ],
         "The Warp House": [
             3544,
@@ -809,7 +806,7 @@
             3609,
             79,
             -416,
-            "warp"
+            "monument"
         ],
         "Warped Mountain Retreat": [
             3637,
@@ -887,7 +884,7 @@
             3655,
             24,
             -2295,
-            "cave"
+            "hole"
         ],
         "Osaka": [
             20239,
@@ -1049,7 +1046,7 @@
             1532,
             63,
             -6923,
-            "bed"
+            "house"
         ],
         "Western Coral Cliffs": [
             7,
@@ -1181,7 +1178,7 @@
             -7979,
             -58,
             9174,
-            "sietch"
+            "hole"
         ],
         "Black Cliffhouse": [
             -8004,
@@ -1199,7 +1196,7 @@
             -8652,
             63,
             8493,
-            "beach shack"
+            "house"
         ],
         "Ice Cherry House": [
             -6323,
