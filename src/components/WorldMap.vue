@@ -208,15 +208,38 @@ function onWheel(event) {
   event.preventDefault()
   const s = { ...mapState.value }
   const panStep = 15000 / s.zoom
-  if (event.deltaY < 0) {
-    if (event.shiftKey) s.shiftX -= panStep
-    else if (event.ctrlKey) s.shiftY -= panStep
-    else s.zoom = Math.min(s.zoom * 1.15, 20)
-  } else {
-    if (event.shiftKey) s.shiftX += panStep
-    else if (event.ctrlKey) s.shiftY += panStep
-    else s.zoom = Math.max(s.zoom / 1.15, 0.2)
+  if (event.shiftKey || event.ctrlKey) {
+    if (event.deltaY < 0) {
+      if (event.shiftKey) s.shiftX -= panStep
+      else s.shiftY -= panStep
+    } else {
+      if (event.shiftKey) s.shiftX += panStep
+      else s.shiftY += panStep
+    }
+    mapState.value = s
+    return
   }
+
+  // Zoom while keeping the map point under the cursor fixed on screen.
+  const svgEl = event.currentTarget
+  const pt = svgEl.createSVGPoint()
+  pt.x = event.clientX
+  pt.y = event.clientY
+  const svgPt = pt.matrixTransform(svgEl.getScreenCTM().inverse())
+
+  const oldSize = MAPSIZE / s.zoom
+  const newZoom = event.deltaY < 0
+    ? Math.min(s.zoom * 1.15, 20)
+    : Math.max(s.zoom / 1.15, 0.2)
+  const newSize = MAPSIZE / newZoom
+
+  const fracX = (svgPt.x - s.shiftX) / oldSize
+  const fracZ = (svgPt.y - s.shiftY) / oldSize
+
+  s.zoom = newZoom
+  s.shiftX = svgPt.x - fracX * newSize
+  s.shiftY = svgPt.y - fracZ * newSize
+
   mapState.value = s
 }
 
