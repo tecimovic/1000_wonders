@@ -1,1244 +1,1664 @@
 {
-    "end": {
-        "St. Enderling": [
-            1019,
-            60,
-            1674,
-            "end city"
-        ],
-        "End House": [
-            119,
-            58,
-            7,
-            "house"
-        ],
-        "End Shrine": [
-            118,
-            58,
-            3,
-            "monument"
-        ],
-        "Return Portal": [
-            5,
-            63,
-            1,
-            "portal"
-        ],
-        "Far Out Outgoing Portal": [
-            54,
-            74,
-            75,
-            "portal"
-        ],
-        "Far Out Incoming Portal": [
-            589,
-            71,
-            799,
-            "portal"
-        ]
-    },
-    "nether": {
-        "Grotton portal": [
-            -321,
-            58,
-            28,
-            "portal"
-        ],
-        "Olive Branch Floating portal": [
-            -140,
-            78,
-            19,
-            "portal"
-        ],
-        "Olive Leaf portal": [
-            -223,
-            79,
-            22,
-            "portal"
-        ],
-        "Nowhere portal": [
-            -86,
-            56,
-            33,
-            "portal"
-        ],
-        "Stronghold portal": [
-            -107,
-            32,
-            270,
-            "portal"
-        ],
-        "Firefly portal": [
-            -370,
-            64,
-            442,
-            "portal"
-        ],
-        "Ice Cherry portal": [
-            -775,
-            51,
-            894,
-            "portal"
-        ],
-        "Pancho portal": [
-            -979,
-            62,
-            1061,
-            "portal"
-        ],
-        "Australis Integralis portal": [
-            -877,
-            61,
-            1060,
-            "portal"
-        ],
-        "The Hexabastion": [
-            -1042,
-            44,
-            1503,
-            "bastion remnant"
-        ],
-        "Unnamed Portal": [
-            37,
-            64,
-            -3,
-            "portal"
-        ],
-        "The Hung Portal": [
-            103,
-            58,
-            -10,
-            "portal"
-        ],
-        "Doom Portal": [
-            108,
-            69,
-            -309,
-            "portal"
-        ],
-        "Floating Portal": [
-            -52,
-            59,
-            -345,
-            "portal"
-        ],
-        "Lava Beach Portal": [
-            245,
-            65,
-            31,
-            "portal"
-        ],
-        "Stonecutters Portal": [
-            289,
-            47,
-            126,
-            "portal"
-        ],
-        "Basalt Portal": [
-            488,
-            82,
-            -676,
-            "portal"
-        ],
-        "Portalis Magnus": [
-            583,
-            68,
-            -626,
-            "portal"
-        ]
-    },
-    "overworld": {
-        "The Origin": [
-            30,
-            63,
-            -53,
-            "house"
-        ],
-        "Hoverbee Mining Base": [
-            141,
-            64,
-            -2,
-            "house"
-        ],
-        "Unnamed Portal": [
-            296,
-            69,
-            -30,
-            "portal"
-        ],
-        "Burj House": [
-            669,
-            72,
-            -246,
-            "house"
-        ],
-        "Old Taiga House": [
-            931,
-            71,
-            -329,
-            "house"
-        ],
-        "New Forrest Bay Shelter": [
-            1679,
-            63,
-            -281,
-            "house"
-        ],
-        "The Hung Portal": [
-            831,
-            63,
-            2,
-            "house",
-            "portal"
-        ],
-        "Station House": [
-            918,
-            64,
-            605,
-            "house"
-        ],
-        "The Ice Box": [
-            943,
-            63,
-            869,
-            "house"
-        ],
-        "The Cliff House": [
-            238,
-            75,
-            205,
-            "house",
-            "portal"
-        ],
-        "House by the Berry Meadow": [
-            61,
-            66,
-            861,
-            "house"
-        ],
-        "The Mushroom House": [
-            -393,
-            68,
-            480,
-            "house"
-        ],
-        "Trading Station": [
-            -70,
-            72,
-            -685,
-            "house"
-        ],
-        "Bridge House": [
-            -130,
-            81,
-            -1511,
-            "house",
-            "mine"
-        ],
-        "Thugeesville": [
-            -280,
-            71,
-            -1403,
-            "house"
-        ],
-        "Mesa Proving Grounds": [
-            -273,
-            70,
-            -1065,
-            "house"
-        ],
-        "Sunshine Village": [
-            -735,
-            63,
-            -491,
-            "house"
-        ],
-        "Vacay House": [
-            -51,
-            66,
-            -1686,
-            "house"
-        ],
-        "Shiphouse at the Bunnies": [
-            -251,
-            62,
-            -1797,
-            "house",
-            "mine"
-        ],
-        "Forbidden Scute Research Station": [
-            -279,
-            64,
-            -1895,
-            "house"
-        ],
-        "Panda House": [
-            -390,
-            63,
-            -2340,
-            "house"
-        ],
-        "Coral Cliff Trading Post": [
-            -835,
-            74,
-            -1692,
-            "house"
-        ],
-        "Coral Outpost": [
-            -1239,
-            63,
-            -1729,
-            "house"
-        ],
-        "Dylan's Shiphouse": [
-            650,
-            68,
-            -2046,
-            "house"
-        ],
-        "Riquezas Island hotel": [
-            734,
-            72,
-            -1906,
-            "house"
-        ],
-        "Cunucu House": [
-            1216,
-            64,
-            -2354,
-            "house"
-        ],
-        "Doom Portal Village": [
-            784,
-            76,
-            -2602,
-            "house",
-            "portal"
-        ],
-        "Jungle Frontier Encampment": [
-            1124,
-            63,
-            -1890,
-            "house"
-        ],
-        "Jungle Outcrop House": [
-            1231,
-            91,
-            -1919,
-            "house"
-        ],
-        "Julias's Treehouse": [
-            1234,
-            97,
-            -1807,
-            "house"
-        ],
-        "Parrot Island Trading Post": [
-            1300,
-            64,
-            -1494,
-            "house"
-        ],
-        "Null (no dog)": [
-            93,
-            66,
-            -2036,
-            "house"
-        ],
-        "Burried Treasure Waypoint": [
-            273,
-            63,
-            -2328,
-            "house"
-        ],
-        "Worlds End Cliff House": [
-            222,
-            72,
-            -2651,
-            "house"
-        ],
-        "Floating Portal Restricted Area": [
-            -347,
-            63,
-            -2837,
-            "house"
-        ],
-        "Floating Portal": [
-            -432,
-            63,
-            -2843,
-            "portal"
-        ],
-        "Crazy Country": [
-            -177,
-            64,
-            -3317,
-            "house"
-        ],
-        "Death spot": [
-            -295,
-            62,
-            -3062,
-            "monument"
-        ],
-        "Mesa Verde Parrot House": [
-            -1038,
-            87,
-            -2423,
-            "house"
-        ],
-        "Lava River Portal": [
-            -1199,
-            63,
-            -2189,
-            "portal"
-        ],
-        "Panda Portal": [
-            -412,
-            64,
-            -2394,
-            "portal"
-        ],
-        "The Lonely Wreck": [
-            626,
-            67,
-            -925,
-            "house"
-        ],
-        "Point Shackleton": [
-            750,
-            67,
-            2532,
-            "house"
-        ],
-        "Shallow Lake Mining Outpost": [
-            500,
-            60,
-            2273,
-            "house",
-            "mine"
-        ],
-        "Forrest River Outpost": [
-            -166,
-            70,
-            2068,
-            "house",
-            "village"
-        ],
-        "YAHP Guardhouse": [
-            -305,
-            62,
-            1026,
-            "house",
-            "portal"
-        ],
-        "Rock Island Shelter": [
-            -243,
-            65,
-            1406,
-            "house"
-        ],
-        "Cape Rock": [
-            256,
-            63,
-            1611,
-            "house"
-        ],
-        "Turtle Island": [
-            -486,
-            64,
-            59,
-            "house"
-        ],
-        "Lush Cave Mining Base": [
-            -486,
-            39,
-            398,
-            "house"
-        ],
-        "Nowhere Portal": [
-            -642,
-            65,
-            260,
-            "portal"
-        ],
-        "Gates to the West": [
-            -1453,
-            69,
-            -54,
-            "house"
-        ],
-        "Olive Leaf Pillager Outreach": [
-            -1744,
-            71,
-            200,
-            "house",
-            "portal"
-        ],
-        "White Dove Pillager Outreach": [
-            1672,
-            63,
-            -2614,
-            "house"
-        ],
-        "Floating Portal Encampment": [
-            -1050,
-            73,
-            128,
-            "house",
-            "portal"
-        ],
-        "Lava Beach Cottage": [
-            1992,
-            64,
-            260,
-            "house",
-            "portal"
-        ],
-        "Far East Embassy": [
-            2220,
-            64,
-            606,
-            "house"
-        ],
-        "Stonecutting School": [
-            2248,
-            64,
-            961,
-            "house",
-            "portal"
-        ],
-        "Impossible Forrest": [
-            1716,
-            64,
-            722,
-            "house"
-        ],
-        "Peaceful Village": [
-            2968,
-            76,
-            613,
-            "house"
-        ],
-        "Mercy of St. Lightning": [
-            -463,
-            62,
-            1439,
-            "house"
-        ],
-        "Southwest Channel": [
-            -767,
-            64,
-            1099,
-            "house"
-        ],
-        "Upper Class Villagers House": [
-            1427,
-            166,
-            -1587,
-            "house"
-        ],
-        "Secret Valley Embassy": [
-            1910,
-            87,
-            -1446,
-            "house"
-        ],
-        "Predjama House": [
-            1990,
-            71,
-            -1539,
-            "house"
-        ],
-        "Iron Mountaintop Observatory": [
-            2182,
-            182,
-            -1439,
-            "house"
-        ],
-        "Eagle's Nest": [
-            2380,
-            217,
-            -1383,
-            "house"
-        ],
-        "Shelter #1": [
-            2460,
-            183,
-            -1275,
-            "house"
-        ],
-        "Shelter #2": [
-            2583,
-            176,
-            -1443,
-            "house"
-        ],
-        "Lake Cave Shelter": [
-            2671,
-            67,
-            -817,
-            "house"
-        ],
-        "Van Gogh Meadow": [
-            2556,
-            64,
-            -572,
-            "house"
-        ],
-        "Eastern Village": [
-            2866,
-            72,
-            -222,
-            "house"
-        ],
-        "Mangrove Swamp Hut": [
-            1851,
-            62,
-            -3492,
-            "house"
-        ],
-        "Mangel Halto Beachfront Resort": [
-            1820,
-            64,
-            -3807,
-            "house"
-        ],
-        "Ghost Village Embassy": [
-            2011,
-            64,
-            -2712,
-            "house"
-        ],
-        "White Dove Fort": [
-            1556,
-            84,
-            -2484,
-            "house"
-        ],
-        "White Poppy Villager Outreach Center": [
-            2362,
-            71,
-            -771,
-            "house"
-        ],
-        "Watermelon Beach House": [
-            -1085,
-            63,
-            527,
-            "house"
-        ],
-        "Hole in a ground": [
-            -645,
-            60,
-            904,
-            "house"
-        ],
-        "Wayside by the Rough Trident": [
-            1552,
-            77,
-            1321,
-            "house"
-        ],
-        "Moss Bay": [
-            1643,
-            66,
-            2117,
-            "house"
-        ],
-        "Gaping Mountain Meadow Villa": [
-            2254,
-            78,
-            2381,
-            "house"
-        ],
-        "Plynders Mund": [
-            2324,
-            66,
-            620,
-            "house"
-        ],
-        "Oghwy Hole": [
-            1647,
-            65,
-            2924,
-            "village"
-        ],
-        "Platyville Meadow": [
-            1960,
-            68,
-            3152,
-            "house"
-        ],
-        "Wolfs Lodge": [
-            1547,
-            64,
-            3608,
-            "house"
-        ],
-        "Stillness: swamp monitoring station": [
-            1578,
-            64,
-            3920,
-            "house"
-        ],
-        "Dripstone Cave House": [
-            -1050,
-            70,
-            1003,
-            "house"
-        ],
-        "Oghwy Point": [
-            1064,
-            70,
-            2734,
-            "house"
-        ],
-        "Inuit Embassy Village": [
-            1423,
-            75,
-            6157,
-            "village"
-        ],
-        "Lone Mountain Shelter": [
-            1516,
-            124,
-            5594,
-            "house"
-        ],
-        "Iglu of Salvation": [
-            1203,
-            63,
-            4328,
-            "house"
-        ],
-        "Stubborn Village": [
-            778,
-            69,
-            3382,
-            "village"
-        ],
-        "Stronghold waypoint One": [
-            -477,
-            119,
-            1829,
-            "house"
-        ],
-        "Stronghold waypoint Two": [
-            -808,
-            124,
-            1987,
-            "house"
-        ],
-        "House by the lonesome birch tree": [
-            418,
-            128,
-            4487,
-            "house"
-        ],
-        "Venice Village": [
-            -2370,
-            63,
-            4937,
-            "house"
-        ],
-        "Cherry House": [
-            -1568,
-            103,
-            4860,
-            "house"
-        ],
-        "Stronghold": [
-            -910,
-            -19,
-            2062,
-            "stronghold"
-        ],
-        "Paradise Village": [
-            -1586,
-            62,
-            2333,
-            "village"
-        ],
-        "Paradise Lake Resort": [
-            -1135,
-            64,
-            2265,
-            "house"
-        ],
-        "PL teleport": [
-            -1909,
-            77,
-            1114,
-            "portal"
-        ],
-        "The Temple": [
-            -1916,
-            102,
-            1099,
-            "house"
-        ],
-        "Livetshule": [
-            1685,
-            74,
-            -4302,
-            "house"
-        ],
-        "Wonderland": [
-            3769,
-            101,
-            -2104,
-            "house"
-        ],
-        "Ancient City of Lightning": [
-            2426,
-            -41,
-            -944,
-            "ancient city"
-        ],
-        "The Warp House": [
-            3544,
-            70,
-            -628,
-            "house"
-        ],
-        "The Allmighty Warp": [
-            3609,
-            79,
-            -416,
-            "monument"
-        ],
-        "Warped Mountain Retreat": [
-            3637,
-            171,
-            -929,
-            "house"
-        ],
-        "Panda Bay": [
-            3645,
-            65,
-            -1500,
-            "house"
-        ],
-        "Farewell Bay": [
-            3930,
-            64,
-            -2468,
-            "house"
-        ],
-        "Terra Occidentalis": [
-            5211,
-            64,
-            -2581,
-            "house"
-        ],
-        "HMS Bounty": [
-            4366,
-            66,
-            -1760,
-            "ship"
-        ],
-        "HMS Wager": [
-            5284,
-            66,
-            -1865,
-            "ship"
-        ],
-        "South Shore Den": [
-            5236,
-            64,
-            -559,
-            "house"
-        ],
-        "Ding Dong The Wicked Witch House": [
-            6723,
-            70,
-            -1323,
-            "house"
-        ],
-        "The Jump House": [
-            6646,
-            195,
-            -1432,
-            "house"
-        ],
-        "The Midland Farm": [
-            3800,
-            95,
-            -2378,
-            "house"
-        ],
-        "High Mesa Waypoint": [
-            2553,
-            119,
-            -2279,
-            "house"
-        ],
-        "The Missplaced Village": [
-            2379,
-            86,
-            -2398,
-            "village"
-        ],
-        "Barkand Dulgur Outpost": [
-            3655,
-            24,
-            -2295,
-            "hole"
-        ],
-        "Osaka": [
-            20239,
-            63,
-            -891,
-            "village"
-        ],
-        "Tokyo": [
-            19238,
-            63,
-            -709,
-            "village"
-        ],
-        "Zombie Hoard Village": [
-            17631,
-            105,
-            -494,
-            "village"
-        ],
-        "Morogwin": [
-            16657,
-            71,
-            -342,
-            "village"
-        ],
-        "Snoozlia Julia Hole": [
-            16193,
-            71,
-            -401,
-            "hole"
-        ],
-        "Lou Reed Hole and Pit of Doom": [
-            14462,
-            69,
-            -229,
-            "hole"
-        ],
-        "Null Island and Null Hole": [
-            12543,
-            66,
-            59,
-            "hole"
-        ],
-        "Trial Chamber Rest Stop": [
-            -2114,
-            82,
-            -1419,
-            "house"
-        ],
-        "Oasis of Abu-al-lighty": [
-            -765,
-            79,
-            -1154,
-            "house"
-        ],
-        "Gobica Hole": [
-            2971,
-            36,
-            -2133,
-            "house"
-        ],
-        "Northeast Landing": [
-            4313,
-            63,
-            -3659,
-            "house"
-        ],
-        "Goth Canyon Allay Farm": [
-            4314,
-            109,
-            -4129,
-            "house"
-        ],
-        "Dark Landing": [
-            4253,
-            63,
-            -4853,
-            "house"
-        ],
-        "Untereis Pass": [
-            4393,
-            136,
-            -5237,
-            "house"
-        ],
-        "Untereis City": [
-            4020,
-            106,
-            -5235,
-            "house"
-        ],
-        "Mud Mountain River Pass": [
-            3987,
-            72,
-            -5549,
-            "house"
-        ],
-        "Meggy House": [
-            4030,
-            127,
-            -6458,
-            "house"
-        ],
-        "Ville de Plaines": [
-            4432,
-            66,
-            -7400,
-            "house"
-        ],
-        "Aurora": [
-            4063,
-            63,
-            -7843,
-            "house"
-        ],
-        "Lonely Iglu": [
-            4324,
-            66,
-            -8987,
-            "house"
-        ],
-        "Iglu Tu": [
-            4241,
-            75,
-            -9466,
-            "house"
-        ],
-        "Castaway Beach": [
-            4346,
-            87,
-            -11374,
-            "house"
-        ],
-        "Landing by the Mansion of the Lightning God": [
-            4305,
-            64,
-            -15791,
-            "woodland mansion"
-        ],
-        "Portalis Magnus Guardhouse": [
-            4698,
-            64,
-            -4998,
-            "house"
-        ],
-        "Muro d'aqua": [
-            4080,
-            64,
-            -6857,
-            "house"
-        ],
-        "Western Sands Portal": [
-            2563,
-            69,
-            -7011,
-            "house"
-        ],
-        "The Most Naturally Lonely Mushroom": [
-            1532,
-            63,
-            -6923,
-            "house"
-        ],
-        "Western Coral Cliffs": [
-            7,
-            68,
-            -6901,
-            "house"
-        ],
-        "The Hidden Valley": [
-            -133,
-            68,
-            -4084,
-            "house"
-        ],
-        "Waterfall Village": [
-            -2284,
-            86,
-            -882,
-            "village"
-        ],
-        "Optimism Village": [
-            -1952,
-            63,
-            28,
-            "village"
-        ],
-        "Pesimism Village": [
-            -1806,
-            66,
-            -364,
-            "village"
-        ],
-        "Grotton": [
-            -2552,
-            67,
-            244,
-            "village"
-        ],
-        "Stalag M": [
-            -1826,
-            101,
-            781,
-            "house"
-        ],
-        "Sunny Coral Rest Stop": [
-            -770,
-            63,
-            -800,
-            "house"
-        ],
-        "Altaris Welcome Center": [
-            -2671,
-            78,
-            2436,
-            "house"
-        ],
-        "Camp Firefly": [
-            -2884,
-            64,
-            2761,
-            "trail ruin"
-        ],
-        "Firefly Locks": [
-            -2964,
-            63,
-            3587,
-            "house"
-        ],
-        "South New Hoverbee": [
-            -2396,
-            71,
-            4317,
-            "house"
-        ],
-        "Australis Integralis": [
-            -4501,
-            85,
-            7374,
-            "village"
-        ],
-        "Lands End Tiny House": [
-            -5974,
-            69,
-            7809,
-            "house"
-        ],
-        "Lost Portal Shelter": [
-            -6687,
-            93,
-            8415,
-            "house"
-        ],
-        "Australis Incognitae": [
-            -7059,
-            79,
-            8511,
-            "village"
-        ],
-        "Flowering Cactus Shelter": [
-            -7985,
-            67,
-            9189,
-            "house"
-        ],
-        "South Barrier Reef Shelter": [
-            -8619,
-            65,
-            11187,
-            "house"
-        ],
-        "Shelter of Australis Creepeerius": [
-            -8714,
-            84,
-            12215,
-            "woodland mansion"
-        ],
-        "Birj House of Australis Creepeerius": [
-            -8709,
-            63,
-            12381,
-            "house"
-        ],
-        "The Pale Village": [
-            -8626,
-            73,
-            12691,
-            "village"
-        ],
-        "Sietch Tabr": [
-            -7979,
-            -58,
-            9174,
-            "hole"
-        ],
-        "Black Cliffhouse": [
-            -8004,
-            71,
-            8792,
-            "house"
-        ],
-        "Pancho Village": [
-            -7836,
-            74,
-            8375,
-            "village"
-        ],
-        "Pancho Beach": [
-            -8652,
-            63,
-            8493,
-            "house"
-        ],
-        "Ice Cherry House": [
-            -6323,
-            103,
-            7008,
-            "house"
-        ],
-        "Morelos": [
-            -4731,
-            71,
-            6128,
-            "village"
-        ],
-        "Norilsk": [
-            -5942,
-            70,
-            4752,
-            "village"
-        ],
-        "Crazy Hole": [
-            -4748,
-            73,
-            4301,
-            "hole"
-        ],
-        "Postojna": [
-            -3817,
-            99,
-            4331,
-            "village"
-        ],
-        "Antigrav": [
-            -2948,
-            64,
-            4434,
-            "village"
-        ],
-        "Nowhere": [
-            -2618,
-            78,
-            4252,
-            "village"
-        ]
-    }
+    "end": [
+        {
+            "name": "St. Enderling",
+            "x": 1019,
+            "y": 60,
+            "z": 1674,
+            "type": "end city",
+            "features": []
+        },
+        {
+            "name": "End House",
+            "x": 119,
+            "y": 58,
+            "z": 7,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "End Shrine",
+            "x": 118,
+            "y": 58,
+            "z": 3,
+            "type": "monument",
+            "features": []
+        },
+        {
+            "name": "Return Portal",
+            "x": 5,
+            "y": 63,
+            "z": 1,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Far Out Outgoing Portal",
+            "x": 54,
+            "y": 74,
+            "z": 75,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Far Out Incoming Portal",
+            "x": 589,
+            "y": 71,
+            "z": 799,
+            "type": "portal",
+            "features": []
+        }
+    ],
+    "nether": [
+        {
+            "name": "Grotton portal",
+            "x": -321,
+            "y": 58,
+            "z": 28,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Olive Branch Floating portal",
+            "x": -140,
+            "y": 78,
+            "z": 19,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Olive Leaf portal",
+            "x": -223,
+            "y": 79,
+            "z": 22,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Nowhere portal",
+            "x": -86,
+            "y": 56,
+            "z": 33,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Stronghold portal",
+            "x": -107,
+            "y": 32,
+            "z": 270,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Firefly portal",
+            "x": -370,
+            "y": 64,
+            "z": 442,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Ice Cherry portal",
+            "x": -775,
+            "y": 51,
+            "z": 894,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Pancho portal",
+            "x": -979,
+            "y": 62,
+            "z": 1061,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Australis Integralis portal",
+            "x": -877,
+            "y": 61,
+            "z": 1060,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "The Hexabastion",
+            "x": -1042,
+            "y": 44,
+            "z": 1503,
+            "type": "bastion remnant",
+            "features": []
+        },
+        {
+            "name": "Unnamed Portal",
+            "x": 37,
+            "y": 64,
+            "z": -3,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "The Hung Portal",
+            "x": 103,
+            "y": 58,
+            "z": -10,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Doom Portal",
+            "x": 108,
+            "y": 69,
+            "z": -309,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Floating Portal",
+            "x": -52,
+            "y": 59,
+            "z": -345,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Lava Beach Portal",
+            "x": 245,
+            "y": 65,
+            "z": 31,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Stonecutters Portal",
+            "x": 289,
+            "y": 47,
+            "z": 126,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Basalt Portal",
+            "x": 488,
+            "y": 82,
+            "z": -676,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Portalis Magnus",
+            "x": 583,
+            "y": 68,
+            "z": -626,
+            "type": "portal",
+            "features": []
+        }
+    ],
+    "overworld": [
+        {
+            "name": "The Origin",
+            "x": 30,
+            "y": 63,
+            "z": -53,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Hoverbee Mining Base",
+            "x": 141,
+            "y": 64,
+            "z": -2,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Unnamed Portal",
+            "x": 296,
+            "y": 69,
+            "z": -30,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Burj House",
+            "x": 669,
+            "y": 72,
+            "z": -246,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Old Taiga House",
+            "x": 931,
+            "y": 71,
+            "z": -329,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "New Forrest Bay Shelter",
+            "x": 1679,
+            "y": 63,
+            "z": -281,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Hung Portal",
+            "x": 831,
+            "y": 63,
+            "z": 2,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "Station House",
+            "x": 918,
+            "y": 64,
+            "z": 605,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Ice Box",
+            "x": 943,
+            "y": 63,
+            "z": 869,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Cliff House",
+            "x": 238,
+            "y": 75,
+            "z": 205,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "House by the Berry Meadow",
+            "x": 61,
+            "y": 66,
+            "z": 861,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Mushroom House",
+            "x": -393,
+            "y": 68,
+            "z": 480,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Trading Station",
+            "x": -70,
+            "y": 72,
+            "z": -685,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Bridge House",
+            "x": -130,
+            "y": 81,
+            "z": -1511,
+            "type": "house",
+            "features": [
+                "mine"
+            ]
+        },
+        {
+            "name": "Thugeesville",
+            "x": -280,
+            "y": 71,
+            "z": -1403,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Mesa Proving Grounds",
+            "x": -273,
+            "y": 70,
+            "z": -1065,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Sunshine Village",
+            "x": -735,
+            "y": 63,
+            "z": -491,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Vacay House",
+            "x": -51,
+            "y": 66,
+            "z": -1686,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Shiphouse at the Bunnies",
+            "x": -251,
+            "y": 62,
+            "z": -1797,
+            "type": "house",
+            "features": [
+                "mine"
+            ]
+        },
+        {
+            "name": "Forbidden Scute Research Station",
+            "x": -279,
+            "y": 64,
+            "z": -1895,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Panda House",
+            "x": -390,
+            "y": 63,
+            "z": -2340,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Coral Cliff Trading Post",
+            "x": -835,
+            "y": 74,
+            "z": -1692,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Coral Outpost",
+            "x": -1239,
+            "y": 63,
+            "z": -1729,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Dylan's Shiphouse",
+            "x": 650,
+            "y": 68,
+            "z": -2046,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Riquezas Island hotel",
+            "x": 734,
+            "y": 72,
+            "z": -1906,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Cunucu House",
+            "x": 1216,
+            "y": 64,
+            "z": -2354,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Doom Portal Village",
+            "x": 784,
+            "y": 76,
+            "z": -2602,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "Jungle Frontier Encampment",
+            "x": 1124,
+            "y": 63,
+            "z": -1890,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Jungle Outcrop House",
+            "x": 1231,
+            "y": 91,
+            "z": -1919,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Julias's Treehouse",
+            "x": 1234,
+            "y": 97,
+            "z": -1807,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Parrot Island Trading Post",
+            "x": 1300,
+            "y": 64,
+            "z": -1494,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Null (no dog)",
+            "x": 93,
+            "y": 66,
+            "z": -2036,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Burried Treasure Waypoint",
+            "x": 273,
+            "y": 63,
+            "z": -2328,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Worlds End Cliff House",
+            "x": 222,
+            "y": 72,
+            "z": -2651,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Floating Portal Restricted Area",
+            "x": -347,
+            "y": 63,
+            "z": -2837,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Floating Portal",
+            "x": -432,
+            "y": 63,
+            "z": -2843,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Crazy Country",
+            "x": -177,
+            "y": 64,
+            "z": -3317,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Death spot",
+            "x": -295,
+            "y": 62,
+            "z": -3062,
+            "type": "monument",
+            "features": []
+        },
+        {
+            "name": "Mesa Verde Parrot House",
+            "x": -1038,
+            "y": 87,
+            "z": -2423,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Lava River Portal",
+            "x": -1199,
+            "y": 63,
+            "z": -2189,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Panda Portal",
+            "x": -412,
+            "y": 64,
+            "z": -2394,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "The Lonely Wreck",
+            "x": 626,
+            "y": 67,
+            "z": -925,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Point Shackleton",
+            "x": 750,
+            "y": 67,
+            "z": 2532,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Shallow Lake Mining Outpost",
+            "x": 500,
+            "y": 60,
+            "z": 2273,
+            "type": "house",
+            "features": [
+                "mine"
+            ]
+        },
+        {
+            "name": "Forrest River Outpost",
+            "x": -166,
+            "y": 70,
+            "z": 2068,
+            "type": "house",
+            "features": [
+                "village"
+            ]
+        },
+        {
+            "name": "YAHP Guardhouse",
+            "x": -305,
+            "y": 62,
+            "z": 1026,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "Rock Island Shelter",
+            "x": -243,
+            "y": 65,
+            "z": 1406,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Cape Rock",
+            "x": 256,
+            "y": 63,
+            "z": 1611,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Turtle Island",
+            "x": -486,
+            "y": 64,
+            "z": 59,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Lush Cave Mining Base",
+            "x": -486,
+            "y": 39,
+            "z": 398,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Nowhere Portal",
+            "x": -642,
+            "y": 65,
+            "z": 260,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Gates to the West",
+            "x": -1453,
+            "y": 69,
+            "z": -54,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Olive Leaf Pillager Outreach",
+            "x": -1744,
+            "y": 71,
+            "z": 200,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "White Dove Pillager Outreach",
+            "x": 1672,
+            "y": 63,
+            "z": -2614,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Floating Portal Encampment",
+            "x": -1050,
+            "y": 73,
+            "z": 128,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "Lava Beach Cottage",
+            "x": 1992,
+            "y": 64,
+            "z": 260,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "Far East Embassy",
+            "x": 2220,
+            "y": 64,
+            "z": 606,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Stonecutting School",
+            "x": 2248,
+            "y": 64,
+            "z": 961,
+            "type": "house",
+            "features": [
+                "portal"
+            ]
+        },
+        {
+            "name": "Impossible Forrest",
+            "x": 1716,
+            "y": 64,
+            "z": 722,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Peaceful Village",
+            "x": 2968,
+            "y": 76,
+            "z": 613,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Mercy of St. Lightning",
+            "x": -463,
+            "y": 62,
+            "z": 1439,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Southwest Channel",
+            "x": -767,
+            "y": 64,
+            "z": 1099,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Upper Class Villagers House",
+            "x": 1427,
+            "y": 166,
+            "z": -1587,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Secret Valley Embassy",
+            "x": 1910,
+            "y": 87,
+            "z": -1446,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Predjama House",
+            "x": 1990,
+            "y": 71,
+            "z": -1539,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Iron Mountaintop Observatory",
+            "x": 2182,
+            "y": 182,
+            "z": -1439,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Eagle's Nest",
+            "x": 2380,
+            "y": 217,
+            "z": -1383,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Shelter #1",
+            "x": 2460,
+            "y": 183,
+            "z": -1275,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Shelter #2",
+            "x": 2583,
+            "y": 176,
+            "z": -1443,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Lake Cave Shelter",
+            "x": 2671,
+            "y": 67,
+            "z": -817,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Van Gogh Meadow",
+            "x": 2556,
+            "y": 64,
+            "z": -572,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Eastern Village",
+            "x": 2866,
+            "y": 72,
+            "z": -222,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Mangrove Swamp Hut",
+            "x": 1851,
+            "y": 62,
+            "z": -3492,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Mangel Halto Beachfront Resort",
+            "x": 1820,
+            "y": 64,
+            "z": -3807,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Ghost Village Embassy",
+            "x": 2011,
+            "y": 64,
+            "z": -2712,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "White Dove Fort",
+            "x": 1556,
+            "y": 84,
+            "z": -2484,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "White Poppy Villager Outreach Center",
+            "x": 2362,
+            "y": 71,
+            "z": -771,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Watermelon Beach House",
+            "x": -1085,
+            "y": 63,
+            "z": 527,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Hole in a ground",
+            "x": -645,
+            "y": 60,
+            "z": 904,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Wayside by the Rough Trident",
+            "x": 1552,
+            "y": 77,
+            "z": 1321,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Moss Bay",
+            "x": 1643,
+            "y": 66,
+            "z": 2117,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Gaping Mountain Meadow Villa",
+            "x": 2254,
+            "y": 78,
+            "z": 2381,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Plynders Mund",
+            "x": 2324,
+            "y": 66,
+            "z": 620,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Oghwy Hole",
+            "x": 1647,
+            "y": 65,
+            "z": 2924,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Platyville Meadow",
+            "x": 1960,
+            "y": 68,
+            "z": 3152,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Wolfs Lodge",
+            "x": 1547,
+            "y": 64,
+            "z": 3608,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Stillness: swamp monitoring station",
+            "x": 1578,
+            "y": 64,
+            "z": 3920,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Dripstone Cave House",
+            "x": -1050,
+            "y": 70,
+            "z": 1003,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Oghwy Point",
+            "x": 1064,
+            "y": 70,
+            "z": 2734,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Inuit Embassy Village",
+            "x": 1423,
+            "y": 75,
+            "z": 6157,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Lone Mountain Shelter",
+            "x": 1516,
+            "y": 124,
+            "z": 5594,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Iglu of Salvation",
+            "x": 1203,
+            "y": 63,
+            "z": 4328,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Stubborn Village",
+            "x": 778,
+            "y": 69,
+            "z": 3382,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Stronghold waypoint One",
+            "x": -477,
+            "y": 119,
+            "z": 1829,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Stronghold waypoint Two",
+            "x": -808,
+            "y": 124,
+            "z": 1987,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "House by the lonesome birch tree",
+            "x": 418,
+            "y": 128,
+            "z": 4487,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Venice Village",
+            "x": -2370,
+            "y": 63,
+            "z": 4937,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Cherry House",
+            "x": -1568,
+            "y": 103,
+            "z": 4860,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Stronghold",
+            "x": -910,
+            "y": -19,
+            "z": 2062,
+            "type": "stronghold",
+            "features": []
+        },
+        {
+            "name": "Paradise Village",
+            "x": -1586,
+            "y": 62,
+            "z": 2333,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Paradise Lake Resort",
+            "x": -1135,
+            "y": 64,
+            "z": 2265,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "PL teleport",
+            "x": -1909,
+            "y": 77,
+            "z": 1114,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "The Temple",
+            "x": -1916,
+            "y": 102,
+            "z": 1099,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Livetshule",
+            "x": 1685,
+            "y": 74,
+            "z": -4302,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Wonderland",
+            "x": 3769,
+            "y": 101,
+            "z": -2104,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Ancient City of Lightning",
+            "x": 2426,
+            "y": -41,
+            "z": -944,
+            "type": "ancient city",
+            "features": []
+        },
+        {
+            "name": "The Warp House",
+            "x": 3544,
+            "y": 70,
+            "z": -628,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Allmighty Warp",
+            "x": 3609,
+            "y": 79,
+            "z": -416,
+            "type": "monument",
+            "features": []
+        },
+        {
+            "name": "Warped Mountain Retreat",
+            "x": 3637,
+            "y": 171,
+            "z": -929,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Panda Bay",
+            "x": 3645,
+            "y": 65,
+            "z": -1500,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Farewell Bay",
+            "x": 3930,
+            "y": 64,
+            "z": -2468,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Terra Occidentalis",
+            "x": 5211,
+            "y": 64,
+            "z": -2581,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "HMS Bounty",
+            "x": 4366,
+            "y": 66,
+            "z": -1760,
+            "type": "ship",
+            "features": []
+        },
+        {
+            "name": "HMS Wager",
+            "x": 5284,
+            "y": 66,
+            "z": -1865,
+            "type": "ship",
+            "features": []
+        },
+        {
+            "name": "South Shore Den",
+            "x": 5236,
+            "y": 64,
+            "z": -559,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Ding Dong The Wicked Witch House",
+            "x": 6723,
+            "y": 70,
+            "z": -1323,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Jump House",
+            "x": 6646,
+            "y": 195,
+            "z": -1432,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Midland Farm",
+            "x": 3800,
+            "y": 95,
+            "z": -2378,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "High Mesa Waypoint",
+            "x": 2553,
+            "y": 119,
+            "z": -2279,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Missplaced Village",
+            "x": 2379,
+            "y": 86,
+            "z": -2398,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Barkand Dulgur Outpost",
+            "x": 3655,
+            "y": 24,
+            "z": -2295,
+            "type": "hole",
+            "features": []
+        },
+        {
+            "name": "Osaka",
+            "x": 20239,
+            "y": 63,
+            "z": -891,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Tokyo",
+            "x": 19238,
+            "y": 63,
+            "z": -709,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Zombie Hoard Village",
+            "x": 17631,
+            "y": 105,
+            "z": -494,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Morogwin",
+            "x": 16657,
+            "y": 71,
+            "z": -342,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Snoozlia Julia Hole",
+            "x": 16193,
+            "y": 71,
+            "z": -401,
+            "type": "hole",
+            "features": []
+        },
+        {
+            "name": "Lou Reed Hole and Pit of Doom",
+            "x": 14462,
+            "y": 69,
+            "z": -229,
+            "type": "hole",
+            "features": []
+        },
+        {
+            "name": "Null Island and Null Hole",
+            "x": 12543,
+            "y": 66,
+            "z": 59,
+            "type": "hole",
+            "features": []
+        },
+        {
+            "name": "Trial Chamber Rest Stop",
+            "x": -2114,
+            "y": 82,
+            "z": -1419,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Oasis of Abu-al-lighty",
+            "x": -765,
+            "y": 79,
+            "z": -1154,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Gobica Hole",
+            "x": 2971,
+            "y": 36,
+            "z": -2133,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Northeast Landing",
+            "x": 4313,
+            "y": 63,
+            "z": -3659,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Goth Canyon Allay Farm",
+            "x": 4314,
+            "y": 109,
+            "z": -4129,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Dark Landing",
+            "x": 4253,
+            "y": 63,
+            "z": -4853,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Untereis Pass",
+            "x": 4393,
+            "y": 136,
+            "z": -5237,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Untereis City",
+            "x": 4020,
+            "y": 106,
+            "z": -5235,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Mud Mountain River Pass",
+            "x": 3987,
+            "y": 72,
+            "z": -5549,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Meggy House",
+            "x": 4030,
+            "y": 127,
+            "z": -6458,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Ville de Plaines",
+            "x": 4432,
+            "y": 66,
+            "z": -7400,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Aurora",
+            "x": 4063,
+            "y": 63,
+            "z": -7843,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Lonely Iglu",
+            "x": 4324,
+            "y": 66,
+            "z": -8987,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Iglu Tu",
+            "x": 4241,
+            "y": 75,
+            "z": -9466,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Castaway Beach",
+            "x": 4346,
+            "y": 87,
+            "z": -11374,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Landing by the Mansion of the Lightning God",
+            "x": 4305,
+            "y": 64,
+            "z": -15791,
+            "type": "woodland mansion",
+            "features": []
+        },
+        {
+            "name": "Portalis Magnus Guardhouse",
+            "x": 4698,
+            "y": 64,
+            "z": -4998,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Muro d'aqua",
+            "x": 4080,
+            "y": 64,
+            "z": -6857,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Western Sands Portal",
+            "x": 2563,
+            "y": 69,
+            "z": -7011,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Most Naturally Lonely Mushroom",
+            "x": 1532,
+            "y": 63,
+            "z": -6923,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Western Coral Cliffs",
+            "x": 7,
+            "y": 68,
+            "z": -6901,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Hidden Valley",
+            "x": -133,
+            "y": 68,
+            "z": -4084,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Waterfall Village",
+            "x": -2284,
+            "y": 86,
+            "z": -882,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Optimism Village",
+            "x": -1952,
+            "y": 63,
+            "z": 28,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Pesimism Village",
+            "x": -1806,
+            "y": 66,
+            "z": -364,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Grotton",
+            "x": -2552,
+            "y": 67,
+            "z": 244,
+            "type": "village",
+            "features": ["developed", "cave", "geode"]
+        },
+        {
+            "name": "Stalag M",
+            "x": -1826,
+            "y": 101,
+            "z": 781,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Sunny Coral Rest Stop",
+            "x": -770,
+            "y": 63,
+            "z": -800,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Altaris Welcome Center",
+            "x": -2671,
+            "y": 78,
+            "z": 2436,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Camp Firefly",
+            "x": -2884,
+            "y": 64,
+            "z": 2761,
+            "type": "trail ruin",
+            "features": []
+        },
+        {
+            "name": "Firefly Locks",
+            "x": -2964,
+            "y": 63,
+            "z": 3587,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "South New Hoverbee",
+            "x": -2396,
+            "y": 71,
+            "z": 4317,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Australis Integralis",
+            "x": -4501,
+            "y": 85,
+            "z": 7374,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Lands End Tiny House",
+            "x": -5974,
+            "y": 69,
+            "z": 7809,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Lost Portal Shelter",
+            "x": -6687,
+            "y": 93,
+            "z": 8415,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Australis Incognitae",
+            "x": -7059,
+            "y": 79,
+            "z": 8511,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Flowering Cactus Shelter",
+            "x": -7985,
+            "y": 67,
+            "z": 9189,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "South Barrier Reef Shelter",
+            "x": -8619,
+            "y": 65,
+            "z": 11187,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Shelter of Australis Creepeerius",
+            "x": -8714,
+            "y": 84,
+            "z": 12215,
+            "type": "woodland mansion",
+            "features": []
+        },
+        {
+            "name": "Birj House of Australis Creepeerius",
+            "x": -8709,
+            "y": 63,
+            "z": 12381,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Pale Village",
+            "x": -8626,
+            "y": 73,
+            "z": 12691,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Sietch Tabr",
+            "x": -7979,
+            "y": -58,
+            "z": 9174,
+            "type": "hole",
+            "features": []
+        },
+        {
+            "name": "Black Cliffhouse",
+            "x": -8004,
+            "y": 71,
+            "z": 8792,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Pancho Village",
+            "x": -7836,
+            "y": 74,
+            "z": 8375,
+            "type": "village",
+            "features": ["developed", "ghast","honey farm"]
+        },
+        {
+            "name": "Pancho Beach",
+            "x": -8652,
+            "y": 63,
+            "z": 8493,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Ice Cherry House",
+            "x": -6323,
+            "y": 103,
+            "z": 7008,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Morelos",
+            "x": -4731,
+            "y": 71,
+            "z": 6128,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Norilsk",
+            "x": -5942,
+            "y": 70,
+            "z": 4752,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Crazy Hole",
+            "x": -4748,
+            "y": 73,
+            "z": 4301,
+            "type": "hole",
+            "features": []
+        },
+        {
+            "name": "Postojna",
+            "x": -3817,
+            "y": 99,
+            "z": 4331,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Antigrav",
+            "x": -2948,
+            "y": 64,
+            "z": 4434,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Nowhere",
+            "x": -2618,
+            "y": 78,
+            "z": 4252,
+            "type": "village",
+            "features": []
+        }
+    ]
 }

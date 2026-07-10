@@ -76,7 +76,7 @@ watch(selectedCoords, (val) => {
       :class="tab.panelClass"
     >
       <WorldMap
-        :places="places[tab.id] ?? {}"
+        :places="places[tab.id] ?? []"
         :mapId="tab.id"
         :markerColor="tab.markerColor"
         :gridColor="tab.gridColor"

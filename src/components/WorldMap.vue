@@ -2,7 +2,7 @@
 import { ref, computed, onUnmounted } from 'vue'
 
 const props = defineProps({
-  places:        { type: Object,  required: true },
+  places:        { type: Array,   required: true },
   markerColor:   { type: String,  default: '#60a5fa' },
   gridColor:     { type: String,  default: '#60a5fa' },
   showNames:     { type: Boolean, default: true },
@@ -22,14 +22,14 @@ let dragData = null
 let didDrag = false
 
 const layout = computed(() => {
-  const entries = Object.entries(props.places)
+  const entries = props.places
   if (entries.length === 0) {
     return { factorX: 1, factorZ: 1, originX: MAPSIZE / 2, originZ: MAPSIZE / 2, minX: -1, maxX: 1, minZ: -1, maxZ: 1 }
   }
 
   let maxX = -Infinity, minX = Infinity, maxZ = -Infinity, minZ = Infinity
-  for (const [, coords] of entries) {
-    const x = coords[0], z = coords[2]
+  for (const place of entries) {
+    const x = place.x, z = place.z
     if (x > maxX) maxX = x
     if (x < minX) minX = x
     if (z > maxZ) maxZ = z
@@ -50,14 +50,15 @@ const layout = computed(() => {
 
 const markers = computed(() => {
   const { factorX, factorZ, originX, originZ } = layout.value
-  return Object.entries(props.places).map(([name, coords]) => ({
-    name,
-    x: originX + factorX * coords[0],
-    z: originZ + factorZ * coords[2],
-    wx: coords[0],
-    wy: coords[1],
-    wz: coords[2],
-    description: typeof coords[3] === 'string' ? coords[3] : null
+  return props.places.map(place => ({
+    name: place.name,
+    x: originX + factorX * place.x,
+    z: originZ + factorZ * place.z,
+    wx: place.x,
+    wy: place.y,
+    wz: place.z,
+    description: typeof place.type === 'string' ? place.type : null,
+    features: place.features ?? []
   }))
 })
 
