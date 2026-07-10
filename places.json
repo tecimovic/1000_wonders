@@ -890,7 +890,7 @@
             "y": 65,
             "z": 2924,
             "type": "village",
-            "features": []
+            "features": ["developed"]
         },
         {
             "name": "Platyville Meadow",
@@ -1009,8 +1009,8 @@
             "x": -910,
             "y": -19,
             "z": 2062,
-            "type": "stronghold",
-            "features": []
+            "type": "house",
+            "features": ["stronghold"]
         },
         {
             "name": "Paradise Village",
@@ -1029,20 +1029,12 @@
             "features": []
         },
         {
-            "name": "PL teleport",
-            "x": -1909,
-            "y": 77,
-            "z": 1114,
-            "type": "portal",
-            "features": []
-        },
-        {
             "name": "The Temple",
             "x": -1916,
             "y": 102,
             "z": 1099,
             "type": "house",
-            "features": []
+            "features": ["portal"]
         },
         {
             "name": "Livetshule",
@@ -1305,8 +1297,8 @@
             "x": 4020,
             "y": 106,
             "z": -5235,
-            "type": "house",
-            "features": []
+            "type": "village",
+            "features": ["developed"]
         },
         {
             "name": "Mud Mountain River Pass",
@@ -1450,7 +1442,7 @@
             "y": 67,
             "z": 244,
             "type": "village",
-            "features": ["developed", "cave", "geode"]
+            "features": ["developed", "cave", "geode", "portal"]
         },
         {
             "name": "Stalag M",
@@ -1481,8 +1473,8 @@
             "x": -2884,
             "y": 64,
             "z": 2761,
-            "type": "trail ruin",
-            "features": []
+            "type": "house",
+            "features": ["trail ruin"]
         },
         {
             "name": "Firefly Locks",

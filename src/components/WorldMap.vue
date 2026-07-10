@@ -303,6 +303,14 @@ function coordText(m) {
   return `(X:${m.wx}, Z:${m.wz}${height})`
 }
 
+function typeText(m) {
+  if (!m.description) return ''
+  if (m.features && m.features.length > 0) {
+    return `${m.description}: ${m.features.join(', ')}`
+  }
+  return m.description
+}
+
 const viewBox = computed(() => {
   const { zoom, shiftX, shiftY } = mapState.value
   const size = MAPSIZE / zoom
@@ -667,7 +675,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
             v-if="hoveredName === m.name"
             :x="-2000"
             :y="-2000"
-            :width="Math.max(m.name.length * 4400, coordText(m).length * 3200, (m.description || '').length * 3200 + 2000, 8000) + 4000"
+            :width="Math.max(m.name.length * 4400, coordText(m).length * 3200, typeText(m).length * 3200 + 2000, 8000) + 4000"
             :height="m.description ? 23600 : 16000"
             fill="#0a0a18"
             fill-opacity="0.92"
@@ -695,7 +703,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
             dominant-baseline="hanging"
             font-size="6000"
             class="place-desc"
-          >{{ m.description }}</text>
+          >{{ typeText(m) }}</text>
         </g>
       </g>
 
