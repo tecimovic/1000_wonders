@@ -1437,6 +1437,38 @@
             "features": []
         },
         {
+            "name": "Goli Otok",
+            "x": -5946,
+            "y": 65,
+            "z": -299,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Grotton West Portal",
+            "x": -3151,
+            "y": 64,
+            "z": 242,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Land of Milk and Honey",
+            "x": -4064,
+            "y": 63,
+            "z": 294,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Iqaluit",
+            "x": -4614,
+            "y": 63,
+            "z": 178,
+            "type": "village",
+            "features": []
+        },
+        {
             "name": "Grotton",
             "x": -2552,
             "y": 67,
