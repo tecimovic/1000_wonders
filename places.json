@@ -1477,12 +1477,28 @@
             "features": []
         },
         {
+            "name": "Cherrytown",
+            "x": -2454,
+            "y": 104,
+            "z": -105,
+            "type": "village",
+            "features": []
+        },
+        {
             "name": "Grotton",
             "x": -2552,
             "y": 67,
             "z": 244,
             "type": "village",
             "features": ["developed", "cave", "geode", "portal"]
+        },
+        {
+            "name": "Zombietown",
+            "x": -2670,
+            "y": 71,
+            "z": -1320,
+            "type": "village",
+            "features": ["zombie"]
         },
         {
             "name": "Stalag M",
