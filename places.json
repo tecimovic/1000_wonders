@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Untereis Portal",
+            "x": 508,
+            "y": 113,
+            "z": -663,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Double Portal Magnus",
             "x": -379,
             "y": 66,
@@ -379,6 +387,30 @@
             "z": -2340,
             "type": "house",
             "features": []
+        },
+        {
+            "name": "Grand Pyramid",
+            "x": -852,
+            "y": 64,
+            "z": -1840,
+            "type": "monument",
+            "features": ["portal"]
+        },
+        {
+            "name": "Oranje",
+            "x": 1260,
+            "y": 69,
+            "z": -3684,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Coral Town",
+            "x": -781,
+            "y": 63,
+            "z": -1747,
+            "type": "village",
+            "features": ["developed"]
         },
         {
             "name": "Coral Cliff Trading Post",
