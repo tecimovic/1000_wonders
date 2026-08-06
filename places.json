@@ -1349,6 +1349,14 @@
             "features": []
         },
         {
+            "name": "Portal of Randomness",
+            "x": 4209,
+            "y": 63,
+            "z": -11881,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Meggy House",
             "x": 4030,
             "y": 127,
@@ -1361,7 +1369,7 @@
             "x": 4432,
             "y": 66,
             "z": -7400,
-            "type": "house",
+            "type": "village",
             "features": []
         },
         {
@@ -1369,7 +1377,7 @@
             "x": 4063,
             "y": 63,
             "z": -7843,
-            "type": "house",
+            "type": "village",
             "features": []
         },
         {
@@ -1401,6 +1409,14 @@
             "x": 4305,
             "y": 64,
             "z": -15791,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Mushroom of perpetual reincarnation",
+            "x": 4318,
+            "y": 68,
+            "z": -15990,
             "type": "woodland mansion",
             "features": []
         },
@@ -1738,6 +1754,14 @@
             "y": 78,
             "z": 4252,
             "type": "village",
+            "features": []
+        },
+        {
+            "name": "HMS Belerophone",
+            "x": 5443,
+            "y": 64,
+            "z": -16061,
+            "type": "ship",
             "features": []
         },
         {
