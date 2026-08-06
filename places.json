@@ -1757,6 +1757,14 @@
             "features": []
         },
         {
+            "name": "Phantasmagoria Isle",
+            "x": 6490,
+            "y": 72,
+            "z": -16044,
+            "type": "house",
+            "features": []
+        },
+        {
             "name": "HMS Belerophone",
             "x": 5443,
             "y": 64,
