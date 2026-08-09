@@ -1413,11 +1413,43 @@
             "features": []
         },
         {
-            "name": "The Mushroom of perpetual reincarnation",
+            "name": "LG Mansion of the North",
+            "x": 4321,
+            "y": 66,
+            "z": -15909,
+            "type": "woodland mansion",
+            "features": ["pacified"]
+        },
+        {
+            "name": "The Mushroom of Restorative Divination",
+            "x": 4235,
+            "y": 73,
+            "z": -15902,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Mushroom of Elusive Validation",
+            "x": 4210,
+            "y": 65,
+            "z": -15928,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Mushroom of Eternal Contemplation",
+            "x": 4199,
+            "y": 67,
+            "z": -15988,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "The Mushroom of Perpetual Reincarnation",
             "x": 4318,
             "y": 68,
             "z": -15990,
-            "type": "woodland mansion",
+            "type": "house",
             "features": []
         },
         {
@@ -1757,12 +1789,44 @@
             "features": []
         },
         {
+            "name": "HMS Audacious",
+            "x": 6975,
+            "y": 63,
+            "z": -16018,
+            "type": "ship",
+            "features": []
+        },
+        {
+            "name": "Ub",
+            "x": 6796,
+            "y": 64,
+            "z": -15714,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Phantasmagoria",
+            "x": 6771,
+            "y": 67,
+            "z": -15928,
+            "type": "village",
+            "features": []
+        },
+        {
             "name": "Phantasmagoria Isle",
             "x": 6490,
             "y": 72,
             "z": -16044,
             "type": "house",
             "features": []
+        },
+        {
+            "name": "The Mudhouse of the Swamp of Phantasmagoria",
+            "x": 6560,
+            "y": 64,
+            "z": -15602,
+            "type": "house",
+            "features": ["swamp"]
         },
         {
             "name": "HMS Belerophone",
