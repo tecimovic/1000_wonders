@@ -1805,6 +1805,14 @@
             "features": []
         },
         {
+            "name": "Mooshroom Isle",
+            "x": 6997,
+            "y": 64,
+            "z": -16661,
+            "type": "house",
+            "features": []
+        },
+        {
             "name": "Phantasmagoria",
             "x": 6771,
             "y": 67,
