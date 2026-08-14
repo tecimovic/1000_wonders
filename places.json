@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Concordia Portal",
+            "x": 1035,
+            "y": 63,
+            "z": -2156,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Untereis Portal",
             "x": 508,
             "y": 113,
@@ -1811,6 +1819,38 @@
             "z": -16661,
             "type": "house",
             "features": []
+        },
+        {
+            "name": "Portal of Concordia",
+            "x": 8375,
+            "y": 64,
+            "z": -17192,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Red Velvet House",
+            "x": 9053,
+            "y": 64,
+            "z": -17110,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Northern Panda Temple",
+            "x": 9053,
+            "y": 64,
+            "z": -17110,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Old Faithful",
+            "x": 8708,
+            "y": 74,
+            "z": -17106,
+            "type": "house",
+            "features": ["geyser"]
         },
         {
             "name": "Phantasmagoria",
