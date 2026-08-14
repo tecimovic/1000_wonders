@@ -1838,11 +1838,11 @@
         },
         {
             "name": "Northern Panda Temple",
-            "x": 9053,
-            "y": 64,
-            "z": -17110,
+            "x": 9492,
+            "y": 71,
+            "z": -17132,
             "type": "house",
-            "features": []
+            "features": ["jungle pyramid"]
         },
         {
             "name": "Old Faithful",
