@@ -1853,6 +1853,14 @@
             "features": ["geyser"]
         },
         {
+            "name": "The Great Hexarod",
+            "x": 6702,
+            "y": 97,
+            "z": -16067,
+            "type": "monument",
+            "features": []
+        },
+        {
             "name": "Phantasmagoria",
             "x": 6771,
             "y": 67,
