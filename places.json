@@ -1413,6 +1413,22 @@
             "features": []
         },
         {
+            "name": "Manshroom",
+            "x": 7112,
+            "y": 65,
+            "z": -19666,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Yawm",
+            "x": 7112,
+            "y": 65,
+            "z": -19696,
+            "type": "woodland mansion",
+            "features": []
+        },
+        {
             "name": "Landing by the Mansion of the Lightning God",
             "x": 4305,
             "y": 64,
@@ -1851,6 +1867,14 @@
             "z": -17106,
             "type": "house",
             "features": ["geyser"]
+        },
+        {
+            "name": "North Farpoint Station",
+            "x": 7076,
+            "y": 64,
+            "z": -18481,
+            "type": "house",
+            "features": []
         },
         {
             "name": "The Great Hexarod",
