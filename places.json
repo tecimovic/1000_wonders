@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Aurora Portal",
+            "x": 524,
+            "y": 62,
+            "z": -1017,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Concordia Portal",
             "x": 1035,
             "y": 63,
@@ -1381,12 +1389,20 @@
             "features": []
         },
         {
+            "name": "Aurora Portal",
+            "x": 4116,
+            "y": 71,
+            "z": -8141,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Aurora",
             "x": 4063,
             "y": 63,
             "z": -7843,
             "type": "village",
-            "features": []
+            "features": ["moostew"]
         },
         {
             "name": "Lonely Iglu",
@@ -1426,6 +1442,14 @@
             "y": 65,
             "z": -19696,
             "type": "woodland mansion",
+            "features": []
+        },
+        {
+            "name": "Halfway Beach",
+            "x": 4167,
+            "y": 63,
+            "z": -14433,
+            "type": "house",
             "features": []
         },
         {
@@ -1474,7 +1498,7 @@
             "y": 68,
             "z": -15990,
             "type": "house",
-            "features": []
+            "features": ["moostew"]
         },
         {
             "name": "Portalis Magnus Guardhouse",
@@ -1826,7 +1850,7 @@
             "y": 64,
             "z": -15714,
             "type": "village",
-            "features": []
+            "features": ["moostew"]
         },
         {
             "name": "Mooshroom Isle",
@@ -1890,7 +1914,7 @@
             "y": 67,
             "z": -15928,
             "type": "village",
-            "features": []
+            "features": ["moostew"]
         },
         {
             "name": "Phantasmagoria Isle",
