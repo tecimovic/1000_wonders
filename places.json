@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Randomness Portal",
+            "x": 526,
+            "y": 69,
+            "z": -1467,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Aurora Portal",
             "x": 524,
             "y": 62,
@@ -1949,11 +1957,51 @@
             "features": []
         },
         {
+            "name": "Cannae Beach",
+            "x": 2870,
+            "y": 64,
+            "z": -11429,
+            "type": "house",
+            "features": []
+        },
+        {
             "name": "Northwest Passage",
             "x": -2729,
             "y": 67,
             "z": -2146,
             "type": "house",
+            "features": []
+        },
+        {
+            "name": "Jorvik",
+            "x": 2174,
+            "y": 86,
+            "z": -12518,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Jorvik Fjord",
+            "x": 1566,
+            "y": 62,
+            "z": -14006,
+            "type": "natural wonder",
+            "features": []
+        },
+        {
+            "name": "Utqiagvik",
+            "x": -484,
+            "y": 64,
+            "z": -17667,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Cannae",
+            "x": 2466,
+            "y": 72,
+            "z": -11872,
+            "type": "village",
             "features": []
         }
     ]
