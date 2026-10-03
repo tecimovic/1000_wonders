@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Utqiagvik portal",
+            "x": -59,
+            "y": 64,
+            "z": -2209,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Randomness Portal",
             "x": 526,
             "y": 69,
@@ -1995,6 +2003,14 @@
             "z": -17667,
             "type": "house",
             "features": ["portal"]
+        },
+        {
+            "name": "Utqiagvik portal",
+            "x": -475,
+            "y": 63,
+            "z": -17702,
+            "type": "portal",
+            "features": []
         },
         {
             "name": "Utqiagvik village",
