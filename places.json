@@ -1453,6 +1453,14 @@
             "features": []
         },
         {
+            "name": "Vercingetorix Mansion",
+            "x": -786,
+            "y": 63,
+            "z": -20983,
+            "type": "woodland mansion",
+            "features": []
+        },
+        {
             "name": "Yawm",
             "x": 7112,
             "y": 65,
