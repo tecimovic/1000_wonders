@@ -1478,6 +1478,14 @@
         },
         {
             "name": "Sulphur Springs",
+            "x": 3404,
+            "y": 71,
+            "z": -16933,
+            "type": "geyser",
+            "features": []
+        },
+        {
+            "name": "Sulphur Springs",
             "x": 3186,
             "y": 64,
             "z": -16779,
@@ -1931,6 +1939,14 @@
             "z": -15714,
             "type": "village",
             "features": ["moostew"]
+        },
+        {
+            "name": "Argentum",
+            "x": 3896,
+            "y": 75,
+            "z": -16780,
+            "type": "village",
+            "features": []
         },
         {
             "name": "White Tent",
