@@ -1453,11 +1453,67 @@
             "features": []
         },
         {
+            "name": "Pale Shelter",
+            "x": -697,
+            "y": 82,
+            "z": -21213,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Illusionary Mountain Base Camp",
+            "x": 1399,
+            "y": 65,
+            "z": -18911,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "HMS Rodney",
+            "x": 3510,
+            "y": 64,
+            "z": -16266,
+            "type": "ship",
+            "features": []
+        },
+        {
+            "name": "Sulphur Springs",
+            "x": 3186,
+            "y": 64,
+            "z": -16779,
+            "type": "geyser",
+            "features": []
+        },
+        {
+            "name": "Birch Portal",
+            "x": 2836,
+            "y": 80,
+            "z": -17216,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Cockatoo Island",
+            "x": 797,
+            "y": 64,
+            "z": -19570,
+            "type": "house",
+            "features": []
+        },
+        {
             "name": "Vercingetorix Mansion",
+            "x": -764,
+            "y": 84,
+            "z": -21064,
+            "type": "woodland mansion",
+            "features": []
+        },
+        {
+            "name": "Mushroomgetorix",
             "x": -786,
             "y": 63,
             "z": -20983,
-            "type": "woodland mansion",
+            "type": "house",
             "features": []
         },
         {
@@ -1875,6 +1931,14 @@
             "z": -15714,
             "type": "village",
             "features": ["moostew"]
+        },
+        {
+            "name": "White Tent",
+            "x": 5604,
+            "y": 63,
+            "z": -17314,
+            "type": "tent",
+            "features": []
         },
         {
             "name": "Mooshroom Isle",
