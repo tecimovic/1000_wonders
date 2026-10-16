@@ -59,6 +59,14 @@
             "features": []
         },
         {
+            "name": "Birch portal",
+            "x": 344,
+            "y": 83,
+            "z": -2160,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Randomness Portal",
             "x": 526,
             "y": 69,
