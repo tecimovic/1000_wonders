@@ -1501,6 +1501,14 @@
             "features": []
         },
         {
+            "name": "Helltower",
+            "x": 2822,
+            "y": 88,
+            "z": -17180,
+            "type": "monument",
+            "features": []
+        },
+        {
             "name": "Birch Portal",
             "x": 2836,
             "y": 80,
