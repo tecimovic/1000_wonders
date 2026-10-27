@@ -1533,7 +1533,7 @@
             "features": []
         },
         {
-            "name": "Sulphur Springs",
+            "name": "Sulphur Springs East",
             "x": 3404,
             "y": 71,
             "z": -16933,
@@ -2173,12 +2173,36 @@
             "features": []
         },
         {
+            "name": "J'Bar",
+            "x": 5870,
+            "y": 63,
+            "z": -7022,
+            "type": "house",
+            "features": ["portal"]
+        },
+        {
+            "name": "Ice Cliff Shelter",
+            "x": 6269,
+            "y": 63,
+            "z": -9375,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Box'n'mushroom",
+            "x": 5859,
+            "y": 63,
+            "z": -10637,
+            "type": "box",
+            "features": []
+        },
+        {
             "name": "Poiland",
             "x": 6533,
             "y": 66,
             "z": -9906,
-            "type": "portal",
-            "features": []
+            "type": "house",
+            "features": ["portal"]
         },
         {
             "name": "Utqiagvik village",
