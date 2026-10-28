@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "J'Bar portal",
+            "x": 720,
+            "y": 61,
+            "z": -883,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Poiland",
             "x": 814,
             "y": 60,
@@ -2173,12 +2181,28 @@
             "features": []
         },
         {
+            "name": "J'Bar Underground",
+            "x": 5734,
+            "y": -16,
+            "z": -7075,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "J'Bar",
             "x": 5870,
             "y": 63,
             "z": -7022,
             "type": "house",
             "features": ["portal"]
+        },
+        {
+            "name": "Lightning God Datacenter",
+            "x": 5707,
+            "y": 97,
+            "z": -7321,
+            "type": "monument",
+            "features": []
         },
         {
             "name": "Ice Cliff Shelter",

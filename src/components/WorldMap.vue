@@ -15,7 +15,7 @@ const props = defineProps({
 const emit = defineEmits(['update:showNames', 'update:showCoords', 'update:showHeight', 'update:selectedCoords'])
 
 const MAPSIZE = 1_000_000
-const hoveredName = ref(null)
+const hoveredId = ref(null)
 const mapState = ref({ zoom: 1, shiftX: 0, shiftY: 0 })
 const isDragging = ref(false)
 let dragData = null
@@ -51,6 +51,7 @@ const layout = computed(() => {
 const markers = computed(() => {
   const { factorX, factorZ, originX, originZ } = layout.value
   return props.places.map(place => ({
+    id: `${place.x},${place.y},${place.z}`,
     name: place.name,
     x: originX + factorX * place.x,
     z: originZ + factorZ * place.z,
@@ -259,12 +260,12 @@ function isSelected(m) {
 
 // Render selected marker second-to-last, hovered marker last, so they paint on top.
 const sortedMarkers = computed(() => {
-  const h = hoveredName.value
+  const h = hoveredId.value
   const copy = [...markers.value]
   const selIdx = copy.findIndex(m => isSelected(m))
-  if (selIdx !== -1 && copy[selIdx].name !== h) copy.push(copy.splice(selIdx, 1)[0])
+  if (selIdx !== -1 && copy[selIdx].id !== h) copy.push(copy.splice(selIdx, 1)[0])
   if (h) {
-    const idx = copy.findIndex(m => m.name === h)
+    const idx = copy.findIndex(m => m.id === h)
     if (idx !== -1) copy.push(copy.splice(idx, 1)[0])
   }
   return copy
@@ -294,7 +295,7 @@ const dotScale = computed(() => {
 
 // Matches the radius used to draw a marker's icon, so the label can anchor to its corner.
 function iconRadius(m) {
-  const r = (hoveredName.value === m.name ? 4000 : 2500) * dotScale.value
+  const r = (hoveredId.value === m.id ? 4000 : 2500) * dotScale.value
   return m.description === 'portal' ? r * PORTAL_SCALE : r
 }
 
@@ -512,12 +513,12 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
 
       <g
         v-for="m in sortedMarkers"
-        :key="m.name"
+        :key="m.id"
         class="place-marker"
       >
         <!-- glow halo behind the dot -->
         <circle
-          v-if="hoveredName === m.name"
+          v-if="hoveredId === m.id"
           :cx="m.x" :cy="m.z"
           :r="7000 * dotScale"
           :fill="markerColor"
@@ -537,35 +538,35 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         />
         <template v-if="m.description === 'house'">
           <polygon
-            :points="housePoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :points="housePoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             style="cursor: pointer"
-            @mouseenter="hoveredName = m.name"
-            @mouseleave="hoveredName = null"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
             @click.stop="selectMarker(m)"
           />
           <rect
-            v-bind="houseDoorRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="houseDoorRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             fill="#0a0a18"
             pointer-events="none"
           />
         </template>
         <template v-else-if="m.description === 'woodland mansion'">
           <polygon
-            :points="mansionPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :points="mansionPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             style="cursor: pointer"
-            @mouseenter="hoveredName = m.name"
-            @mouseleave="hoveredName = null"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
             @click.stop="selectMarker(m)"
           />
           <rect
-            v-bind="mansionDoorRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="mansionDoorRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             fill="#0a0a18"
             pointer-events="none"
           />
           <rect
-            v-for="(win, i) in mansionWindowRects(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-for="(win, i) in mansionWindowRects(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :key="'win' + i"
             v-bind="win"
             fill="#0a0a18"
@@ -574,74 +575,74 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         </template>
         <polygon
           v-else-if="m.description === 'monument'"
-          :points="monumentPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+          :points="monumentPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
           :fill="markerColor"
           style="cursor: pointer"
-          @mouseenter="hoveredName = m.name"
-          @mouseleave="hoveredName = null"
+          @mouseenter="hoveredId = m.id"
+          @mouseleave="hoveredId = null"
           @click.stop="selectMarker(m)"
         />
         <template v-else-if="m.description === 'ship'">
           <polygon
-            :points="shipHullPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :points="shipHullPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             style="cursor: pointer"
-            @mouseenter="hoveredName = m.name"
-            @mouseleave="hoveredName = null"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
             @click.stop="selectMarker(m)"
           />
           <rect
-            v-bind="shipMastRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="shipMastRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             pointer-events="none"
           />
           <rect
-            v-bind="shipYardRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="shipYardRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             pointer-events="none"
           />
         </template>
         <template v-else-if="m.description === 'village'">
           <polygon
-            :points="churchPoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :points="churchPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             style="cursor: pointer"
-            @mouseenter="hoveredName = m.name"
-            @mouseleave="hoveredName = null"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
             @click.stop="selectMarker(m)"
           />
           <rect
-            v-bind="churchDoorRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="churchDoorRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             fill="#0a0a18"
             pointer-events="none"
           />
         </template>
         <template v-else-if="m.description === 'portal'">
           <rect
-            v-bind="portalFrameRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="portalFrameRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             style="cursor: pointer"
-            @mouseenter="hoveredName = m.name"
-            @mouseleave="hoveredName = null"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
             @click.stop="selectMarker(m)"
           />
           <rect
-            v-bind="portalHoleRect(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="portalHoleRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             fill="#0a0a18"
             pointer-events="none"
           />
         </template>
         <template v-else-if="m.description === 'hole'">
           <polygon
-            :points="cavePoints(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            :points="cavePoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             :fill="markerColor"
             style="cursor: pointer"
-            @mouseenter="hoveredName = m.name"
-            @mouseleave="hoveredName = null"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
             @click.stop="selectMarker(m)"
           />
           <ellipse
-            v-bind="caveMouthEllipse(m.x, m.z, (hoveredName === m.name ? 4000 : 2500) * dotScale)"
+            v-bind="caveMouthEllipse(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
             fill="#0a0a18"
             pointer-events="none"
           />
@@ -649,11 +650,11 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <circle
           v-else
           :cx="m.x" :cy="m.z"
-          :r="(hoveredName === m.name ? 4000 : 2500) * dotScale"
+          :r="(hoveredId === m.id ? 4000 : 2500) * dotScale"
           :fill="markerColor"
           style="cursor: pointer"
-          @mouseenter="hoveredName = m.name"
-          @mouseleave="hoveredName = null"
+          @mouseenter="hoveredId = m.id"
+          @mouseleave="hoveredId = null"
           @click.stop="selectMarker(m)"
         />
         <!--
@@ -672,7 +673,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
           pointer-events="none"
         >
           <rect
-            v-if="hoveredName === m.name"
+            v-if="hoveredId === m.id"
             :x="-2000"
             :y="-2000"
             :width="Math.max(m.name.length * 4400, coordText(m).length * 3200, typeText(m).length * 3200 + 2000, 8000) + 4000"
@@ -684,21 +685,21 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
             rx="2000"
           />
           <text
-            v-if="showNames || hoveredName === m.name"
+            v-if="showNames || hoveredId === m.id"
             x="0" y="0"
             dominant-baseline="hanging"
-            :font-size="hoveredName === m.name ? 7500 : 5000"
+            :font-size="hoveredId === m.id ? 7500 : 5000"
             class="place-name"
           >{{ m.name }}</text>
           <text
-            v-if="showCoords || hoveredName === m.name"
+            v-if="showCoords || hoveredId === m.id"
             x="0" y="7800"
             dominant-baseline="hanging"
-            :font-size="hoveredName === m.name ? 6000 : 4000"
+            :font-size="hoveredId === m.id ? 6000 : 4000"
             class="place-coord"
           >{{ coordText(m) }}</text>
           <text
-            v-if="hoveredName === m.name && m.description"
+            v-if="hoveredId === m.id && m.description"
             x="0" y="15600"
             dominant-baseline="hanging"
             font-size="6000"
