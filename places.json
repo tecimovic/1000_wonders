@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Poiland Magnus",
+            "x": 674,
+            "y": 62,
+            "z": -942,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "J'Bar portal",
             "x": 720,
             "y": 61,
@@ -1235,6 +1243,22 @@
             "z": -14413,
             "type": "portal",
             "features": ["house"]
+        },
+        {
+            "name": "Poiland Magnus",
+            "x": 5369,
+            "y": 64,
+            "z": -7514,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "HMS Victory",
+            "x": 5062,
+            "y": 64,
+            "z": -7357,
+            "type": "ship",
+            "features": []
         },
         {
             "name": "HMS Warspite",
