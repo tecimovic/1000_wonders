@@ -2253,6 +2253,22 @@
             "features": ["portal"]
         },
         {
+            "name": "Cliffs of Tripoli",
+            "x": 5253,
+            "y": 92,
+            "z": -5810,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Carthago Nova",
+            "x": 5181,
+            "y": 64,
+            "z": -6414,
+            "type": "house",
+            "features": []
+        },
+        {
             "name": "Utqiagvik village",
             "x": -438,
             "y": 64,
