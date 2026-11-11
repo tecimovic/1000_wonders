@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Carthago Portal",
+            "x": 664,
+            "y": 71,
+            "z": -695,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Poiland Magnus",
             "x": 674,
             "y": 62,
@@ -2261,6 +2269,14 @@
             "features": []
         },
         {
+            "name": "HMS Liburna",
+            "x": 5438,
+            "y": 64,
+            "z": -4738,
+            "type": "ship",
+            "features": []
+        },
+        {
             "name": "Carthago Nova",
             "x": 5181,
             "y": 64,
@@ -2274,6 +2290,22 @@
             "y": 64,
             "z": -17875,
             "type": "village",
+            "features": []
+        },
+        {
+            "name": "The little portal of silent contemplation",
+            "x": 5286,
+            "y": 75,
+            "z": -3563,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "The little place of silent contemplation",
+            "x": 5430,
+            "y": 63,
+            "z": -3605,
+            "type": "house",
             "features": []
         },
         {
