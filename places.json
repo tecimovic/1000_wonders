@@ -2349,11 +2349,27 @@
             "features": []
         },
         {
+            "name": "Skylar",
+            "x": 6363,
+            "y": 164,
+            "z": 52,
+            "type": "house",
+            "features": []
+        },
+        {
             "name": "Mystery Bridge",
             "x": 3629,
             "y": 110,
             "z": 262,
             "type": "monument",
+            "features": []
+        },
+        {
+            "name": "Viribus",
+            "x": 8186,
+            "y": 69,
+            "z": 231,
+            "type": "village",
             "features": []
         },
         {
