@@ -5,17 +5,6 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Apps</title>
-    <script>
-      // If the server handed us this page for /lg, /lg/..., /train or /train/...
-      // (e.g. no trailing slash, or a 404 fallback), forward to that app.
-      (function () {
-        var apps = ['lg', 'train'];
-        var first = location.pathname.split('/')[1];
-        if (apps.indexOf(first) !== -1) {
-          location.replace('/' + first + '/' + location.search + location.hash);
-        }
-      })();
-    </script>
     <style>
       :root { color-scheme: dark; }
       * { box-sizing: border-box; }
@@ -33,32 +22,106 @@
         color: #e8e8f0;
         font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
       }
-      main { width: 100%; max-width: 480px; }
+      main { width: 100%; max-width: 520px; }
       h1 { font-weight: 650; letter-spacing: -0.02em; margin: 0 0 24px; }
       ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
       a {
-        display: block;
-        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 18px 14px 14px;
         border: 1px solid #262640;
-        border-radius: 12px;
+        border-radius: 14px;
         background: #0e0e1c;
         color: inherit;
         text-decoration: none;
         transition: border-color .15s, background .15s, transform .15s;
       }
       a:hover { border-color: #7a5cff; background: #14142a; transform: translateY(-1px); }
-      a strong { font-size: 18px; }
-      a span { display: block; font-size: 14px; color: #9a9ab0; margin-top: 4px; }
-      code { color: #7a7a95; font-size: 13px; float: right; }
+      .icon {
+        flex: none;
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+        background: #16162b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .icon img { width: 100%; height: 100%; object-fit: contain; }
+      /* Small pixel-ish images (like hexarod.png) get some breathing room. */
+      .icon img[src$=".png"] { width: 78%; height: 78%; image-rendering: auto; }
+      .text { flex: 1; min-width: 0; }
+      .text strong { display: block; font-size: 18px; }
+      .text span { display: block; font-size: 14px; color: #9a9ab0; margin-top: 3px; }
+      code { flex: none; color: #7a7a95; font-size: 13px; }
+      .status { color: #9a9ab0; }
+      @media (max-width: 420px) { code { display: none; } }
     </style>
   </head>
   <body>
     <main>
       <h1>Apps</h1>
-      <ul>
-        <li><a href="/lg/"><code>/lg</code><strong>World of 1000 Wonders</strong><span>Minecraft world map</span></a></li>
-        <li><a href="/train/"><code>/train</code><strong>Public transportation</strong><span>Yay, public transportation!</span></a></li>
-      </ul>
+      <ul id="apps"></ul>
+      <p id="status" class="status">Loading…</p>
     </main>
+
+    <script>
+      // The list of apps lives in /apps.json:
+      //   [{ "icon": "/x.png", "title": "...", "subtitle": "...", "uri": "/app/" }, ...]
+      (async function () {
+        var status = document.getElementById('status');
+        var apps;
+        try {
+          var res = await fetch('/apps.json', { cache: 'no-cache' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          apps = await res.json();
+        } catch (e) {
+          status.textContent = 'Could not load the list of apps (' + e.message + ').';
+          return;
+        }
+
+        // If the server handed us this page for /<app> or /<app>/anything
+        // (no trailing slash, or a 404 fallback), forward to that app.
+        var first = location.pathname.split('/')[1];
+        if (first) {
+          var match = apps.find(function (a) { return a.uri.split('/')[1] === first; });
+          if (match) { location.replace(match.uri + location.search + location.hash); return; }
+        }
+
+        var list = document.getElementById('apps');
+        apps.forEach(function (app) {
+          var a = document.createElement('a');
+          a.href = app.uri;
+
+          var icon = document.createElement('div');
+          icon.className = 'icon';
+          if (app.icon) {
+            var img = document.createElement('img');
+            img.src = app.icon;
+            img.alt = '';
+            icon.appendChild(img);
+          }
+
+          var text = document.createElement('div');
+          text.className = 'text';
+          var title = document.createElement('strong');
+          title.textContent = app.title;
+          var subtitle = document.createElement('span');
+          subtitle.textContent = app.subtitle || '';
+          text.append(title, subtitle);
+
+          var uri = document.createElement('code');
+          uri.textContent = app.uri.replace(/\/$/, '');
+
+          a.append(icon, text, uri);
+          var li = document.createElement('li');
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+        status.remove();
+      })();
+    </script>
   </body>
 </html>

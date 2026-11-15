@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b0e26"/>
+      <stop offset="1" stop-color="#3a2040"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f1e8"/>
+      <stop offset="1" stop-color="#cfcabb"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff1c2"/>
+      <stop offset="1" stop-color="#ffc56b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="26" fill="url(#sky)"/>
+
+  <!-- moon + a couple of stars -->
+  <circle cx="102" cy="22" r="7" fill="#fff3c4"/>
+  <circle cx="105" cy="20" r="6" fill="#16163a"/>
+  <circle cx="24" cy="18" r="1.2" fill="#fff"/>
+  <circle cx="58" cy="12" r="1" fill="#fff"/>
+
+  <!-- overhead wire + pantograph -->
+  <line x1="0" y1="34" x2="128" y2="34" stroke="#8e93bd" stroke-width="1.5"/>
+  <path d="M54 54 L64 44 L58 35 M74 54 L64 44 L70 35" fill="none" stroke="#3a3f66" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="52" y1="35" x2="76" y2="35" stroke="#c9cde8" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="52" y="52" width="24" height="4" rx="1" fill="#3a3f66"/>
+
+  <!-- body: two articulated sections with rounded noses -->
+  <path d="M20 56 Q10 56 9 68 L8 96 L62 96 L62 56 Z" fill="url(#body)"/>
+  <path d="M66 56 L108 56 Q118 56 119 68 L120 96 L66 96 Z" fill="url(#body)"/>
+  <rect x="61" y="60" width="6" height="34" fill="#2a2f4d"/>
+
+  <!-- windows -->
+  <rect x="13" y="61" width="46" height="20" rx="3" fill="#1a1e3a"/>
+  <rect x="69" y="61" width="46" height="20" rx="3" fill="#1a1e3a"/>
+  <path d="M15 63 L24 63 L24 79 L14 79 Q14 68 15 63 Z" fill="url(#glass)"/>
+  <rect x="27" y="63" width="12" height="16" rx="2" fill="url(#glass)"/>
+  <rect x="45" y="63" width="12" height="16" rx="2" fill="url(#glass)"/>
+  <rect x="71" y="63" width="12" height="16" rx="2" fill="url(#glass)"/>
+  <rect x="89" y="63" width="12" height="16" rx="2" fill="url(#glass)"/>
+  <path d="M104 63 L113 63 Q114 68 114 79 L104 79 Z" fill="url(#glass)"/>
+  <!-- doors -->
+  <rect x="40.5" y="62" width="3.5" height="31" fill="#1a1e3a"/>
+  <rect x="84.5" y="62" width="3.5" height="31" fill="#1a1e3a"/>
+
+  <!-- livery -->
+  <path d="M8.5 84 L119.5 84 L119.7 88 L8.4 88 Z" fill="#ff8a3d"/>
+  <path d="M8.4 88 L119.7 88 L120 93 L8.2 93 Z" fill="#e5484d"/>
+
+  <!-- lights -->
+  <circle cx="118" cy="86" r="2.2" fill="#fff3c4"/>
+  <rect x="8" y="83" width="2.5" height="5" rx="1" fill="#ff4d4d"/>
+
+  <!-- street + wheels -->
+  <rect x="0" y="100" width="128" height="28" fill="#0b0b1a"/>
+  <rect x="0" y="99" width="128" height="2" fill="#7d82ad"/>
+  <g fill="#2a2f4d" stroke="#9aa0c8" stroke-width="1.5">
+    <circle cx="22" cy="98" r="4.5"/><circle cx="34" cy="98" r="4.5"/>
+    <circle cx="94" cy="98" r="4.5"/><circle cx="106" cy="98" r="4.5"/>
+  </g>
+  <rect x="22" y="112" width="16" height="2" rx="1" fill="#3b3f63"/>
+  <rect x="56" y="112" width="16" height="2" rx="1" fill="#3b3f63"/>
+  <rect x="90" y="112" width="16" height="2" rx="1" fill="#3b3f63"/>
+</svg>

@@ -1,0 +1,46 @@
+name: Build
+
+# Full production build of the landing page and every Vue app.
+# Succeeds only if everything compiles and every app in public/apps.json
+# ends up with an index.html in dist/.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all apps
+        run: npm run build
+
+      - name: Check that every app was built
+        run: |
+          node -e '
+            const fs = require("fs");
+            const apps = JSON.parse(fs.readFileSync("public/apps.json", "utf8"));
+            let ok = fs.existsSync("dist/index.html");
+            if (!ok) console.error("missing: dist/index.html (landing page)");
+            for (const app of apps) {
+              const page = "dist" + app.uri + "index.html";
+              const found = fs.existsSync(page);
+              console.log((found ? "ok      " : "MISSING ") + page + "  (" + app.title + ")");
+              ok = ok && found;
+            }
+            process.exit(ok ? 0 : 1);
+          '

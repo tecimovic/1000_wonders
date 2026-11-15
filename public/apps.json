@@ -1,0 +1,14 @@
+[
+  {
+    "icon": "/hexarod.png",
+    "title": "World of 1000 Wonders",
+    "subtitle": "Interactive map of a Minecraft world",
+    "uri": "/lg/"
+  },
+  {
+    "icon": "/tram.svg",
+    "title": "Public transportation",
+    "subtitle": "Yay, public transportation!",
+    "uri": "/train/"
+  }
+]
