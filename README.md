@@ -15,8 +15,11 @@ Vue 3 apps:
 
 - **[/lg/](http://platycore.com/lg/)**: *World of 1000 Wonders*, an
   interactive map of a Minecraft world (Overworld, Nether and End).
-- **[/train/](http://platycore.com/train/)**: a site about public
-  transportation. For now it's a placeholder with an animated tram.
+- **[/train/](http://platycore.com/train/)**: live public transportation
+  data for Boston, from the MBTA's real-time API (based on GTFS). It shows
+  current service alerts in a collapsible tree, and for any stop or station
+  its upcoming arrivals and departures and its facilities (elevators, parking,
+  fare machines, ...). It's password-protected.
 
 The repo also keeps a few notes and assets about that Minecraft world.
 
@@ -30,6 +33,12 @@ landing page builds its menu from `public/apps.json`, so adding an app
 means creating its folder and adding one entry (icon, title, subtitle and
 URI) to that file. [`AGENTS.md`](AGENTS.md) describes the full repo
 structure and the exact steps.
+
+Working on the train app? A local copy of the MBTA API and GTFS
+documentation is in [`doc/mbta/`](doc/mbta/README.md).
+
+Secrets (like the MBTA API key) are committed only in encrypted form. The
+password is never in the repo, so ask the owner for it.
 
 Every push to `main` and every pull request is built by GitHub Actions.
 The badge at the top shows whether `main` currently builds.

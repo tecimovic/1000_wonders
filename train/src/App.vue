@@ -1,21 +1,60 @@
 <script setup>
-import TransitScene from './components/TransitScene.vue'
+import { ref, onMounted } from 'vue'
+import LandingPage from './components/LandingPage.vue'
+import PasswordPage from './components/PasswordPage.vue'
+import { cryptoAvailable } from './crypto.js'
+import { unlock } from './mbtaApiKey.js'
+import { readPasswordCookie, savePasswordCookie, clearPasswordCookie } from './passwordCookie.js'
+
+// 'checking' → 'password' or 'landing'. ('unsupported' if the browser can't decrypt.)
+const view = ref('checking')
+const invalid = ref(false)
+const busy = ref(false)
+
+// On load: a stored password that still decrypts the key goes straight in.
+onMounted(async () => {
+  if (!cryptoAvailable()) {
+    view.value = 'unsupported'
+    return
+  }
+  const stored = readPasswordCookie()
+  if (stored && (await unlock(stored))) {
+    view.value = 'landing'
+    return
+  }
+  if (stored) {
+    // A password was stored but no longer works.
+    clearPasswordCookie()
+    invalid.value = true
+  }
+  view.value = 'password'
+})
+
+async function onSubmit(password) {
+  if (!password) {
+    invalid.value = false // nothing entered: no error, just stay
+    return
+  }
+  busy.value = true
+  const ok = await unlock(password)
+  busy.value = false
+  if (ok) {
+    savePasswordCookie(password) // expires in 7 days
+    invalid.value = false
+    view.value = 'landing'
+  } else {
+    invalid.value = true
+  }
+}
 </script>
 
 <template>
-  <div class="page">
-    <header>
-      <p class="eyebrow">Now arriving · Line 1</p>
-      <h1>Yay, <span>public transportation!</span></h1>
-      <p class="sub">Something is being built here. Please mind the gap.</p>
-    </header>
-
-    <TransitScene />
-
-    <footer>
-      <a href="/">← All apps</a>
-    </footer>
+  <LandingPage v-if="view === 'landing'" />
+  <PasswordPage v-else-if="view === 'password'" :invalid="invalid" :busy="busy" @submit="onSubmit" />
+  <div v-else-if="view === 'unsupported'" class="page">
+    <p class="sub">This page needs a secure (HTTPS) connection.</p>
   </div>
+  <div v-else class="page" aria-busy="true"></div>
 </template>
 
 <style>
@@ -25,6 +64,8 @@ import TransitScene from './components/TransitScene.vue'
   --muted: #8c93b8;
   --accent: #ff8a3d;
   --accent-2: #ffd166;
+  --line: #262a52;
+  --line-soft: #191c3a;
   color-scheme: dark;
 }
 
@@ -91,4 +132,65 @@ footer a {
   font-size: 14px;
 }
 footer a:hover { color: var(--ink); }
+
+/* ── Shared building blocks for the app pages ── */
+body {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%, #1c1a4a 0%, transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+.card {
+  background: #0d0f22;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 20px 60px -30px #000;
+}
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.card h2 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
+
+.tools { display: flex; gap: 6px; flex-wrap: wrap; }
+button.ghost {
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: #151834;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+button.ghost:hover:not(:disabled) { border-color: var(--accent); }
+button.ghost:disabled { opacity: .5; cursor: default; }
+
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.error-box {
+  margin: 8px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #2a1016;
+  border: 1px solid #5c1f29;
+  color: #ffb3b3;
+}
+
+.route-chip {
+  display: inline-block;
+  min-width: 28px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
 </style>

@@ -34,10 +34,28 @@ lg/                 "World of 1000 Wonders": a map of a Minecraft world. → /lg
   index.html, vite.config.js, favicon.ico
   places.json       The map data. Edit this to add or move places.
   src/              App.vue, main.js, components/WorldMap.vue, assets/
-train/              Public transportation site, currently a placeholder
-  index.html,       (animated tram). The URL stays /train/ even though the
-  vite.config.js,   topic is public transportation in general.
-  favicon.svg, src/
+train/              Public transportation site: live Boston MBTA data, behind a
+  index.html,       password page. The URL stays /train/ even though the topic
+  vite.config.js,   is public transportation in general. See "train: MBTA data"
+  favicon.svg       and "train: password and secrets" below.
+  src/
+    App.vue           Chooses the page: PasswordPage or LandingPage.
+    components/
+      PasswordPage.vue  Password form + the animated tram (TransitScene.vue).
+      LandingPage.vue   The main page: AlertsTree, then StopPicker + StopDetails.
+      AlertsTree.vue    Current alerts as a collapsible tree-table (mode → effect → alert).
+      StopPicker.vue    Search box over all stations and stand-alone stops.
+      StopDetails.vue   Predictions (auto-refresh 30 s) and facilities of one stop.
+    mbta/
+      api.js            mbtaGet() (adds the API key), JSON:API helpers, MODES, time formatting.
+      predictions.js    Turns /predictions into display rows (MBTA display rules).
+    crypto.js         encryptSecret() / decryptSecret() (Web Crypto).
+    secrets.js        Encrypted secrets, e.g. encryptedMbtaApiKey.
+    mbtaApiKey.js     unlock(password) and useMbtaApiKey(): the decrypted key.
+    passwordCookie.js The mbtaApiKeyPassword cookie.
+  scripts/encrypt-secret.mjs   Encrypts a new secret for secrets.js.
+doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
+                    reference, not part of the website). Start at README.md.
 deploy              Builds everything and uploads dist/ to the server via FTP.
 .github/workflows/build.yml   CI: builds everything on GitHub (see below).
 dist/               Build output (git-ignored): dist/index.html, dist/<app>/...
@@ -59,6 +77,71 @@ uses them.
   relatively (e.g. `<img src="./assets/x.png">` in a `.vue` file). Vite then
   bundles them into `dist/<app>/assets/`. Don't put app files in the root
   `public/`: that belongs to the landing page.
+
+### train: MBTA data
+
+The train app shows live data for Boston's public transit (MBTA) from the
+**MBTA V3 API** (`https://api-v3.mbta.com`). The API is built on **GTFS**
+(static schedules) and **GTFS-Realtime** (predictions, vehicles, alerts).
+
+**Docs live in `doc/mbta/`**, so there's no need to look things up online
+each time. Start with `doc/mbta/README.md` (index, cheat sheet, and quirks of
+the live API), then use `doc/mbta/mbta-v3-api-reference.md` (every endpoint,
+filter and attribute). `doc/mbta/fetch.sh` refreshes the whole folder. When
+you learn something new about the live API, add it to the README's "Things
+learned" section.
+
+Code rules:
+
+- Call the API only through `mbtaGet()` in `train/src/mbta/api.js`. It adds the
+  `x-api-key` header from the unlocked key. The API allows CORS, so the
+  browser calls it directly.
+- Show times in Boston time (`formatClock` / `formatDateTime` in `api.js`).
+- Show predictions according to MBTA's Real-Time Display Guidelines
+  (`train/src/mbta/predictions.js`, summarized in `doc/mbta/README.md`).
+
+The landing page currently has two parts:
+
+1. **Service alerts** (`/alerts`): a tree-table grouped by mode, then effect.
+   Expanding an alert shows its full text, active periods, cause and routes.
+2. **Stop**: a search box over ~7,100 stations and stops (`/stops`). The
+   selected stop shows its arrivals and departures (`/predictions`, refreshed
+   every 30 s) and its facilities (`/facilities`). The selected stop is kept
+   in the URL (`?stop=place-pktrm`).
+
+### train: password and secrets
+
+**Rule: secrets are committed only in encrypted form.** Never put a plaintext
+secret or its password into any file in this repo.
+
+- `train/src/secrets.js` holds `encryptedMbtaApiKey`, the MBTA V3 API key
+  encrypted with AES-256-GCM. The key comes from the password via
+  PBKDF2-SHA256 with 600,000 iterations. The format is
+  `v1.<iterations>.<salt>.<iv>.<ciphertext>` (base64 parts).
+- To add or rotate a secret, run `node train/scripts/encrypt-secret.mjs`. It
+  reads the secret and the password from stdin, never from arguments, and
+  prints only the encrypted string. Paste that into `secrets.js`.
+- The password isn't in the repo. Ask the owner for it.
+
+The user flow (in `train/src/App.vue`):
+
+1. On load, if the `mbtaApiKeyPassword` cookie exists and decrypts the key,
+   go straight to the landing page.
+2. Otherwise show the password page. If a stored cookie no longer works, the
+   cookie is cleared and the page shows "Invalid password".
+3. Submitting a wrong password shows "Invalid password". Submitting an empty
+   field shows nothing.
+4. The right password goes to the landing page and is stored in the cookie
+   (`Path=/train/`, `SameSite=Strict`, `Secure` on HTTPS). The cookie
+   expires 7 days after the password was entered and isn't refreshed on later
+   visits.
+
+In code, get the key with `useMbtaApiKey()` from `train/src/mbtaApiKey.js`. It
+returns a read-only ref that holds the plaintext key once unlocked.
+
+Web Crypto only works in secure contexts (HTTPS or localhost).
+platycore.com also answers on plain `http://`, so `train/src/main.js` switches
+`http://` to `https://` before the app starts.
 
 ### The app list: `public/apps.json`
 
