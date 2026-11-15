@@ -51,6 +51,22 @@
     ],
     "nether": [
         {
+            "name": "Barkand Dulgur portal",
+            "x": 461,
+            "y": 36,
+            "z": -280,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Warp Portal",
+            "x": 440,
+            "y": 90,
+            "z": -75,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Carthago Portal",
             "x": 664,
             "y": 71,
@@ -1186,7 +1202,7 @@
             "y": 70,
             "z": -628,
             "type": "house",
-            "features": []
+            "features": ["portal"]
         },
         {
             "name": "The Allmighty Warp",
@@ -1338,6 +1354,14 @@
             "y": 86,
             "z": -2398,
             "type": "village",
+            "features": []
+        },
+        {
+            "name": "Barkand Dulgur City",
+            "x": 3656,
+            "y": -50,
+            "z": -2259,
+            "type": "ancient city",
             "features": []
         },
         {
@@ -2301,6 +2325,14 @@
             "features": []
         },
         {
+            "name": "Villa Stratus Astralis",
+            "x": 3749,
+            "y": 71,
+            "z": -1713,
+            "type": "house",
+            "features": []
+        },
+        {
             "name": "The little place of silent contemplation",
             "x": 5430,
             "y": 63,
@@ -2313,6 +2345,30 @@
             "x": 2466,
             "y": 72,
             "z": -11872,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Parthos",
+            "x": 5099,
+            "y": 63,
+            "z": 273,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Mystery Bridge",
+            "x": 3629,
+            "y": 110,
+            "z": 262,
+            "type": "monument",
+            "features": []
+        },
+        {
+            "name": "Ooh-bldee",
+            "x": 2860,
+            "y": 70,
+            "z": -218,
             "type": "village",
             "features": []
         }

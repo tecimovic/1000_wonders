@@ -253,6 +253,42 @@ function caveMouthEllipse(cx, cz, r) {
   return { cx, cy: cz + 0.55 * r, rx: 0.4 * r, ry: 0.45 * r }
 }
 
+// "Ancient city" icon: a front-on silhouette of the Warden — a broad, hulking
+// body with long arms hanging to the knees, stubby legs, and a big head with
+// the two antler-like tendrils sweeping up and out from its sides. In [-1, 1]
+// unit space, traced clockwise from the head's top-left corner.
+const WARDEN_SHAPE = [
+  [-0.4, -0.85], [0.4, -0.85],                  // head top
+  [0.4, -0.7], [0.85, -1.05], [0.4, -0.5],      // right tendril
+  [0.4, -0.3], [0.95, -0.3],                    // neck, right shoulder
+  [0.95, 0.6], [0.72, 0.6], [0.72, 0.4],        // right arm
+  [0.45, 0.4], [0.45, 1], [0.1, 1],             // right leg
+  [0.1, 0.45], [-0.1, 0.45],                    // crotch
+  [-0.1, 1], [-0.45, 1], [-0.45, 0.4],          // left leg
+  [-0.72, 0.4], [-0.72, 0.6], [-0.95, 0.6],     // left arm
+  [-0.95, -0.3], [-0.4, -0.3],                  // left shoulder, neck
+  [-0.4, -0.5], [-0.85, -1.05], [-0.4, -0.7],   // left tendril
+]
+
+// Thin dark slits separating each arm from the torso, so the arms read as limbs.
+const WARDEN_ARM_GAPS = [
+  { x: -0.74, y: -0.12, w: 0.07, h: 0.52 },
+  { x: 0.67,  y: -0.12, w: 0.07, h: 0.52 },
+]
+
+function wardenPoints(cx, cz, r) {
+  return WARDEN_SHAPE.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+function wardenArmGapRects(cx, cz, r) {
+  return WARDEN_ARM_GAPS.map(g => ({
+    x: cx + g.x * r,
+    y: cz + g.y * r,
+    width: g.w * r,
+    height: g.h * r
+  }))
+}
+
 function isSelected(m) {
   const s = props.selectedCoords
   return s !== null && s.mapId === props.mapId && s.wx === m.wx && s.wz === m.wz
@@ -643,6 +679,23 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
           />
           <ellipse
             v-bind="caveMouthEllipse(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+        </template>
+        <template v-else-if="m.description === 'ancient city'">
+          <polygon
+            :points="wardenPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            :fill="markerColor"
+            style="cursor: pointer"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
+            @click.stop="selectMarker(m)"
+          />
+          <rect
+            v-for="(gap, i) in wardenArmGapRects(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            :key="i"
+            v-bind="gap"
             fill="#0a0a18"
             pointer-events="none"
           />
