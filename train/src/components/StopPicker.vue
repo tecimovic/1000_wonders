@@ -93,6 +93,12 @@ function onBlur() {
 }
 
 const optionId = i => 'stop-option-' + i
+
+const placeholder = computed(() => {
+  if (loading.value) return 'Loading stops…'
+  const examples = transit.value.authority.stopSearchExamples || []
+  return `Search ${stops.value.length.toLocaleString()} stops` + (examples.length ? ` — e.g. ${examples.join(', ')}` : '')
+})
 </script>
 
 <template>
@@ -110,7 +116,7 @@ const optionId = i => 'stop-option-' + i
         aria-controls="stop-listbox"
         :aria-expanded="open && results.length > 0"
         :aria-activedescendant="open && results.length ? optionId(active) : undefined"
-        :placeholder="loading ? 'Loading stops…' : `Search ${stops.length.toLocaleString()} stops — e.g. Park Street, Harvard, Washington St`"
+        :placeholder="placeholder"
         :disabled="loading || !!error"
         @input="onInput"
         @keydown="onKeydown"

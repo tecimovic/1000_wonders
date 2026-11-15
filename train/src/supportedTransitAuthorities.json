@@ -6,12 +6,44 @@
     "region": "Boston, Massachusetts, USA",
     "timeZone": "America/New_York",
     "website": "https://www.mbta.com",
+    "stopSearchExamples": [
+      "Park Street",
+      "Harvard",
+      "Washington St"
+    ],
     "api": {
       "type": "mbta-v3",
       "baseUrl": "https://api-v3.mbta.com",
       "docs": "https://www.mbta.com/developers/v3-api",
       "apiKeyHeader": "x-api-key",
       "encryptedApiKey": "v1.600000.HaBUAg3MJheGS0EWC0PQuw==.3/5MnAsO8ZSURXsx.N23zhBpGSRozE3PcIWG4nHMPYO5e/0LcmfCcrrH6dhfaSnBHtG4dnC2X6O5QksXc"
+    }
+  },
+  {
+    "id": "bkk",
+    "name": "Budapest BKK",
+    "fullName": "BKK Centre for Budapest Transport",
+    "region": "Budapest, Hungary",
+    "timeZone": "Europe/Budapest",
+    "website": "https://bkk.hu",
+    "stopSearchExamples": [
+      "Deák Ferenc tér",
+      "Széll Kálmán tér",
+      "Keleti pályaudvar"
+    ],
+    "api": {
+      "type": "bkk-futar",
+      "baseUrl": "https://futar.bkk.hu/api/query/v1/ws/otp/api/where",
+      "docs": "https://opendata.bkk.hu",
+      "apiKeyQueryParam": "key",
+      "encryptedApiKey": "v1.600000.hSJu9ZPXFv6+/j1n0zHDkg==.XJW/eINox7P7CDIP.inHFO/lAKwQyiIGbn7fBQP4cjbFoIbUyLhIWMqFa8ICGod44/kcLFzulNUCTgLCRWjIRiQ==",
+      "language": "en",
+      "stopsArea": {
+        "south": 47.33,
+        "west": 18.85,
+        "north": 47.66,
+        "east": 19.36
+      }
     }
   }
 ]

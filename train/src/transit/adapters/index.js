@@ -8,9 +8,11 @@
 // API-specific formats.
 
 import * as mbtaV3 from './mbta-v3.js'
+import * as bkkFutar from './bkk-futar.js'
 
 const adapters = {
-  'mbta-v3': mbtaV3
+  'mbta-v3': mbtaV3,
+  'bkk-futar': bkkFutar
 }
 
 export function adapterFor(type) {

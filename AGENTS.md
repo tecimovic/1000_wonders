@@ -34,8 +34,8 @@ lg/                 "World of 1000 Wonders": a map of a Minecraft world. → /lg
   index.html, vite.config.js, favicon.ico
   places.json       The map data. Edit this to add or move places.
   src/              App.vue, main.js, components/WorldMap.vue, assets/
-train/              Public transportation site: live transit data (currently
-  index.html,       Boston MBTA), behind a password page. The URL stays
+train/              Public transportation site: live transit data (Boston MBTA,
+  index.html,       Budapest BKK), behind a password page. The URL stays
   vite.config.js,   /train/ even though the topic is public transportation in
   favicon.svg       general. See the "train: ..." sections below.
   src/
@@ -54,6 +54,7 @@ train/              Public transportation site: live transit data (currently
                         useTransit() → { authority, client, modes, capabilities }.
       adapters/         One adapter per API type (index.js maps type → adapter):
         mbta-v3.js        The MBTA V3 API (JSON:API).
+        bkk-futar.js      BKK FUTÁR, Budapest (OneBusAway-style JSON).
       http.js           getJson(): fetch with the authority's base URL and API key.
       predictions.js    Normalized predictions → display rows (display rules).
       format.js         GTFS route types, time formatting in the authority's time zone.
@@ -62,6 +63,7 @@ train/              Public transportation site: live transit data (currently
   scripts/encrypt-secret.mjs   Encrypts an API key for supportedTransitAuthorities.json.
 doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
+doc/bkk/            Local copy of BKK's FUTÁR API docs. Start at README.md.
 deploy              Builds everything and uploads dist/ to the server via FTP.
 .github/workflows/build.yml   CI: builds everything on GitHub (see below).
 dist/               Build output (git-ignored): dist/index.html, dist/<app>/...
@@ -88,8 +90,8 @@ uses them.
 
 The train app can show several transit systems ("authorities"). The user picks
 one in the "Currently showing: ..." heading. The choice is kept in the URL
-(`?authority=mbta`) and in localStorage. Today the list has one entry, the
-Boston MBTA.
+(`?authority=mbta`) and in localStorage. Today the list has two entries: the
+Boston MBTA and Budapest BKK.
 
 **The list is `train/src/supportedTransitAuthorities.json`**, an array with
 one object per authority:
@@ -115,12 +117,17 @@ one object per authority:
 - `id`: short and URL-safe. `name` is shown in the picker, and `fullName`,
   `region` and `website` are shown around the page.
 - `timeZone`: an IANA zone. All times are shown in it.
+- `stopSearchExamples`: a few well-known stop names, shown as examples in the
+  stop search box.
 - `api.type`: picks the adapter (see below).
 - `api.baseUrl`: the start of every request URL.
 - `api.apiKeyHeader` and/or `api.apiKeyQueryParam`: how the key is sent.
   Leave out `encryptedApiKey` if the API needs no key.
 - `api.encryptedApiKey`: the API key, encrypted with **the same password as
   all the others** (see "train: password and secrets").
+- Adapters may read more `api` fields of their own. `bkk-futar` uses
+  `language` (`"en"` or `"hu"`) and `stopsArea` (`{south, west, north, east}`,
+  the area to load stops from).
 
 The order in the file is the order in the picker. The first entry is the
 default.
@@ -166,6 +173,13 @@ Code rules:
 - Show predictions according to MBTA's Real-Time Display Guidelines, which
   only use GTFS-Realtime concepts (`train/src/transit/predictions.js`).
 
+### train: the adapters that exist
+
+| `api.type` | Used by | Docs | Notes |
+|---|---|---|---|
+| `mbta-v3` | Boston MBTA | `doc/mbta/` | All four capabilities. |
+| `bkk-futar` | Budapest BKK | `doc/bkk/` | No facilities. Stops load in 25 tiles (the API caps one request at ~5,000 stops) and are cached in localStorage for 24 h. Alert severity is derived (the API has none). |
+
 ### train: the MBTA adapter (`mbta-v3`)
 
 The Boston MBTA uses the **MBTA V3 API** (`https://api-v3.mbta.com`), which is
@@ -179,7 +193,7 @@ filter and attribute). `doc/mbta/fetch.sh` refreshes the whole folder. When
 you learn something new about the live API, add it to the README's "Things
 learned" section.
 
-The landing page currently has two parts, in this order:
+The landing page (the same for every authority) has two parts, in this order:
 
 1. **Stop**: a search box over ~7,100 stations and stops (`/stops`). The
    selected stop shows its arrivals and departures (`/predictions`, refreshed
