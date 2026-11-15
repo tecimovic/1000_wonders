@@ -1,14 +1,15 @@
 <script setup>
-// Type-to-search picker over all MBTA stations and stand-alone stops (/stops).
+// Type-to-search picker over the selected authority's stations and stops.
 import { ref, computed, onMounted, watch } from 'vue'
-import { mbtaGet, relId } from '../mbta/api.js'
+import { useTransit } from '../transit/authorities.js'
 
 const props = defineProps({
-  modelValue: { type: Object, default: null }, // the selected stop (see `toStop`)
+  modelValue: { type: Object, default: null }, // the selected stop: { id, name, kind, isStation, municipality }
   initialId: { type: String, default: '' }     // pre-select this stop id once loaded
 })
 const emit = defineEmits(['update:modelValue'])
 
+const transit = useTransit()
 const stops = ref([])
 const loading = ref(true)
 const error = ref('')
@@ -17,36 +18,11 @@ const open = ref(false)
 const active = ref(0)
 const MAX_RESULTS = 60
 
-function kindOf(a) {
-  if (a.location_type === 1) return 'Station'
-  if (a.vehicle_type === 3) return 'Bus stop'
-  if (a.vehicle_type === 4) return 'Ferry'
-  return 'Stop'
-}
-
-function toStop(s) {
-  const a = s.attributes
-  const kind = kindOf(a)
-  return {
-    id: s.id,
-    name: a.name,
-    kind,
-    municipality: a.municipality || '',
-    isStation: kind === 'Station',
-    search: (a.name + ' ' + (a.municipality || '') + ' ' + s.id).toLowerCase()
-  }
-}
-
 onMounted(async () => {
   try {
-    const doc = await mbtaGet('/stops', {
-      'filter[location_type]': '0,1',
-      'fields[stop]': 'name,location_type,vehicle_type,municipality'
-    })
-    // Platforms belong to a station: offer the station instead.
-    stops.value = doc.data
-      .filter(s => s.attributes.location_type === 1 || !relId(s, 'parent_station'))
-      .map(toStop)
+    const list = await transit.value.client.getStops()
+    stops.value = list
+      .map(s => ({ ...s, search: (s.name + ' ' + (s.municipality || '') + ' ' + s.id).toLowerCase() }))
       .sort((x, y) => (y.isStation - x.isStation) || x.name.localeCompare(y.name))
     if (props.initialId && !props.modelValue) {
       const found = stops.value.find(s => s.id === props.initialId)

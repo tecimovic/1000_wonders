@@ -25,7 +25,9 @@ not part of the website. Refresh everything with `doc/mbta/fetch.sh`.
 ## V3 API cheat sheet
 
 - **Base URL:** `https://api-v3.mbta.com`. **Auth:** `x-api-key: <key>` header.
-  The key is `encryptedMbtaApiKey` in `train/src/secrets.js` (see AGENTS.md).
+  The key is the `mbta` entry's `api.encryptedApiKey` in
+  `train/src/supportedTransitAuthorities.json` (see AGENTS.md). The app's
+  MBTA code is `train/src/transit/adapters/mbta-v3.js`.
 - **CORS:** `Access-Control-Allow-Origin: *`, and `x-api-key` is an allowed
   header, so browsers can call the API directly. There's no need for a proxy.
 - **Rate limit:** 1,000 requests/min with a key (20/min without). The

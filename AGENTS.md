@@ -34,26 +34,32 @@ lg/                 "World of 1000 Wonders": a map of a Minecraft world. → /lg
   index.html, vite.config.js, favicon.ico
   places.json       The map data. Edit this to add or move places.
   src/              App.vue, main.js, components/WorldMap.vue, assets/
-train/              Public transportation site: live Boston MBTA data, behind a
-  index.html,       password page. The URL stays /train/ even though the topic
-  vite.config.js,   is public transportation in general. See "train: MBTA data"
-  favicon.svg       and "train: password and secrets" below.
+train/              Public transportation site: live transit data (currently
+  index.html,       Boston MBTA), behind a password page. The URL stays
+  vite.config.js,   /train/ even though the topic is public transportation in
+  favicon.svg       general. See the "train: ..." sections below.
   src/
+    supportedTransitAuthorities.json   The transit systems the app can show,
+                      with API details and encrypted API keys.
     App.vue           Chooses the page: PasswordPage or LandingPage.
     components/
       PasswordPage.vue  Password form + the animated tram (TransitScene.vue).
-      LandingPage.vue   The main page: AlertsTree, then StopPicker + StopDetails.
+      LandingPage.vue   "Currently showing: <authority>" picker, StopPicker +
+                        StopDetails, then AlertsTree.
       AlertsTree.vue    Current alerts as a collapsible tree-table (mode → effect → alert).
       StopPicker.vue    Search box over all stations and stand-alone stops.
       StopDetails.vue   Predictions (auto-refresh 30 s) and facilities of one stop.
-    mbta/
-      api.js            mbtaGet() (adds the API key), JSON:API helpers, MODES, time formatting.
-      predictions.js    Turns /predictions into display rows (MBTA display rules).
+    transit/
+      authorities.js    Loads the authorities, unlock(password), selectAuthority(),
+                        useTransit() → { authority, client, modes, capabilities }.
+      adapters/         One adapter per API type (index.js maps type → adapter):
+        mbta-v3.js        The MBTA V3 API (JSON:API).
+      http.js           getJson(): fetch with the authority's base URL and API key.
+      predictions.js    Normalized predictions → display rows (display rules).
+      format.js         GTFS route types, time formatting in the authority's time zone.
     crypto.js         encryptSecret() / decryptSecret() (Web Crypto).
-    secrets.js        Encrypted secrets, e.g. encryptedMbtaApiKey.
-    mbtaApiKey.js     unlock(password) and useMbtaApiKey(): the decrypted key.
     passwordCookie.js The mbtaApiKeyPassword cookie.
-  scripts/encrypt-secret.mjs   Encrypts a new secret for secrets.js.
+  scripts/encrypt-secret.mjs   Encrypts an API key for supportedTransitAuthorities.json.
 doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
 deploy              Builds everything and uploads dist/ to the server via FTP.
@@ -78,11 +84,93 @@ uses them.
   bundles them into `dist/<app>/assets/`. Don't put app files in the root
   `public/`: that belongs to the landing page.
 
-### train: MBTA data
+### train: transit authorities
 
-The train app shows live data for Boston's public transit (MBTA) from the
-**MBTA V3 API** (`https://api-v3.mbta.com`). The API is built on **GTFS**
-(static schedules) and **GTFS-Realtime** (predictions, vehicles, alerts).
+The train app can show several transit systems ("authorities"). The user picks
+one in the "Currently showing: ..." heading. The choice is kept in the URL
+(`?authority=mbta`) and in localStorage. Today the list has one entry, the
+Boston MBTA.
+
+**The list is `train/src/supportedTransitAuthorities.json`**, an array with
+one object per authority:
+
+```json
+{
+  "id": "mbta",
+  "name": "Boston MBTA",
+  "fullName": "Massachusetts Bay Transportation Authority",
+  "region": "Boston, Massachusetts, USA",
+  "timeZone": "America/New_York",
+  "website": "https://www.mbta.com",
+  "api": {
+    "type": "mbta-v3",
+    "baseUrl": "https://api-v3.mbta.com",
+    "docs": "https://www.mbta.com/developers/v3-api",
+    "apiKeyHeader": "x-api-key",
+    "encryptedApiKey": "v1.600000...."
+  }
+}
+```
+
+- `id`: short and URL-safe. `name` is shown in the picker, and `fullName`,
+  `region` and `website` are shown around the page.
+- `timeZone`: an IANA zone. All times are shown in it.
+- `api.type`: picks the adapter (see below).
+- `api.baseUrl`: the start of every request URL.
+- `api.apiKeyHeader` and/or `api.apiKeyQueryParam`: how the key is sent.
+  Leave out `encryptedApiKey` if the API needs no key.
+- `api.encryptedApiKey`: the API key, encrypted with **the same password as
+  all the others** (see "train: password and secrets").
+
+The order in the file is the order in the picker. The first entry is the
+default.
+
+**Adapters.** GTFS standardizes the *data*, but every agency serves it through
+a different web API, so code never talks to an API directly. Each `api.type`
+has an adapter in `train/src/transit/adapters/` that turns its API into one
+normalized shape. The UI only uses that shape. An adapter exports:
+
+| Export | Returns |
+|---|---|
+| `capabilities` | `{ alerts, stops, predictions, facilities }` booleans. The UI hides what's missing. |
+| `modes` | GTFS `route_type` → `{ name, color }` (start from `GTFS_MODES` in `format.js`). |
+| `getAlerts(authority, { signal })` | `[{ id, title, header, description, effect, cause, severity (0–10), lifecycle, timeframe, activePeriods: [{start, end}], routeTypes: [int], routes: [Route], updatedAt, url }]` |
+| `getStops(authority, { signal })` | `[{ id, name, kind, isStation, municipality }]`: stations and stand-alone stops. |
+| `getPredictions(authority, stopId, { signal })` | `[{ id, routeType, route: Route, destination, platform, arrivalTime, departureTime, status, scheduleRelationship, nonRevenue, hasVehicle, vehicleStoppedHere }]` (ISO times, GTFS-Realtime meanings) |
+| `getFacilities(authority, stopId, { signal })` | `[{ id, type, name, properties: [{ name, value }] }]` |
+
+Here `Route` = `{ id, name, longName, color, textColor }` (colors as `#rrggbb`).
+The `authority` passed in carries its decrypted `apiKey`. Use `getJson()` from
+`http.js` for requests: it applies `baseUrl` and the key.
+
+**Adding a transit authority:**
+
+1. Get an API key for it, and check that its API allows CORS (browsers call
+   it directly; many GTFS-Realtime feeds don't allow CORS and would need a
+   proxy).
+2. Encrypt the key with `node train/scripts/encrypt-secret.mjs`, using the
+   same password as the existing keys.
+3. If an adapter for its API type exists, add an object to
+   `supportedTransitAuthorities.json`. That's all.
+4. Otherwise, write `train/src/transit/adapters/<type>.js` with the exports
+   above, and register it in `adapters/index.js`. Put that API's docs in
+   `doc/<authority>/`, like `doc/mbta/`.
+
+Code rules:
+
+- Components use `useTransit()` from `train/src/transit/authorities.js`
+  (`transit.value.client.getAlerts()` and so on) and never call an API
+  directly.
+- Show times in the authority's time zone (`formatClock` / `formatDateTime`
+  in `format.js`, passing `authority.timeZone`).
+- Show predictions according to MBTA's Real-Time Display Guidelines, which
+  only use GTFS-Realtime concepts (`train/src/transit/predictions.js`).
+
+### train: the MBTA adapter (`mbta-v3`)
+
+The Boston MBTA uses the **MBTA V3 API** (`https://api-v3.mbta.com`), which is
+built on **GTFS** (static schedules) and **GTFS-Realtime** (predictions,
+vehicles, alerts).
 
 **Docs live in `doc/mbta/`**, so there's no need to look things up online
 each time. Start with `doc/mbta/README.md` (index, cheat sheet, and quirks of
@@ -91,42 +179,38 @@ filter and attribute). `doc/mbta/fetch.sh` refreshes the whole folder. When
 you learn something new about the live API, add it to the README's "Things
 learned" section.
 
-Code rules:
+The landing page currently has two parts, in this order:
 
-- Call the API only through `mbtaGet()` in `train/src/mbta/api.js`. It adds the
-  `x-api-key` header from the unlocked key. The API allows CORS, so the
-  browser calls it directly.
-- Show times in Boston time (`formatClock` / `formatDateTime` in `api.js`).
-- Show predictions according to MBTA's Real-Time Display Guidelines
-  (`train/src/mbta/predictions.js`, summarized in `doc/mbta/README.md`).
-
-The landing page currently has two parts:
-
-1. **Service alerts** (`/alerts`): a tree-table grouped by mode, then effect.
-   Expanding an alert shows its full text, active periods, cause and routes.
-2. **Stop**: a search box over ~7,100 stations and stops (`/stops`). The
+1. **Stop**: a search box over ~7,100 stations and stops (`/stops`). The
    selected stop shows its arrivals and departures (`/predictions`, refreshed
    every 30 s) and its facilities (`/facilities`). The selected stop is kept
    in the URL (`?stop=place-pktrm`).
+2. **Service alerts** (`/alerts`): a tree-table grouped by mode, then effect.
+   Expanding an alert shows its full text, active periods, cause and routes.
 
 ### train: password and secrets
 
 **Rule: secrets are committed only in encrypted form.** Never put a plaintext
 secret or its password into any file in this repo.
 
-- `train/src/secrets.js` holds `encryptedMbtaApiKey`, the MBTA V3 API key
-  encrypted with AES-256-GCM. The key comes from the password via
+- Each authority's API key is in `api.encryptedApiKey` in
+  `train/src/supportedTransitAuthorities.json`, encrypted with AES-256-GCM.
+  **All keys use the same password**, so the user types one password and
+  every key unlocks. The key comes from the password via
   PBKDF2-SHA256 with 600,000 iterations. The format is
   `v1.<iterations>.<salt>.<iv>.<ciphertext>` (base64 parts).
 - To add or rotate a secret, run `node train/scripts/encrypt-secret.mjs`. It
   reads the secret and the password from stdin, never from arguments, and
-  prints only the encrypted string. Paste that into `secrets.js`.
+  prints only the encrypted string. Paste that into the authority's
+  `encryptedApiKey`.
 - The password isn't in the repo. Ask the owner for it.
 
 The user flow (in `train/src/App.vue`):
 
-1. On load, if the `mbtaApiKeyPassword` cookie exists and decrypts the key,
-   go straight to the landing page.
+1. On load, if the `mbtaApiKeyPassword` cookie exists and its password opens
+   the keys, go straight to the landing page. A password is right if it opens
+   at least one key. An authority whose key doesn't open is shown in the
+   picker as "(key unavailable)".
 2. Otherwise show the password page. If a stored cookie no longer works, the
    cookie is cleared and the page shows "Invalid password".
 3. Submitting a wrong password shows "Invalid password". Submitting an empty
@@ -136,8 +220,9 @@ The user flow (in `train/src/App.vue`):
    expires 7 days after the password was entered and isn't refreshed on later
    visits.
 
-In code, get the key with `useMbtaApiKey()` from `train/src/mbtaApiKey.js`. It
-returns a read-only ref that holds the plaintext key once unlocked.
+In code, `unlock(password)` in `train/src/transit/authorities.js` decrypts the
+keys and keeps them in memory only. Adapters receive the key as
+`authority.apiKey`.
 
 Web Crypto only works in secure contexts (HTTPS or localhost).
 platycore.com also answers on plain `http://`, so `train/src/main.js` switches

@@ -16,10 +16,11 @@ Vue 3 apps:
 - **[/lg/](http://platycore.com/lg/)**: *World of 1000 Wonders*, an
   interactive map of a Minecraft world (Overworld, Nether and End).
 - **[/train/](http://platycore.com/train/)**: live public transportation
-  data for Boston, from the MBTA's real-time API (based on GTFS). It shows
-  current service alerts in a collapsible tree, and for any stop or station
-  its upcoming arrivals and departures and its facilities (elevators, parking,
-  fare machines, ...). It's password-protected.
+  data, starting with Boston's MBTA. A picker at the top chooses the transit
+  system, and more systems can be added. For the chosen system you can pick
+  any stop or station to see its upcoming arrivals and departures and its
+  facilities (elevators, parking, fare machines, ...). Below that, it shows
+  the current service alerts in a collapsible tree. It's password-protected.
 
 The repo also keeps a few notes and assets about that Minecraft world.
 
@@ -34,8 +35,11 @@ means creating its folder and adding one entry (icon, title, subtitle and
 URI) to that file. [`AGENTS.md`](AGENTS.md) describes the full repo
 structure and the exact steps.
 
-Working on the train app? A local copy of the MBTA API and GTFS
-documentation is in [`doc/mbta/`](doc/mbta/README.md).
+Working on the train app? The transit systems it can show are listed in
+`train/src/supportedTransitAuthorities.json`. Adding a system that uses an
+API type the app already supports is one entry there. A new API type also
+needs a small adapter. A local copy of the MBTA API and GTFS documentation is
+in [`doc/mbta/`](doc/mbta/README.md).
 
 Secrets (like the MBTA API key) are committed only in encrypted form. The
 password is never in the repo, so ask the owner for it.

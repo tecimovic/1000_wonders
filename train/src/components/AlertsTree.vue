@@ -1,40 +1,26 @@
 <script setup>
-// Current MBTA alerts as a collapsible tree-table: Mode → Effect → Alert → details.
+// Current alerts as a collapsible tree-table: Mode → Effect → Alert → details.
+// Data comes from the selected authority's adapter (normalized alerts).
 import { ref, computed, onMounted } from 'vue'
-import { mbtaGet, includedLookup, MODES, formatDateTime, humanize } from '../mbta/api.js'
+import { useTransit } from '../transit/authorities.js'
+import { formatDateTime as fmtDateTime } from '../transit/format.js'
 
+const transit = useTransit()
 const alerts = ref([])
 const loading = ref(false)
 const error = ref('')
 const loadedAt = ref(null)
 const expanded = ref(new Set())
 
-const MODE_ORDER = [1, 0, 2, 3, 4, 'other']
-const modeInfo = key => MODES[key] || { name: 'Other', color: '#6b7299' }
+const MODE_ORDER = [1, 0, 2, 3, 4, 5, 6, 7, 11, 12, 'other']
+const modeInfo = key => transit.value.modes[key] || { name: 'Other', color: '#6b7299' }
+const formatDateTime = iso => fmtDateTime(iso, transit.value.authority.timeZone)
 
 async function load() {
   loading.value = true
   error.value = ''
   try {
-    const doc = await mbtaGet('/alerts', {
-      include: 'routes',
-      'fields[alert]': 'header,service_effect,effect,effect_name,cause,severity,lifecycle,timeframe,description,active_period,informed_entity,updated_at,url',
-      'fields[route]': 'short_name,long_name,color,text_color'
-    })
-    const lookup = includedLookup(doc)
-    alerts.value = doc.data.map(a => {
-      const entities = a.attributes.informed_entity || []
-      const routeIds = [...new Set(entities.map(e => e.route).filter(Boolean))]
-      return {
-        id: a.id,
-        ...a.attributes,
-        modes: [...new Set(entities.map(e => e.route_type).filter(t => t != null))],
-        routes: routeIds.map(id => {
-          const r = lookup('route', id)?.attributes || {}
-          return { id, name: r.short_name || r.long_name || id, color: '#' + (r.color || '555555'), text: '#' + (r.text_color || 'FFFFFF') }
-        })
-      }
-    })
+    alerts.value = await transit.value.client.getAlerts()
     loadedAt.value = new Date().toISOString()
     if (expanded.value.size === 0) expanded.value = new Set(MODE_ORDER.map(m => 'm:' + m)) // first load: open the modes
   } catch (e) {
@@ -45,21 +31,21 @@ async function load() {
 }
 onMounted(load)
 
-const bySeverity = (x, y) => y.severity - x.severity || (y.updated_at || '').localeCompare(x.updated_at || '')
+const bySeverity = (x, y) => y.severity - x.severity || (y.updatedAt || '').localeCompare(x.updatedAt || '')
 
 // mode → effect → alerts. An alert affecting several modes is listed under each.
 const tree = computed(() => {
   const modes = new Map()
   for (const alert of alerts.value) {
-    for (const mode of alert.modes.length ? alert.modes : ['other']) {
+    for (const mode of alert.routeTypes.length ? alert.routeTypes : ['other']) {
       if (!modes.has(mode)) modes.set(mode, new Map())
       const effects = modes.get(mode)
-      const effect = alert.effect_name || humanize(alert.effect)
-      if (!effects.has(effect)) effects.set(effect, [])
-      effects.get(effect).push(alert)
+      if (!effects.has(alert.effect)) effects.set(alert.effect, [])
+      effects.get(alert.effect).push(alert)
     }
   }
-  return MODE_ORDER.filter(m => modes.has(m)).map(mode => {
+  const order = [...MODE_ORDER, ...[...modes.keys()].filter(m => !MODE_ORDER.includes(m))]
+  return order.filter(m => modes.has(m)).map(mode => {
     const effects = [...modes.get(mode)].map(([name, list]) => ({
       name,
       alerts: list.sort(bySeverity),
@@ -114,6 +100,7 @@ function expandAll() {
 const collapseAll = () => (expanded.value = new Set())
 
 const severityClass = s => (s >= 7 ? 'sev-high' : s >= 4 ? 'sev-mid' : 'sev-low')
+const lifecycleText = l => (l ? l.charAt(0) + l.slice(1).toLowerCase().replaceAll('_', ' ') : '')
 const periodText = p => `${formatDateTime(p.start)} – ${p.end ? formatDateTime(p.end) : 'until further notice'}`
 </script>
 
@@ -150,16 +137,16 @@ const periodText = p => `${formatDateTime(p.start)} – ${p.end ? formatDateTime
                   <p class="header-text">{{ row.node.header }}</p>
                   <p v-if="row.node.description" class="description">{{ row.node.description }}</p>
                   <dl>
-                    <template v-if="row.node.active_period?.length">
+                    <template v-if="row.node.activePeriods.length">
                       <dt>Active</dt>
-                      <dd><div v-for="(p, i) in row.node.active_period" :key="i">{{ periodText(p) }}</div></dd>
+                      <dd><div v-for="(p, i) in row.node.activePeriods" :key="i">{{ periodText(p) }}</div></dd>
                     </template>
-                    <dt>Cause</dt>
-                    <dd>{{ humanize(row.node.cause) }}</dd>
+                    <template v-if="row.node.cause"><dt>Cause</dt>
+                    <dd>{{ row.node.cause }}</dd></template>
                     <template v-if="row.node.routes.length">
                       <dt>Routes</dt>
                       <dd class="chips">
-                        <span v-for="r in row.node.routes" :key="r.id" class="route-chip" :style="{ background: r.color, color: r.text }">{{ r.name }}</span>
+                        <span v-for="r in row.node.routes" :key="r.id" class="route-chip" :style="{ background: r.color, color: r.textColor }">{{ r.name }}</span>
                       </dd>
                     </template>
                     <template v-if="row.node.url">
@@ -190,7 +177,7 @@ const periodText = p => `${formatDateTime(p.start)} – ${p.end ? formatDateTime
                     <span class="count">{{ row.node.alerts.length }}</span>
                   </template>
                   <template v-else>
-                    <span class="alert-title">{{ row.node.service_effect || row.node.header }}</span>
+                    <span class="alert-title">{{ row.node.title }}</span>
                   </template>
                 </button>
               </td>
@@ -201,18 +188,18 @@ const periodText = p => `${formatDateTime(p.start)} – ${p.end ? formatDateTime
               </td>
               <td class="col-status">
                 <template v-if="row.kind === 'alert'">
-                  <span class="lifecycle" :class="'lc-' + row.node.lifecycle">{{ humanize(row.node.lifecycle) }}</span>
+                  <span class="lifecycle" :class="'lc-' + row.node.lifecycle">{{ lifecycleText(row.node.lifecycle) }}</span>
                   <span v-if="row.node.timeframe" class="muted small"> · {{ row.node.timeframe }}</span>
                 </template>
               </td>
-              <td class="col-updated muted small">{{ row.kind === 'alert' ? formatDateTime(row.node.updated_at) : '' }}</td>
+              <td class="col-updated muted small">{{ row.kind === 'alert' ? formatDateTime(row.node.updatedAt) : '' }}</td>
             </tr>
           </template>
         </tbody>
       </table>
     </div>
     <p v-if="loadedAt" class="muted small foot">
-      Loaded {{ formatDateTime(loadedAt) }} (Boston time). Alerts that affect several modes are listed under each one.
+      Loaded {{ formatDateTime(loadedAt) }} (local time in {{ transit.authority.region }}). Alerts that affect several modes are listed under each one.
     </p>
   </section>
 </template>

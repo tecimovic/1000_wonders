@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import LandingPage from './components/LandingPage.vue'
 import PasswordPage from './components/PasswordPage.vue'
 import { cryptoAvailable } from './crypto.js'
-import { unlock } from './mbtaApiKey.js'
+import { unlock } from './transit/authorities.js'
 import { readPasswordCookie, savePasswordCookie, clearPasswordCookie } from './passwordCookie.js'
 
 // 'checking' → 'password' or 'landing'. ('unsupported' if the browser can't decrypt.)

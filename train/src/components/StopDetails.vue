@@ -1,8 +1,9 @@
 <script setup>
-// Predictions (/predictions) and facilities (/facilities) at one stop.
+// Predictions and facilities at one stop, from the selected authority's adapter.
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
-import { mbtaGet, humanize, formatClock } from '../mbta/api.js'
-import { predictionRows } from '../mbta/predictions.js'
+import { useTransit } from '../transit/authorities.js'
+import { formatClock } from '../transit/format.js'
+import { predictionRows } from '../transit/predictions.js'
 
 const props = defineProps({
   stop: { type: Object, required: true } // { id, name, kind, municipality }
@@ -10,7 +11,11 @@ const props = defineProps({
 
 const REFRESH_MS = 30_000
 
-const predictionsDoc = ref(null)
+const transit = useTransit()
+const timeZone = computed(() => transit.value.authority.timeZone)
+const caps = computed(() => transit.value.capabilities)
+
+const predictionList = ref(null)
 const predictionsError = ref('')
 const predictionsLoading = ref(false)
 const predictionsAt = ref(null)
@@ -26,14 +31,7 @@ let clockTimer = null
 async function loadPredictions(signal) {
   predictionsLoading.value = true
   try {
-    predictionsDoc.value = await mbtaGet('/predictions', {
-      'filter[stop]': props.stop.id,
-      include: 'route,trip,stop,vehicle',
-      'fields[route]': 'short_name,long_name,color,text_color,type,direction_destinations',
-      'fields[trip]': 'headsign',
-      'fields[stop]': 'platform_name,platform_code',
-      'fields[vehicle]': 'current_status'
-    }, { signal })
+    predictionList.value = await transit.value.client.getPredictions(props.stop.id, { signal })
     predictionsError.value = ''
     predictionsAt.value = new Date().toISOString()
     now.value = Date.now()
@@ -47,8 +45,7 @@ async function loadPredictions(signal) {
 async function loadFacilities(signal) {
   facilitiesLoading.value = true
   try {
-    const doc = await mbtaGet('/facilities', { 'filter[stop]': props.stop.id }, { signal })
-    facilities.value = doc.data
+    facilities.value = await transit.value.client.getFacilities(props.stop.id, { signal })
     facilitiesError.value = ''
   } catch (e) {
     if (e.name !== 'AbortError') facilitiesError.value = e.message
@@ -60,14 +57,16 @@ async function loadFacilities(signal) {
 function start() {
   controller?.abort()
   controller = new AbortController()
-  predictionsDoc.value = null
+  predictionList.value = null
   facilities.value = []
   predictionsError.value = facilitiesError.value = ''
   const { signal } = controller
-  loadPredictions(signal)
-  loadFacilities(signal)
   clearInterval(refreshTimer)
-  refreshTimer = setInterval(() => loadPredictions(signal), REFRESH_MS)
+  if (caps.value.predictions) {
+    loadPredictions(signal)
+    refreshTimer = setInterval(() => loadPredictions(signal), REFRESH_MS)
+  }
+  if (caps.value.facilities) loadFacilities(signal)
 }
 
 watch(() => props.stop.id, start)
@@ -82,38 +81,16 @@ onUnmounted(() => {
 })
 
 const predictions = computed(() =>
-  predictionsDoc.value ? predictionRows(predictionsDoc.value, now.value) : { rows: [], hidden: 0 })
-
-// --- facilities --------------------------------------------------------------
-
-// Property names that are routing data or plumbing, not useful to riders.
-const HIDDEN_PROPERTIES = new Set(['excludes-stop', 'payment-app-id', 'payment-app-url', 'contact-url', 'municipality'])
-const YES_NO = new Set(['enclosed', 'secured', 'attended'])
-
-function facilityProperties(f) {
-  const merged = new Map()
-  for (const { name, value } of f.attributes.properties || []) {
-    if (HIDDEN_PROPERTIES.has(name)) continue
-    let v = String(value)
-    if (YES_NO.has(name)) v = v === '1' ? 'yes' : v === '2' ? 'no' : v
-    merged.set(name, merged.has(name) ? merged.get(name) + ', ' + v : v)
-  }
-  return [...merged].map(([name, value]) => ({ name: humanize(name.replaceAll('-', '_')), value }))
-}
+  predictionList.value ? predictionRows(predictionList.value, now.value, timeZone.value) : { rows: [], hidden: 0 })
 
 const facilityGroups = computed(() => {
   const groups = new Map()
   for (const f of facilities.value) {
-    const type = f.attributes.type
-    if (!groups.has(type)) groups.set(type, [])
-    groups.get(type).push({
-      id: f.id,
-      name: f.attributes.long_name || f.attributes.short_name || f.id,
-      properties: facilityProperties(f)
-    })
+    if (!groups.has(f.type)) groups.set(f.type, [])
+    groups.get(f.type).push(f)
   }
   return [...groups]
-    .map(([type, list]) => ({ type, label: humanize(type), list: list.sort((a, b) => a.name.localeCompare(b.name)) }))
+    .map(([label, list]) => ({ label, list: [...list].sort((a, b) => a.name.localeCompare(b.name)) }))
     .sort((a, b) => a.label.localeCompare(b.label))
 })
 </script>
@@ -126,16 +103,16 @@ const facilityGroups = computed(() => {
     </h3>
 
     <!-- predictions -->
-    <section aria-labelledby="pred-title">
+    <section v-if="caps.predictions" aria-labelledby="pred-title">
       <div class="sub-head">
         <h4 id="pred-title">Arrivals &amp; departures</h4>
         <span class="muted small">
-          <template v-if="predictionsAt">Updated {{ formatClock(predictionsAt) }} · refreshes every 30 s</template>
+          <template v-if="predictionsAt">Updated {{ formatClock(predictionsAt, timeZone) }} · refreshes every 30 s</template>
           <template v-else-if="predictionsLoading">Loading…</template>
         </span>
       </div>
       <p v-if="predictionsError" class="error-box">{{ predictionsError }}</p>
-      <p v-else-if="predictionsDoc && !predictions.rows.length" class="muted">
+      <p v-else-if="predictionList && !predictions.rows.length" class="muted">
         No upcoming predictions at this stop right now.
       </p>
       <div v-if="predictions.rows.length" class="table-wrap">
@@ -153,7 +130,7 @@ const facilityGroups = computed(() => {
           <tbody>
             <tr v-for="r in predictions.rows" :key="r.id" :class="{ cancelled: r.cancelled }">
               <td>
-                <span class="route-chip" :style="{ background: r.routeColor, color: r.routeTextColor }" :title="r.routeLongName">{{ r.routeName }}</span>
+                <span class="route-chip" :style="{ background: r.route.color, color: r.route.textColor }" :title="r.route.longName">{{ r.route.name }}</span>
               </td>
               <td>{{ r.destination }}<span v-if="r.nonRevenue" class="muted small"> (not in service)</span></td>
               <td class="col-platform muted">{{ r.platform }}</td>
@@ -171,7 +148,7 @@ const facilityGroups = computed(() => {
     </section>
 
     <!-- facilities -->
-    <section aria-labelledby="fac-title">
+    <section v-if="caps.facilities" aria-labelledby="fac-title">
       <div class="sub-head">
         <h4 id="fac-title">Facilities <span v-if="facilities.length" class="count">{{ facilities.length }}</span></h4>
       </div>
@@ -179,7 +156,7 @@ const facilityGroups = computed(() => {
       <p v-else-if="facilitiesLoading" class="muted">Loading…</p>
       <p v-else-if="!facilities.length" class="muted">No facilities listed for this stop.</p>
       <div v-else class="facility-groups">
-        <div v-for="g in facilityGroups" :key="g.type" class="facility-group">
+        <div v-for="g in facilityGroups" :key="g.label" class="facility-group">
           <h5>{{ g.label }} <span class="count">{{ g.list.length }}</span></h5>
           <ul>
             <li v-for="f in g.list" :key="f.id">

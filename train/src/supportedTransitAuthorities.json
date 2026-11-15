@@ -1,0 +1,17 @@
+[
+  {
+    "id": "mbta",
+    "name": "Boston MBTA",
+    "fullName": "Massachusetts Bay Transportation Authority",
+    "region": "Boston, Massachusetts, USA",
+    "timeZone": "America/New_York",
+    "website": "https://www.mbta.com",
+    "api": {
+      "type": "mbta-v3",
+      "baseUrl": "https://api-v3.mbta.com",
+      "docs": "https://www.mbta.com/developers/v3-api",
+      "apiKeyHeader": "x-api-key",
+      "encryptedApiKey": "v1.600000.HaBUAg3MJheGS0EWC0PQuw==.3/5MnAsO8ZSURXsx.N23zhBpGSRozE3PcIWG4nHMPYO5e/0LcmfCcrrH6dhfaSnBHtG4dnC2X6O5QksXc"
+    }
+  }
+]
