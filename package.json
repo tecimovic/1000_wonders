@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "dev:lg": "vite --config lg/vite.config.js",
+    "dev:train": "vite --config train/vite.config.js",
+    "build": "vite build && vite build --config lg/vite.config.js && vite build --config train/vite.config.js",
     "preview": "vite preview"
   },
   "dependencies": {

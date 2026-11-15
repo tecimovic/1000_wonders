@@ -9,7 +9,21 @@ echo "Entering dist directory."
 cd dist
 
 echo "Inventory..."
-ls -l 
+find . -type f | sort
+
+# ftp's mput is not recursive: upload the root files, then visit every
+# subdirectory (lg/, lg/assets/, train/, ...) and upload its files.
+DIR_CMDS=""
+for d in $(find . -mindepth 1 -type d | sed 's#^\./##' | sort); do
+  up=$(echo "$d" | sed 's#[^/][^/]*#..#g')   # lg/assets -> ../..
+  DIR_CMDS+="mkdir $d
+cd $d
+lcd $d
+mput *
+cd $up
+lcd $up
+"
+done
 
 echo "Initiate ftp session."
 
@@ -19,9 +33,7 @@ quote PASS $PASSWORD
 prompt
 bin
 cd website_ac401764
-mput * 
-cd assets 
-lcd assets 
 mput *
+$DIR_CMDS
 quit
 EOF

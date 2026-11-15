@@ -47,6 +47,7 @@ watch(selectedCoords, (val) => {
 <template>
   <div class="app-root">
     <div class="tabs">
+      <a href="/" class="all-apps-link">← All apps</a>
       <button
         v-for="tab in tabs"
         :key="tab.id"
@@ -64,7 +65,7 @@ watch(selectedCoords, (val) => {
           <span class="site-title">World of 1000 wonders</span>
           <span class="site-subtitle">- by the grace of the Lighthing God</span>
         </div>
-        <img src="/hexarod.png" class="site-logo" alt="" title="Holy hexarod, by the grace of L.G.!" />
+        <img src="./assets/hexarod.png" class="site-logo" alt="" title="Holy hexarod, by the grace of L.G.!" />
       </div>
     </div>
 
@@ -120,6 +121,20 @@ body {
   border-bottom: 2px solid #22223a;
   padding: 6px 12px 0;
   margin-bottom: 0;
+}
+
+.all-apps-link {
+  align-self: center;
+  margin-right: 12px;
+  font-size: 0.85em;
+  color: #6b6b9a;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.all-apps-link:hover {
+  color: #ddd8f8;
 }
 
 .selected-coords {
