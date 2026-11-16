@@ -65,5 +65,34 @@
       "apiKeyQueryParam": "app_key",
       "encryptedApiKey": "v1.600000.d3R0qmEgMCtMq3k50ucn2w==.Pm1R1dOdVeMDZXVH.kGf30QS+rXNlh8DHO0jhUGUbmhqP6wVe69OORljEp8XzaUfCu08XmiTHzdQtid9j"
     }
+  },
+  {
+    "id": "oslo",
+    "name": "Oslo Ruter",
+    "fullName": "Ruter (data from Entur)",
+    "region": "Oslo, Norway",
+    "timeZone": "Europe/Oslo",
+    "website": "https://ruter.no",
+    "stopSearchExamples": [
+      "Jernbanetorget",
+      "Oslo S",
+      "Majorstuen"
+    ],
+    "api": {
+      "type": "entur",
+      "baseUrl": "https://api.entur.io/journey-planner/v3",
+      "docs": "https://developer.entur.org",
+      "headers": {
+        "ET-Client-Name": "platycore-train"
+      },
+      "language": "en",
+      "codespace": "RUT",
+      "stopsArea": {
+        "south": 59.45,
+        "west": 10.3,
+        "north": 60.45,
+        "east": 11.75
+      }
+    }
   }
 ]

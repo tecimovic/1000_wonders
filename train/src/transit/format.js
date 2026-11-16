@@ -16,9 +16,9 @@ export const GTFS_MODES = {
 }
 
 // The order modes are listed in: rail-like modes first, buses after them.
-// Extended route types (109 suburban railway, 714 replacement bus, 900 tram)
-// sit next to their basic type; unknown types go last.
-const MODE_ORDER = [1, 0, 900, 109, 2, 12, 11, 3, 714, 4, 5, 6, 7]
+// Extended route types (109 suburban railway, 200 coach, 714 replacement bus,
+// 900 tram) sit next to their basic type; unknown types go last.
+const MODE_ORDER = [1, 0, 900, 109, 2, 12, 11, 3, 714, 200, 4, 5, 6, 7]
 const modeRank = mode => {
   const i = MODE_ORDER.indexOf(Number(mode))
   return i === -1 ? MODE_ORDER.length : i

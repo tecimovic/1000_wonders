@@ -35,7 +35,7 @@ lg/                 "World of 1000 Wonders": a map of a Minecraft world. → /lg
   places.json       The map data. Edit this to add or move places.
   src/              App.vue, main.js, components/WorldMap.vue, assets/
 train/              Public transportation site: live transit data (Boston MBTA,
-  index.html,       Budapest BKK, London TfL), behind a password page. The URL stays
+  index.html,       Budapest BKK, London TfL, Oslo Ruter), behind a password page. The URL stays
   vite.config.js,   /train/ even though the topic is public transportation in
   favicon.svg       general. See the "train: ..." sections below.
   src/
@@ -57,7 +57,9 @@ train/              Public transportation site: live transit data (Boston MBTA,
         mbta-v3.js        The MBTA V3 API (JSON:API).
         bkk-futar.js      BKK FUTÁR, Budapest (OneBusAway-style JSON).
         tfl-unified.js    Transport for London's Unified API (not GTFS-based).
-      http.js           getJson(): fetch with the authority's base URL and API key.
+        entur.js          Entur's Journey Planner v3 (GraphQL), all of Norway; used for Oslo.
+      http.js           getJson() / postJson(): fetch with the authority's base
+                        URL, API key and fixed headers.
       predictions.js    Normalized predictions → display rows (display rules).
       format.js         GTFS route types, time formatting in the authority's time zone.
     crypto.js         encryptSecret() / decryptSecret() (Web Crypto).
@@ -67,6 +69,7 @@ doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
 doc/bkk/            Local copy of BKK's FUTÁR API docs. Start at README.md.
 doc/tfl/            Local copy of TfL's Unified API spec. Start at README.md.
+doc/entur/          Local copy of Entur's Journey Planner GraphQL schema. Start at README.md.
 deploy              Builds everything and uploads dist/ to the server via FTP.
 .github/workflows/build.yml   CI: builds everything on GitHub (see below).
 dist/               Build output (git-ignored): dist/index.html, dist/<app>/...
@@ -93,8 +96,8 @@ uses them.
 
 The train app can show several transit systems ("authorities"). The user picks
 one in the "Currently showing: ..." heading. The choice is kept in the URL
-(`?authority=mbta`) and in localStorage. Today the list has three entries: the
-Boston MBTA, Budapest BKK and London TfL.
+(`?authority=mbta`) and in localStorage. Today the list has four entries: the
+Boston MBTA, Budapest BKK, London TfL and Oslo Ruter.
 
 **The list is `train/src/supportedTransitAuthorities.json`**, an array with
 one object per authority:
@@ -126,11 +129,15 @@ one object per authority:
 - `api.baseUrl`: the start of every request URL.
 - `api.apiKeyHeader` and/or `api.apiKeyQueryParam`: how the key is sent.
   Leave out `encryptedApiKey` if the API needs no key.
+- `api.headers`: fixed headers sent with every request (not secrets; e.g.
+  Entur's `ET-Client-Name`).
 - `api.encryptedApiKey`: the API key, encrypted with **the same password as
   all the others** (see "train: password and secrets").
 - Adapters may read more `api` fields of their own. `bkk-futar` uses
   `language` (`"en"` or `"hu"`) and `stopsArea` (`{south, west, north, east}`,
-  the area to load stops from).
+  the area to load stops from). `entur` uses `language` (`"en"` or `"no"`),
+  `stopsArea`, and `codespace` (e.g. `"RUT"`: keep only stops served by that
+  data owner's lines, plus train stations).
 
 The order in the file is the order in the picker. The first entry is the
 default.
@@ -153,15 +160,16 @@ normalized shape. The UI only uses that shape. An adapter exports:
 | `getFacilities(authority, stopId, { signal })` | `[{ id, type, name, properties: [{ name, value }] }]` |
 
 Here `Route` = `{ id, name, longName, color, textColor }` (colors as `#rrggbb`).
-The `authority` passed in carries its decrypted `apiKey`. Use `getJson()` from
-`http.js` for requests: it applies `baseUrl` and the key.
+The `authority` passed in carries its decrypted `apiKey`. Use `getJson()` (or
+`postJson()`, e.g. for GraphQL) from `http.js` for requests: they apply
+`baseUrl`, the key and `api.headers`.
 
 **Adding a transit authority:**
 
-1. Get an API key for it, and check that its API allows CORS (browsers call
+1. Get an API key for it (if it needs one), and check that its API allows CORS (browsers call
    it directly; many GTFS-Realtime feeds don't allow CORS and would need a
    proxy).
-2. Encrypt the key with `node train/scripts/encrypt-secret.mjs`, using the
+2. If it has a key, encrypt it with `node train/scripts/encrypt-secret.mjs`, using the
    same password as the existing keys.
 3. If an adapter for its API type exists, add an object to
    `supportedTransitAuthorities.json`. That's all.
@@ -186,6 +194,7 @@ Code rules:
 | `mbta-v3` | Boston MBTA | `doc/mbta/` | All four capabilities. |
 | `bkk-futar` | Budapest BKK | `doc/bkk/` | No facilities. Stops load in 25 tiles (the API caps one request at ~5,000 stops) and are cached in localStorage for 24 h. There's no "all routes" endpoint: lines are the routes in those tiles' references (same load, same cache). Alert severity is derived (the API has none). |
 | `tfl-unified` | London TfL | `doc/tfl/` | TfL publishes no GTFS; its JSON API is mapped to GTFS route types. Lines come from `/Line/Mode/{modes}`. Stops are searched on the server (`searchStops`), since London has ~33,000. Alerts are line statuses. Hubs and bus stop clusters are expanded into their child stops for predictions. Key via `app_key` (optional: the API also works without one, rate-limited). |
+| `entur` | Oslo Ruter | `doc/entur/` | GraphQL, no API key (only an `ET-Client-Name` header). No facilities. Entur covers all of Norway and has no working region filter, so stops in `stopsArea` are loaded in one request with the line ids at each quay, and those served by `codespace` (plus train stations) are kept; lines are the lines at those stops (at train stations only their trains). Both are cached in localStorage for 24 h. Alerts are Entur "situations", kept if they touch the area's lines or stops; severity is derived (it's always "normal"). |
 
 ### train: the MBTA adapter (`mbta-v3`)
 

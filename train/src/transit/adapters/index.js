@@ -10,11 +10,13 @@
 import * as mbtaV3 from './mbta-v3.js'
 import * as bkkFutar from './bkk-futar.js'
 import * as tflUnified from './tfl-unified.js'
+import * as entur from './entur.js'
 
 const adapters = {
   'mbta-v3': mbtaV3,
   'bkk-futar': bkkFutar,
-  'tfl-unified': tflUnified
+  'tfl-unified': tflUnified,
+  entur
 }
 
 export function adapterFor(type) {
