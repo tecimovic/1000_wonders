@@ -3,7 +3,7 @@
 //
 // Every adapter exports the same interface (see "train: transit authorities"
 // in AGENTS.md): modes, capabilities, getAlerts, getStops, getPredictions,
-// getFacilities, and optionally searchStops and getStop. Each function takes the authority (with its decrypted
+// getFacilities, getLines (if capabilities.lines), and optionally searchStops and getStop. Each function takes the authority (with its decrypted
 // `apiKey`) first and returns normalized objects, so the UI never sees
 // API-specific formats.
 

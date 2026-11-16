@@ -17,7 +17,8 @@ Vue 3 apps:
   interactive map of a Minecraft world (Overworld, Nether and End).
 - **[/train/](http://platycore.com/train/)**: live public transportation
   data for **Boston (MBTA)**, **Budapest (BKK)** and **London (TfL)**. A picker at the top
-  chooses the city, and more transit systems can be added. For the chosen system you can pick
+  chooses the city, and more transit systems can be added. For the chosen system it
+  lists all lines (buses, subway, commuter rail, ...) grouped by type. You can pick
   any stop or station to see its upcoming arrivals and departures and its
   facilities (elevators, parking, fare machines, ...). Below that, it shows
   the current service alerts in a collapsible tree. It's password-protected.

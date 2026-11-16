@@ -15,7 +15,7 @@
 import { getJson } from '../http.js'
 import { GTFS_MODES } from '../format.js'
 
-export const capabilities = { alerts: true, stops: true, predictions: true, facilities: true }
+export const capabilities = { lines: true, alerts: true, stops: true, predictions: true, facilities: true }
 
 // TfL modes the app shows, and the GTFS route type each one is shown as.
 // (Codes above 12 are extended GTFS route types: 109 suburban railway,
@@ -89,6 +89,19 @@ const shortStationName = name =>
   (name || '').replace(/\s+(Underground|DLR|Rail|Tram Stop|Tram|Pier)?\s*Station$/i, '').replace(/\s+Tram Stop$/i, '').trim()
 
 const tidy = text => (text || '').replace(/\s{2,}/g, ' ').trim()
+
+// --- lines ----------------------------------------------------------------------
+
+const byName = new Intl.Collator('en', { numeric: true })
+
+// Every line of the modes the app shows (bus routes sorted 1, 2, …, N9, …).
+export async function getLines(authority, { signal } = {}) {
+  const lines = await getJson(authority, `/Line/Mode/${MODE_LIST}`, {}, { signal })
+  return lines
+    .filter(l => MODES[l.modeName] != null)
+    .map(l => ({ ...toRoute(l.id, l.name, l.modeName), routeType: MODES[l.modeName] }))
+    .sort((a, b) => byName.compare(a.name, b.name))
+}
 
 // --- alerts -------------------------------------------------------------------
 

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import AlertsTree from './AlertsTree.vue'
+import LinesList from './LinesList.vue'
 import StopPicker from './StopPicker.vue'
 import StopDetails from './StopDetails.vue'
 import { useTransit, authorityChoices, selectAuthority } from '../transit/authorities.js'
@@ -58,6 +59,8 @@ function onAuthorityChange(event) {
 
     <!-- Remount everything when the authority changes, so no data mixes between systems. -->
     <main :key="authority.id">
+      <LinesList v-if="caps.lines" />
+
       <section v-if="caps.stops" class="card" aria-label="Stop information">
         <div class="card-head">
           <h2>Stop</h2>

@@ -44,8 +44,9 @@ train/              Public transportation site: live transit data (Boston MBTA,
     App.vue           Chooses the page: PasswordPage or LandingPage.
     components/
       PasswordPage.vue  Password form + the animated tram (TransitScene.vue).
-      LandingPage.vue   "Currently showing: <authority>" picker, StopPicker +
-                        StopDetails, then AlertsTree.
+      LandingPage.vue   "Currently showing: <authority>" picker, then LinesList,
+                        StopPicker + StopDetails, and AlertsTree.
+      LinesList.vue     All lines, grouped by mode (Bus, Underground, ...).
       AlertsTree.vue    Current alerts as a collapsible tree-table (mode → effect → alert).
       StopPicker.vue    Search box over all stations and stand-alone stops.
       StopDetails.vue   Predictions (auto-refresh 30 s) and facilities of one stop.
@@ -141,8 +142,9 @@ normalized shape. The UI only uses that shape. An adapter exports:
 
 | Export | Returns |
 |---|---|
-| `capabilities` | `{ alerts, stops, predictions, facilities }` booleans. The UI hides what's missing. |
+| `capabilities` | `{ lines, alerts, stops, predictions, facilities }` booleans. The UI hides what's missing. |
 | `modes` | GTFS `route_type` → `{ name, color }` (start from `GTFS_MODES` in `format.js`). |
+| `getLines(authority, { signal })` | `[{ ...Route, routeType }]`: every line, in the order to show them within a mode. Only needed if `capabilities.lines`. |
 | `getAlerts(authority, { signal })` | `[{ id, title, header, description, effect, cause, severity (0–10), lifecycle, timeframe, activePeriods: [{start, end}], routeTypes: [int], routes: [Route], updatedAt, url }]` |
 | `getStops(authority, { signal })` | `[{ id, name, kind, isStation, municipality }]`: stations and stand-alone stops. |
 | `searchStops(authority, query, { signal })` | *Optional.* Stops matching `query`, searched by the API, same shape as `getStops`. For systems with too many stops to load at once. If present, the stop picker uses it instead of `getStops`. |
@@ -182,8 +184,8 @@ Code rules:
 | `api.type` | Used by | Docs | Notes |
 |---|---|---|---|
 | `mbta-v3` | Boston MBTA | `doc/mbta/` | All four capabilities. |
-| `bkk-futar` | Budapest BKK | `doc/bkk/` | No facilities. Stops load in 25 tiles (the API caps one request at ~5,000 stops) and are cached in localStorage for 24 h. Alert severity is derived (the API has none). |
-| `tfl-unified` | London TfL | `doc/tfl/` | TfL publishes no GTFS; its JSON API is mapped to GTFS route types. Stops are searched on the server (`searchStops`), since London has ~33,000. Alerts are line statuses. Hubs and bus stop clusters are expanded into their child stops for predictions. Key via `app_key` (optional: the API also works without one, rate-limited). |
+| `bkk-futar` | Budapest BKK | `doc/bkk/` | No facilities. Stops load in 25 tiles (the API caps one request at ~5,000 stops) and are cached in localStorage for 24 h. There's no "all routes" endpoint: lines are the routes in those tiles' references (same load, same cache). Alert severity is derived (the API has none). |
+| `tfl-unified` | London TfL | `doc/tfl/` | TfL publishes no GTFS; its JSON API is mapped to GTFS route types. Lines come from `/Line/Mode/{modes}`. Stops are searched on the server (`searchStops`), since London has ~33,000. Alerts are line statuses. Hubs and bus stop clusters are expanded into their child stops for predictions. Key via `app_key` (optional: the API also works without one, rate-limited). |
 
 ### train: the MBTA adapter (`mbta-v3`)
 
@@ -198,13 +200,15 @@ filter and attribute). `doc/mbta/fetch.sh` refreshes the whole folder. When
 you learn something new about the live API, add it to the README's "Things
 learned" section.
 
-The landing page (the same for every authority) has two parts, in this order:
+The landing page (the same for every authority) has three parts, in this order:
 
-1. **Stop**: a search box over ~7,100 stations and stops (`/stops`). The
+1. **Lines** (`/routes`): every line, grouped by mode (route type), each
+   mode a collapsible group (collapsed at first).
+2. **Stop**: a search box over ~7,100 stations and stops (`/stops`). The
    selected stop shows its arrivals and departures (`/predictions`, refreshed
    every 30 s) and its facilities (`/facilities`). The selected stop is kept
    in the URL (`?stop=place-pktrm`).
-2. **Service alerts** (`/alerts`): a tree-table grouped by mode, then effect.
+3. **Service alerts** (`/alerts`): a tree-table grouped by mode, then effect.
    Expanding an alert shows its full text, active periods, cause and routes.
 
 ### train: password and secrets

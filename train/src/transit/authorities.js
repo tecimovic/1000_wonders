@@ -62,7 +62,7 @@ const current = computed(() => {
   const client = {}
   // searchStops and getStop are optional: adapters for systems with too many
   // stops to load at once search on the server instead of using getStops.
-  for (const name of ['getAlerts', 'getStops', 'getPredictions', 'getFacilities', 'searchStops', 'getStop']) {
+  for (const name of ['getLines', 'getAlerts', 'getStops', 'getPredictions', 'getFacilities', 'searchStops', 'getStop']) {
     if (adapter[name]) client[name] = (...args) => adapter[name](withKey, ...args)
   }
   return { authority: withKey, adapter, client, modes: adapter.modes, capabilities: adapter.capabilities }

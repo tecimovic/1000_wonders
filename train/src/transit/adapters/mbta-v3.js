@@ -4,7 +4,7 @@
 import { getJson } from '../http.js'
 import { GTFS_MODES, humanize } from '../format.js'
 
-export const capabilities = { alerts: true, stops: true, predictions: true, facilities: true }
+export const capabilities = { lines: true, alerts: true, stops: true, predictions: true, facilities: true }
 
 // MBTA's own mode names and colors.
 export const modes = {
@@ -33,6 +33,17 @@ function toRoute(id, route) {
     color: '#' + (r.color || '555555'),
     textColor: '#' + (r.text_color || 'FFFFFF')
   }
+}
+
+// --- lines ----------------------------------------------------------------------
+
+// Every publicly listed route, in MBTA's own order (sort_order).
+export async function getLines(authority, { signal } = {}) {
+  const doc = await getJson(authority, '/routes', {
+    sort: 'sort_order',
+    'fields[route]': 'short_name,long_name,color,text_color,type'
+  }, { signal })
+  return doc.data.map(r => ({ ...toRoute(r.id, r), routeType: r.attributes.type }))
 }
 
 // --- alerts -------------------------------------------------------------------

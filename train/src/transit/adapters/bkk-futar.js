@@ -10,7 +10,7 @@
 import { getJson } from '../http.js'
 import { GTFS_MODES } from '../format.js'
 
-export const capabilities = { alerts: true, stops: true, predictions: true, facilities: false }
+export const capabilities = { lines: true, alerts: true, stops: true, predictions: true, facilities: false }
 
 // FUTÁR's TraverseMode → GTFS route_type (109 = suburban railway, the HÉV).
 const ROUTE_TYPE = {
@@ -109,25 +109,39 @@ export async function getAlerts(authority, { signal } = {}) {
 
 // --- stops ----------------------------------------------------------------------
 
-const STOPS_CACHE_HOURS = 24
+const CACHE_HOURS = 24
+const CACHE_VERSION = 2 // bump when the cached shape changes
 const TILES = 5        // the area is loaded as TILES × TILES requests…
 const PARALLEL = 6     // …this many at a time. One request may return at most ~5,000 stops.
 
 function readCache(key) {
   try {
     const cached = JSON.parse(localStorage.getItem(key) || 'null')
-    if (cached && Date.now() - cached.at < STOPS_CACHE_HOURS * 3600 * 1000) return cached.stops
+    if (cached && Date.now() - cached.at < CACHE_HOURS * 3600 * 1000) return cached.network
   } catch { /* storage blocked or corrupt */ }
   return null
 }
-function writeCache(key, stops) {
-  try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), stops })) } catch { /* full or blocked */ }
+function writeCache(key, network) {
+  try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), network })) } catch { /* full or blocked */ }
 }
 
-// Stop areas (like stations) and stand-alone stops. Platforms are left out:
-// pick their stop area, which returns departures for all of its platforms.
-export async function getStops(authority, { signal } = {}) {
-  const cacheKey = `stops:${authority.id}`
+// FUTÁR has no "all stops" or "all routes" endpoint. Both come from one tiled
+// load of stops-for-location over api.stopsArea: the stops, plus the routes
+// serving them (from the response's references). Shared by getStops and
+// getLines, and cached in localStorage for 24 h.
+const loading = new Map() // authority id → Promise of { stops, lines }
+
+function loadNetwork(authority, signal) {
+  if (!loading.has(authority.id)) {
+    const p = fetchNetwork(authority, signal)
+    p.catch(() => loading.delete(authority.id))
+    loading.set(authority.id, p)
+  }
+  return loading.get(authority.id)
+}
+
+async function fetchNetwork(authority, signal) {
+  const cacheKey = `network:v${CACHE_VERSION}:${authority.id}`
   const cached = readCache(cacheKey)
   if (cached) return cached
 
@@ -147,13 +161,15 @@ export async function getStops(authority, { signal } = {}) {
   }
 
   const all = new Map()
+  const routes = new Map()
   let next = 0
   async function worker() {
     while (next < tiles.length) {
       const tile = tiles[next++]
-      const data = await futar(authority, '/stops-for-location.json', { ...tile, includeReferences: false }, { signal })
+      const data = await futar(authority, '/stops-for-location.json', { ...tile, includeReferences: 'COMPACT' }, { signal })
       if (data.limitExceeded) throw new Error(`${authority.name}: too many stops in one area. Increase TILES in bkk-futar.js.`)
       for (const s of data.list) all.set(s.id, s)
+      for (const [id, r] of Object.entries(data.references?.routes || {})) routes.set(id, r)
     }
   }
   await Promise.all(Array.from({ length: PARALLEL }, worker))
@@ -180,8 +196,28 @@ export async function getStops(authority, { signal } = {}) {
         municipality: s.localityName || '' // a postal code, e.g. 1013
       }
     })
-  writeCache(cacheKey, stops)
-  return stops
+
+  const lines = [...routes]
+    .filter(([, r]) => ROUTE_TYPE[r.type] != null)
+    .sort(([, a], [, b]) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+    .map(([id, r]) => ({ ...toRoute(id, r), routeType: ROUTE_TYPE[r.type] }))
+
+  const network = { stops, lines }
+  writeCache(cacheKey, network)
+  return network
+}
+
+// Stop areas (like stations) and stand-alone stops. Platforms are left out:
+// pick their stop area, which returns departures for all of its platforms.
+export async function getStops(authority, { signal } = {}) {
+  return (await loadNetwork(authority, signal)).stops
+}
+
+// --- lines ----------------------------------------------------------------------
+
+// The routes that serve stops in api.stopsArea, in BKK's order (sortOrder).
+export async function getLines(authority, { signal } = {}) {
+  return (await loadNetwork(authority, signal)).lines
 }
 
 // --- predictions ------------------------------------------------------------------

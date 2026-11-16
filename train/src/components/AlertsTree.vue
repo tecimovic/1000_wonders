@@ -3,7 +3,7 @@
 // Data comes from the selected authority's adapter (normalized alerts).
 import { ref, computed, onMounted } from 'vue'
 import { useTransit } from '../transit/authorities.js'
-import { formatDateTime as fmtDateTime } from '../transit/format.js'
+import { formatDateTime as fmtDateTime, sortModes } from '../transit/format.js'
 
 const transit = useTransit()
 const alerts = ref([])
@@ -12,7 +12,6 @@ const error = ref('')
 const loadedAt = ref(null)
 const expanded = ref(new Set())
 
-const MODE_ORDER = [1, 0, 2, 3, 4, 5, 6, 7, 11, 12, 'other']
 const modeInfo = key => transit.value.modes[key] || { name: 'Other', color: '#6b7299' }
 const formatDateTime = iso => fmtDateTime(iso, transit.value.authority.timeZone)
 
@@ -22,7 +21,7 @@ async function load() {
   try {
     alerts.value = await transit.value.client.getAlerts()
     loadedAt.value = new Date().toISOString()
-    if (expanded.value.size === 0) expanded.value = new Set(MODE_ORDER.map(m => 'm:' + m)) // first load: open the modes
+    if (expanded.value.size === 0) expanded.value = new Set(tree.value.map(m => 'm:' + m.mode)) // first load: open the modes
   } catch (e) {
     error.value = e.message
   } finally {
@@ -44,8 +43,7 @@ const tree = computed(() => {
       effects.get(alert.effect).push(alert)
     }
   }
-  const order = [...MODE_ORDER, ...[...modes.keys()].filter(m => !MODE_ORDER.includes(m))]
-  return order.filter(m => modes.has(m)).map(mode => {
+  return sortModes(modes.keys()).map(mode => {
     const effects = [...modes.get(mode)].map(([name, list]) => ({
       name,
       alerts: list.sort(bySeverity),
