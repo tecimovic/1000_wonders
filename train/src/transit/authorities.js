@@ -60,8 +60,10 @@ const current = computed(() => {
   const withKey = { ...authority, apiKey: keys.value.get(authority.id) ?? null }
   const adapter = adapterFor(authority.api.type)
   const client = {}
-  for (const name of ['getAlerts', 'getStops', 'getPredictions', 'getFacilities']) {
-    client[name] = (...args) => adapter[name](withKey, ...args)
+  // searchStops and getStop are optional: adapters for systems with too many
+  // stops to load at once search on the server instead of using getStops.
+  for (const name of ['getAlerts', 'getStops', 'getPredictions', 'getFacilities', 'searchStops', 'getStop']) {
+    if (adapter[name]) client[name] = (...args) => adapter[name](withKey, ...args)
   }
   return { authority: withKey, adapter, client, modes: adapter.modes, capabilities: adapter.capabilities }
 })

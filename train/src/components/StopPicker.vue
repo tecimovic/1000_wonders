@@ -1,6 +1,8 @@
 <script setup>
 // Type-to-search picker over the selected authority's stations and stops.
-import { ref, computed, onMounted, watch } from 'vue'
+// Searches a list loaded once (getStops), or, if the adapter has searchStops,
+// asks the API on every (debounced) change of the query.
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useTransit } from '../transit/authorities.js'
 
 const props = defineProps({
@@ -17,8 +19,61 @@ const query = ref('')
 const open = ref(false)
 const active = ref(0)
 const MAX_RESULTS = 60
+const SEARCH_DELAY_MS = 250
+
+const remote = computed(() => Boolean(transit.value.client.searchStops))
+const remoteResults = ref([])
+const searching = ref(false)
+let searchTimer = null
+let searchController = null
+
+async function runSearch(text) {
+  searchController?.abort()
+  searchController = new AbortController()
+  const { signal } = searchController
+  searching.value = true
+  try {
+    const found = await transit.value.client.searchStops(text, { signal })
+    if (!signal.aborted) {
+      remoteResults.value = found.slice(0, MAX_RESULTS)
+      error.value = ''
+    }
+  } catch (e) {
+    if (e.name !== 'AbortError') error.value = e.message
+  } finally {
+    if (!signal.aborted) searching.value = false
+  }
+}
+
+watch(query, text => {
+  if (!remote.value || !open.value) return
+  clearTimeout(searchTimer)
+  if (text.trim().length < 2) {
+    searchController?.abort()
+    remoteResults.value = []
+    searching.value = false
+    return
+  }
+  searchTimer = setTimeout(() => runSearch(text), SEARCH_DELAY_MS)
+})
+
+onUnmounted(() => {
+  clearTimeout(searchTimer)
+  searchController?.abort()
+})
 
 onMounted(async () => {
+  if (remote.value) {
+    try {
+      if (props.initialId && !props.modelValue) {
+        const found = await transit.value.client.getStop?.(props.initialId)
+        if (found) select(found)
+      }
+    } finally {
+      loading.value = false
+    }
+    return
+  }
   try {
     const list = await transit.value.client.getStops()
     stops.value = list
@@ -38,6 +93,7 @@ onMounted(async () => {
 watch(() => props.modelValue, s => { if (s) query.value = s.name })
 
 const results = computed(() => {
+  if (remote.value) return remoteResults.value
   const words = query.value.toLowerCase().split(/\s+/).filter(Boolean)
   if (!words.length) return stops.value.filter(s => s.isStation).slice(0, MAX_RESULTS)
   const first = words[0]
@@ -97,7 +153,7 @@ const optionId = i => 'stop-option-' + i
 const placeholder = computed(() => {
   if (loading.value) return 'Loading stops…'
   const examples = transit.value.authority.stopSearchExamples || []
-  return `Search ${stops.value.length.toLocaleString()} stops` + (examples.length ? ` — e.g. ${examples.join(', ')}` : '')
+  return (remote.value ? 'Search stops and stations' : `Search ${stops.value.length.toLocaleString()} stops`) + (examples.length ? ` — e.g. ${examples.join(', ')}` : '')
 })
 </script>
 
@@ -117,7 +173,7 @@ const placeholder = computed(() => {
         :aria-expanded="open && results.length > 0"
         :aria-activedescendant="open && results.length ? optionId(active) : undefined"
         :placeholder="placeholder"
-        :disabled="loading || !!error"
+        :disabled="loading || (!!error && !remote)"
         @input="onInput"
         @keydown="onKeydown"
         @focus="onFocus"
@@ -143,6 +199,7 @@ const placeholder = computed(() => {
         </li>
       </ul>
     </div>
+    <p v-if="remote && searching" class="muted small searching">Searching…</p>
     <p v-if="error" class="error-box">{{ error }}</p>
   </div>
 </template>
@@ -173,6 +230,7 @@ li.active { background: #1c2045; }
 .name { font-weight: 600; }
 .meta { font-size: 12px; color: var(--muted); white-space: nowrap; }
 .kind.station { color: var(--accent-2); font-weight: 600; }
+.searching { margin: 6px 0 0; }
 
 @media (max-width: 520px) {
   li { flex-direction: column; gap: 2px; }

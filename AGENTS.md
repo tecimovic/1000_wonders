@@ -35,7 +35,7 @@ lg/                 "World of 1000 Wonders": a map of a Minecraft world. → /lg
   places.json       The map data. Edit this to add or move places.
   src/              App.vue, main.js, components/WorldMap.vue, assets/
 train/              Public transportation site: live transit data (Boston MBTA,
-  index.html,       Budapest BKK), behind a password page. The URL stays
+  index.html,       Budapest BKK, London TfL), behind a password page. The URL stays
   vite.config.js,   /train/ even though the topic is public transportation in
   favicon.svg       general. See the "train: ..." sections below.
   src/
@@ -55,6 +55,7 @@ train/              Public transportation site: live transit data (Boston MBTA,
       adapters/         One adapter per API type (index.js maps type → adapter):
         mbta-v3.js        The MBTA V3 API (JSON:API).
         bkk-futar.js      BKK FUTÁR, Budapest (OneBusAway-style JSON).
+        tfl-unified.js    Transport for London's Unified API (not GTFS-based).
       http.js           getJson(): fetch with the authority's base URL and API key.
       predictions.js    Normalized predictions → display rows (display rules).
       format.js         GTFS route types, time formatting in the authority's time zone.
@@ -64,6 +65,7 @@ train/              Public transportation site: live transit data (Boston MBTA,
 doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
 doc/bkk/            Local copy of BKK's FUTÁR API docs. Start at README.md.
+doc/tfl/            Local copy of TfL's Unified API spec. Start at README.md.
 deploy              Builds everything and uploads dist/ to the server via FTP.
 .github/workflows/build.yml   CI: builds everything on GitHub (see below).
 dist/               Build output (git-ignored): dist/index.html, dist/<app>/...
@@ -90,8 +92,8 @@ uses them.
 
 The train app can show several transit systems ("authorities"). The user picks
 one in the "Currently showing: ..." heading. The choice is kept in the URL
-(`?authority=mbta`) and in localStorage. Today the list has two entries: the
-Boston MBTA and Budapest BKK.
+(`?authority=mbta`) and in localStorage. Today the list has three entries: the
+Boston MBTA, Budapest BKK and London TfL.
 
 **The list is `train/src/supportedTransitAuthorities.json`**, an array with
 one object per authority:
@@ -143,6 +145,8 @@ normalized shape. The UI only uses that shape. An adapter exports:
 | `modes` | GTFS `route_type` → `{ name, color }` (start from `GTFS_MODES` in `format.js`). |
 | `getAlerts(authority, { signal })` | `[{ id, title, header, description, effect, cause, severity (0–10), lifecycle, timeframe, activePeriods: [{start, end}], routeTypes: [int], routes: [Route], updatedAt, url }]` |
 | `getStops(authority, { signal })` | `[{ id, name, kind, isStation, municipality }]`: stations and stand-alone stops. |
+| `searchStops(authority, query, { signal })` | *Optional.* Stops matching `query`, searched by the API, same shape as `getStops`. For systems with too many stops to load at once. If present, the stop picker uses it instead of `getStops`. |
+| `getStop(authority, stopId, { signal })` | *Optional, goes with `searchStops`.* One stop by id (for `?stop=` in the URL), or `null`. |
 | `getPredictions(authority, stopId, { signal })` | `[{ id, routeType, route: Route, destination, platform, arrivalTime, departureTime, status, scheduleRelationship, nonRevenue, hasVehicle, vehicleStoppedHere }]` (ISO times, GTFS-Realtime meanings) |
 | `getFacilities(authority, stopId, { signal })` | `[{ id, type, name, properties: [{ name, value }] }]` |
 
@@ -179,6 +183,7 @@ Code rules:
 |---|---|---|---|
 | `mbta-v3` | Boston MBTA | `doc/mbta/` | All four capabilities. |
 | `bkk-futar` | Budapest BKK | `doc/bkk/` | No facilities. Stops load in 25 tiles (the API caps one request at ~5,000 stops) and are cached in localStorage for 24 h. Alert severity is derived (the API has none). |
+| `tfl-unified` | London TfL | `doc/tfl/` | TfL publishes no GTFS; its JSON API is mapped to GTFS route types. Stops are searched on the server (`searchStops`), since London has ~33,000. Alerts are line statuses. Hubs and bus stop clusters are expanded into their child stops for predictions. Key via `app_key` (optional: the API also works without one, rate-limited). |
 
 ### train: the MBTA adapter (`mbta-v3`)
 

@@ -45,5 +45,25 @@
         "east": 19.36
       }
     }
+  },
+  {
+    "id": "tfl",
+    "name": "London TfL",
+    "fullName": "Transport for London",
+    "region": "London, United Kingdom",
+    "timeZone": "Europe/London",
+    "website": "https://tfl.gov.uk",
+    "stopSearchExamples": [
+      "Oxford Circus",
+      "King's Cross",
+      "Waterloo"
+    ],
+    "api": {
+      "type": "tfl-unified",
+      "baseUrl": "https://api.tfl.gov.uk",
+      "docs": "https://api-portal.tfl.gov.uk",
+      "apiKeyQueryParam": "app_key",
+      "encryptedApiKey": "v1.600000.d3R0qmEgMCtMq3k50ucn2w==.Pm1R1dOdVeMDZXVH.kGf30QS+rXNlh8DHO0jhUGUbmhqP6wVe69OORljEp8XzaUfCu08XmiTHzdQtid9j"
+    }
   }
 ]

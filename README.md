@@ -16,7 +16,7 @@ Vue 3 apps:
 - **[/lg/](http://platycore.com/lg/)**: *World of 1000 Wonders*, an
   interactive map of a Minecraft world (Overworld, Nether and End).
 - **[/train/](http://platycore.com/train/)**: live public transportation
-  data for **Boston (MBTA)** and **Budapest (BKK)**. A picker at the top
+  data for **Boston (MBTA)**, **Budapest (BKK)** and **London (TfL)**. A picker at the top
   chooses the city, and more transit systems can be added. For the chosen system you can pick
   any stop or station to see its upcoming arrivals and departures and its
   facilities (elevators, parking, fare machines, ...). Below that, it shows
@@ -39,8 +39,9 @@ Working on the train app? The transit systems it can show are listed in
 `train/src/supportedTransitAuthorities.json`. Adding a system that uses an
 API type the app already supports is one entry there. A new API type also
 needs a small adapter. Local copies of the API docs are in
-[`doc/mbta/`](doc/mbta/README.md) (MBTA and GTFS) and
-[`doc/bkk/`](doc/bkk/README.md) (BKK FUTÁR).
+[`doc/mbta/`](doc/mbta/README.md) (MBTA and GTFS),
+[`doc/bkk/`](doc/bkk/README.md) (BKK FUTÁR) and
+[`doc/tfl/`](doc/tfl/README.md) (TfL Unified API).
 
 Secrets (like the transit API keys) are committed only in encrypted form. The
 password is never in the repo, so ask the owner for it.
