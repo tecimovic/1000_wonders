@@ -37,6 +37,11 @@ export async function unlock(password) {
   return !anyEncrypted || results.some(([, key, encrypted]) => encrypted && key !== null)
 }
 
+// Forgets the decrypted keys (logout).
+export function lock() {
+  keys.value = new Map()
+}
+
 export const isAvailable = id => keys.value.has(id)
 
 // All authorities, for a picker.

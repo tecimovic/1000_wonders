@@ -6,6 +6,8 @@ import StopPicker from './StopPicker.vue'
 import StopDetails from './StopDetails.vue'
 import { useTransit, authorityChoices, selectAuthority } from '../transit/authorities.js'
 
+const emit = defineEmits(['logout'])
+
 const transit = useTransit()
 const authority = computed(() => transit.value.authority)
 const caps = computed(() => transit.value.capabilities)
@@ -54,7 +56,10 @@ function onAuthorityChange(event) {
           </span>
         </h1>
       </div>
-      <a href="/" class="back">← All apps</a>
+      <nav class="links">
+        <a href="/" class="back">← All apps</a>
+        <a href="#" class="back" @click.prevent="emit('logout')">Log out</a>
+      </nav>
     </header>
 
     <!-- Remount everything when the authority changes, so no data mixes between systems. -->
@@ -143,6 +148,7 @@ option { font-size: 16px; font-weight: 600; letter-spacing: normal; color: var(-
 
 .back { color: var(--muted); text-decoration: none; font-size: 14px; white-space: nowrap; padding-bottom: 6px; }
 .back:hover { color: var(--ink); }
+.links { display: flex; gap: 16px; }
 
 main { display: grid; gap: 20px; }
 .hint { margin: 14px 0 0; }

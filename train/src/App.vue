@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import LandingPage from './components/LandingPage.vue'
 import PasswordPage from './components/PasswordPage.vue'
 import { cryptoAvailable } from './crypto.js'
-import { unlock } from './transit/authorities.js'
+import { unlock, lock } from './transit/authorities.js'
 import { readPasswordCookie, savePasswordCookie, clearPasswordCookie } from './passwordCookie.js'
 
 // 'checking' → 'password' or 'landing'. ('unsupported' if the browser can't decrypt.)
@@ -46,10 +46,18 @@ async function onSubmit(password) {
     invalid.value = true
   }
 }
+
+// Logout: delete the cookie, forget the decrypted keys, back to the password page.
+function onLogout() {
+  clearPasswordCookie()
+  lock()
+  invalid.value = false
+  view.value = 'password'
+}
 </script>
 
 <template>
-  <LandingPage v-if="view === 'landing'" />
+  <LandingPage v-if="view === 'landing'" @logout="onLogout" />
   <PasswordPage v-else-if="view === 'password'" :invalid="invalid" :busy="busy" @submit="onSubmit" />
   <div v-else-if="view === 'unsupported'" class="page">
     <p class="sub">This page needs a secure (HTTPS) connection.</p>

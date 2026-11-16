@@ -251,9 +251,11 @@ The user flow (in `train/src/App.vue`):
    (`Path=/train/`, `SameSite=Strict`, `Secure` on HTTPS). The cookie
    expires 7 days after the password was entered and isn't refreshed on later
    visits.
+5. "Log out" (next to "← All apps" on the landing page) deletes the cookie,
+   forgets the decrypted keys (`lock()`) and goes back to the password page.
 
 In code, `unlock(password)` in `train/src/transit/authorities.js` decrypts the
-keys and keeps them in memory only. Adapters receive the key as
+keys and keeps them in memory only; `lock()` forgets them. Adapters receive the key as
 `authority.apiKey`.
 
 Web Crypto only works in secure contexts (HTTPS or localhost).
