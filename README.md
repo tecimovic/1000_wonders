@@ -51,9 +51,10 @@ needs a small adapter. Local copies of the API docs are in
 [`doc/tfl/`](doc/tfl/README.md) (TfL Unified API) and
 [`doc/entur/`](doc/entur/README.md) (Entur, Norway).
 
-Working on the game? Rooms are little ASCII maps in
-`billy/src/game/rooms.js` (`#` wall, `=` platform, `K` key, `C` cactus, `D` door, `S` start), and
-the jump and walk tuning is in `billy/src/game/player.js`.
+Working on the game? Start with
+[`billy/doc/billy-maintanence.md`](billy/doc/billy-maintanence.md): how the
+engine works, how to add a room, and how to test changes. Rooms are little
+ASCII maps in `billy/src/game/rooms.js`.
 
 Secrets (like the transit API keys) are committed only in encrypted form. The
 password is never in the repo, so ask the owner for it.

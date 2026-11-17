@@ -67,21 +67,11 @@ train/              Public transportation site: live transit data (Boston MBTA,
     passwordCookie.js The mbtaApiKeyPassword cookie.
   scripts/encrypt-secret.mjs   Encrypts an API key for supportedTransitAuthorities.json.
 billy/              "Dead Set Billy": a retro platformer on a canvas. → /billy/
-  index.html, vite.config.js, favicon.svg     See "billy: the game engine" below.
-  src/
-    App.vue           Header ("← All apps", title, controls help) + GameScreen.
-    components/GameScreen.vue   Inventory bar, the canvas (scaled up by whole
-                      numbers, crisp pixels), room name, win/death overlays,
-                      touch buttons.
-    game/             The engine, plain JS (no Vue):
-      engine.js         createGame(): fixed 60 fps loop, inventory, doors, hazards,
-                        win/death, drawing.
-      player.js         Billy's movement and collisions; PHYSICS constants.
-      room.js           Room size, tile legend, parseRoom().
-      rooms.js          The rooms: name, colors and an ASCII map each.
-      sprites.js        Pixel art as strings (Billy, key, tiles, cactus, doors,
-                        gravestone), inventory icons and the death animation.
-      input.js          Controls: walk direction (sticky) and jump (held).
+  index.html, vite.config.js, favicon.svg
+  doc/billy-maintanence.md   READ FIRST for Billy work: engine, rooms, testing.
+  src/              App.vue, components/GameScreen.vue (inventory, canvas,
+                    overlays, touch buttons), game/ (the engine, plain JS:
+                    engine.js, player.js, room.js, rooms.js, sprites.js, input.js).
 doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
 doc/bkk/            Local copy of BKK's FUTÁR API docs. Start at README.md.
@@ -281,36 +271,15 @@ platycore.com also answers on plain `http://`, so `train/src/main.js` switches
 
 ### billy: the game engine
 
-"Dead Set Billy" is a platformer in the style of the old 8-bit home computer
-games: walk left and right, jump, collect the keys. Billy is a little
-skeleton. The characters, art and rooms are our own (it's inspired by the
-genre, not a copy of any one game). For now there is one room. Billy picks
-up the key, which goes into his inventory (shown above the top-left corner of
-the room); having a key unlocks the door in the right wall (a padlock shows
-while it's locked, daylight once it's open), and walking out through it wins
-the game: "Billy is free!". More rooms will come. Touching a cactus kills
-Billy: he blinks red, then crumbles pixel by pixel into a "RIP" gravestone
-(`deathSprite()` in `sprites.js`; if he dies in mid-air, he drops to the
-ground first), and a "Billy has died" screen offers a restart.
+"Dead Set Billy" is a retro platformer (our own art; Billy is a little
+skeleton): walk, jump, collect the key into the inventory, leave through the
+door it unlocks, and avoid the deadly cactus. One room so far. The engine is
+plain JS in `billy/src/game/`, and Vue only wraps the canvas.
 
-- **Rooms** are 32×16 tiles of 8×8 pixels (256×128 pixels), written as ASCII
-  maps in `billy/src/game/rooms.js`. Legend (also in `room.js`): `.` empty,
-  `#` wall (solid from every side), `=` platform (stand on it, jump up through
-  it from below), `K` key, `C` cactus (deadly to touch),
-  `D` door (a column of D's in a wall; locked and solid until Billy has a key), `S` Billy's start (his feet on the bottom of that
-  tile). Anything outside the room counts as wall, until rooms get exits.
-- **Movement** (`player.js`): constant walking speed; one press of left or
-  right keeps Billy walking that way on his own, until down stops him or he
-  walks into a wall (after a jump or fall he keeps going); every jump follows the
-  same arc, and its direction (left, right, straight up) is fixed at take-off,
-  with no steering in mid-air; walking off a ledge drops straight down;
-  hitting a wall in mid-air stops the sideways motion; holding jump jumps
-  again on landing. A jump rises about 4½ tiles. Tune it in `PHYSICS`.
-- **Loop** (`engine.js`): fixed 60 updates per second, whatever the screen's
-  refresh rate. The canvas is drawn at 256×128 and scaled up by CSS.
-- **Controls**: ← → (or A D) start walking, ↓ (or S) stop, ↑ / W / Space
-  jump; Enter restarts after a win or a death. On touch screens there are on-screen
-  buttons (◀ ■ Jump ▶).
+**Before working on Billy, read `billy/doc/billy-maintanence.md`.** It covers
+how the engine works, how to add a room, and how to verify changes, so you
+don't need to read the source first. Keep it up to date with every change to
+Billy.
 
 ### The app list: `public/apps.json`
 
