@@ -10,9 +10,40 @@ const props = defineProps({
   showHeight:    { type: Boolean, default: true },
   selectedCoords: { type: Object, default: null },
   mapId:          { type: String, required: true },
+  highlightedTypes: { type: Array, default: () => [] },
+  highlightPanelOpen: { type: Boolean, default: true },
 })
 
-const emit = defineEmits(['update:showNames', 'update:showCoords', 'update:showHeight', 'update:selectedCoords'])
+const emit = defineEmits(['update:showNames', 'update:showCoords', 'update:showHeight', 'update:selectedCoords', 'update:highlightedTypes', 'update:highlightPanelOpen'])
+
+// ── Type highlighting ────────────────────────────────────────────────────────
+
+const HIGHLIGHT_COLOR = '#ff1f1f'
+
+// Every type present on this map, alphabetically, with how many places have it.
+const placeTypes = computed(() => {
+  const counts = new Map()
+  for (const place of props.places) {
+    if (typeof place.type !== 'string') continue
+    counts.set(place.type, (counts.get(place.type) ?? 0) + 1)
+  }
+  return [...counts.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([type, count]) => ({ type, count }))
+})
+
+function isHighlighted(type) {
+  return props.highlightedTypes.includes(type)
+}
+
+function toggleHighlight(type, on) {
+  const rest = props.highlightedTypes.filter(t => t !== type)
+  emit('update:highlightedTypes', on ? [...rest, type] : rest)
+}
+
+function iconColor(m) {
+  return isHighlighted(m.description) ? HIGHLIGHT_COLOR : props.markerColor
+}
 
 const MAPSIZE = 1_000_000
 const hoveredId = ref(null)
@@ -289,6 +320,47 @@ function wardenArmGapRects(cx, cz, r) {
   }))
 }
 
+// "Tent" icon: a small A-frame camp tent, its two poles crossing and poking
+// out above the peak, with a triangular door flap open at the front. In
+// [-1, 1] unit space; drawn at 80% of the usual icon size, since it's tiny.
+const TENT_SCALE = 0.8
+const TENT_SHAPE = [[0, -0.75], [1, 1], [-1, 1]]
+const TENT_DOOR = [[0, 0.05], [0.38, 1], [-0.38, 1]]
+const TENT_POLES = [[-0.28, -1.15], [0, -0.75], [0.28, -1.15]]
+
+function tentPoints(shape, cx, cz, r) {
+  const s = r * TENT_SCALE
+  return shape.map(([dx, dz]) => `${cx + dx * s},${cz + dz * s}`).join(' ')
+}
+
+// "Geyser" icon: a low rocky mound with a column of water shooting up out of
+// its vent and bursting into a three-lobed splash at the top, plus two
+// droplets falling off to the sides. In [-1, 1]-ish unit space.
+const GEYSER_MOUND = [[-1, 1], [-0.55, 0.5], [0.55, 0.5], [1, 1]]
+const GEYSER_PLUME = [
+  [-0.12, 0.5], [-0.14, -0.3],                  // column, left side
+  [-0.55, -0.6], [-0.35, -0.95], [-0.15, -0.8], // left lobe
+  [0, -1.15],                                   // top lobe
+  [0.15, -0.8], [0.35, -0.95], [0.55, -0.6],    // right lobe
+  [0.14, -0.3], [0.12, 0.5],                    // column, right side
+]
+const GEYSER_DROPS = [[-0.7, -0.1, 0.12], [0.72, 0.05, 0.1]]
+// The dark vent opening at the top of the mound, behind the water column.
+const GEYSER_VENT = { dx: 0, dz: 0.6, rx: 0.32, ry: 0.1 }
+
+function geyserPoints(shape, cx, cz, r) {
+  return shape.map(([dx, dz]) => `${cx + dx * r},${cz + dz * r}`).join(' ')
+}
+
+function geyserDrops(cx, cz, r) {
+  return GEYSER_DROPS.map(([dx, dz, dr]) => ({ cx: cx + dx * r, cy: cz + dz * r, r: dr * r }))
+}
+
+function geyserVent(cx, cz, r) {
+  const v = GEYSER_VENT
+  return { cx: cx + v.dx * r, cy: cz + v.dz * r, rx: v.rx * r, ry: v.ry * r }
+}
+
 function isSelected(m) {
   const s = props.selectedCoords
   return s !== null && s.mapId === props.mapId && s.wx === m.wx && s.wz === m.wz
@@ -332,7 +404,9 @@ const dotScale = computed(() => {
 // Matches the radius used to draw a marker's icon, so the label can anchor to its corner.
 function iconRadius(m) {
   const r = (hoveredId.value === m.id ? 4000 : 2500) * dotScale.value
-  return m.description === 'portal' ? r * PORTAL_SCALE : r
+  if (m.description === 'portal') return r * PORTAL_SCALE
+  if (m.description === 'tent') return r * TENT_SCALE
+  return r
 }
 
 function coordText(m) {
@@ -575,7 +649,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <template v-if="m.description === 'house'">
           <polygon
             :points="housePoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             style="cursor: pointer"
             @mouseenter="hoveredId = m.id"
             @mouseleave="hoveredId = null"
@@ -590,7 +664,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <template v-else-if="m.description === 'woodland mansion'">
           <polygon
             :points="mansionPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             style="cursor: pointer"
             @mouseenter="hoveredId = m.id"
             @mouseleave="hoveredId = null"
@@ -612,7 +686,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <polygon
           v-else-if="m.description === 'monument'"
           :points="monumentPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-          :fill="markerColor"
+          :fill="iconColor(m)"
           style="cursor: pointer"
           @mouseenter="hoveredId = m.id"
           @mouseleave="hoveredId = null"
@@ -621,7 +695,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <template v-else-if="m.description === 'ship'">
           <polygon
             :points="shipHullPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             style="cursor: pointer"
             @mouseenter="hoveredId = m.id"
             @mouseleave="hoveredId = null"
@@ -629,19 +703,19 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
           />
           <rect
             v-bind="shipMastRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             pointer-events="none"
           />
           <rect
             v-bind="shipYardRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             pointer-events="none"
           />
         </template>
         <template v-else-if="m.description === 'village'">
           <polygon
             :points="churchPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             style="cursor: pointer"
             @mouseenter="hoveredId = m.id"
             @mouseleave="hoveredId = null"
@@ -656,7 +730,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <template v-else-if="m.description === 'portal'">
           <rect
             v-bind="portalFrameRect(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             style="cursor: pointer"
             @mouseenter="hoveredId = m.id"
             @mouseleave="hoveredId = null"
@@ -671,7 +745,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <template v-else-if="m.description === 'hole'">
           <polygon
             :points="cavePoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             style="cursor: pointer"
             @mouseenter="hoveredId = m.id"
             @mouseleave="hoveredId = null"
@@ -686,7 +760,7 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <template v-else-if="m.description === 'ancient city'">
           <polygon
             :points="wardenPoints(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
-            :fill="markerColor"
+            :fill="iconColor(m)"
             style="cursor: pointer"
             @mouseenter="hoveredId = m.id"
             @mouseleave="hoveredId = null"
@@ -700,11 +774,65 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
             pointer-events="none"
           />
         </template>
+        <template v-else-if="m.description === 'tent'">
+          <polygon
+            :points="tentPoints(TENT_SHAPE, m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            :fill="iconColor(m)"
+            style="cursor: pointer"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
+            @click.stop="selectMarker(m)"
+          />
+          <polyline
+            :points="tentPoints(TENT_POLES, m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            fill="none"
+            :stroke="iconColor(m)"
+            :stroke-width="(hoveredId === m.id ? 4000 : 2500) * dotScale * 0.14"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            pointer-events="none"
+          />
+          <polygon
+            :points="tentPoints(TENT_DOOR, m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+        </template>
+        <template v-else-if="m.description === 'geyser'">
+          <polygon
+            :points="geyserPoints(GEYSER_MOUND, m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            :fill="iconColor(m)"
+            style="cursor: pointer"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
+            @click.stop="selectMarker(m)"
+          />
+          <ellipse
+            v-bind="geyserVent(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            fill="#0a0a18"
+            pointer-events="none"
+          />
+          <polygon
+            :points="geyserPoints(GEYSER_PLUME, m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            :fill="iconColor(m)"
+            style="cursor: pointer"
+            @mouseenter="hoveredId = m.id"
+            @mouseleave="hoveredId = null"
+            @click.stop="selectMarker(m)"
+          />
+          <circle
+            v-for="(drop, i) in geyserDrops(m.x, m.z, (hoveredId === m.id ? 4000 : 2500) * dotScale)"
+            :key="'drop' + i"
+            v-bind="drop"
+            :fill="iconColor(m)"
+            pointer-events="none"
+          />
+        </template>
         <circle
           v-else
           :cx="m.x" :cy="m.z"
           :r="(hoveredId === m.id ? 4000 : 2500) * dotScale"
-          :fill="markerColor"
+          :fill="iconColor(m)"
           style="cursor: pointer"
           @mouseenter="hoveredId = m.id"
           @mouseleave="hoveredId = null"
@@ -824,6 +952,35 @@ function fontReset()    { fontScale.value = DEFAULT_FONT_SCALE }
         <input type="checkbox" :checked="showHeight" :disabled="!showCoords" @change="emit('update:showHeight', $event.target.checked)" />
         <span>Height</span>
       </label>
+
+      <!-- Highlight places by type -->
+      <div v-if="placeTypes.length" class="hud-panel type-panel">
+        <div class="type-panel-header" :class="{ open: highlightPanelOpen }">
+          <button
+            type="button"
+            class="type-toggle"
+            :title="highlightPanelOpen ? 'Hide the list' : 'Show the list'"
+            :aria-expanded="highlightPanelOpen"
+            @click="emit('update:highlightPanelOpen', !highlightPanelOpen)"
+          >
+            <span class="type-caret">&#9662;</span>
+            <span>Highlight</span>
+            <span v-if="!highlightPanelOpen && highlightedTypes.length" class="type-count">({{ highlightedTypes.length }})</span>
+          </button>
+          <button
+            v-if="highlightedTypes.length"
+            type="button"
+            class="type-clear"
+            title="Clear all highlights"
+            @click="emit('update:highlightedTypes', [])"
+          >clear</button>
+        </div>
+        <label v-for="t in highlightPanelOpen ? placeTypes : []" :key="t.type" class="type-row" :class="{ on: isHighlighted(t.type) }">
+          <input type="checkbox" :checked="isHighlighted(t.type)" @change="toggleHighlight(t.type, $event.target.checked)" />
+          <span class="type-name">{{ t.type }}</span>
+          <span class="type-count">{{ t.count }}</span>
+        </label>
+      </div>
     </div>
   </div>
 </template>
@@ -981,5 +1138,112 @@ text   { transition: font-size 0.15s ease-out; }
 
 .coord-toggle.disabled input[type="checkbox"] {
   cursor: default;
+}
+
+/* ── Type highlight panel ── */
+.type-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 8px;
+  min-width: 170px;
+  max-height: 45vh;
+  overflow-y: auto;
+  color: #b0b0d8;
+  font-size: 12px;
+  user-select: none;
+}
+
+.type-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 0 2px;
+  font-weight: 600;
+  color: #ddd8f8;
+}
+
+.type-panel-header.open {
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.type-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.type-toggle:hover {
+  color: #ffffff;
+}
+
+.type-caret {
+  display: inline-block;
+  font-size: 10px;
+  transform: rotate(-90deg);
+  transition: transform 0.15s;
+}
+
+.type-panel-header.open .type-caret {
+  transform: none;
+}
+
+.type-clear {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #6b6b9a;
+  font: inherit;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.type-clear:hover {
+  color: #ffffff;
+}
+
+.type-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.type-row:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.type-row.on .type-name {
+  color: #ff4d4d;
+  font-weight: 600;
+}
+
+.type-row input[type="checkbox"] {
+  accent-color: #ff1f1f;
+  cursor: pointer;
+  margin: 0;
+}
+
+.type-name {
+  flex: 1;
+}
+
+.type-count {
+  color: #6b6b9a;
+  font-variant-numeric: tabular-nums;
 }
 </style>

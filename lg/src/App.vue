@@ -30,6 +30,8 @@ const showNames      = ref(true)
 const showCoords     = ref(true)
 const showHeight     = ref(true)
 const selectedCoords = ref(initial)
+const highlightedTypes = ref([])
+const highlightPanelOpen = ref(true)
 
 watch(selectedCoords, (val) => {
   if (val) {
@@ -85,6 +87,8 @@ watch(selectedCoords, (val) => {
         v-model:showCoords="showCoords"
         v-model:showHeight="showHeight"
         v-model:selectedCoords="selectedCoords"
+        v-model:highlightedTypes="highlightedTypes"
+        v-model:highlightPanelOpen="highlightPanelOpen"
       />
     </div>
   </div>
