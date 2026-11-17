@@ -23,7 +23,7 @@ Vue 3 apps:
   the data exists, its facilities (elevators, parking, fare machines, ...). Below that, it shows
   the current service alerts in a collapsible tree. It's password-protected.
 - **[/billy/](http://platycore.com/billy/)**: *Dead Set Billy*, a retro
-  8-bit-style platformer starring a little skeleton. Walk, jump from platform
+  8-bit-style platformer starring a little capybara. Walk, jump from platform
   to platform, grab the key, and get out through the locked door, without
   touching the cactus. It's one room for now, with more to come.
   Tap left or right and Billy keeps walking on his own (down stops him);

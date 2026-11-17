@@ -272,7 +272,7 @@ platycore.com also answers on plain `http://`, so `train/src/main.js` switches
 ### billy: the game engine
 
 "Dead Set Billy" is a retro platformer (our own art; Billy is a little
-skeleton): walk, jump, collect the key into the inventory, leave through the
+capybara on two legs): walk, jump, collect the key into the inventory, leave through the
 door it unlocks, and avoid the deadly cactus. One room so far. The engine is
 plain JS in `billy/src/game/`, and Vue only wraps the canvas.
 

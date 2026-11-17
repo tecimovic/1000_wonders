@@ -2,29 +2,32 @@
 // any other character is looked up in the palette. Each sprite is turned
 // into a small offscreen canvas once, and drawn from there every frame.
 
-// Billy, a cheerful skeleton, facing right. 8×16. Head, ribcage, then legs.
+// Billy, a cheerful capybara on two legs, facing right. 8×16. Head (long
+// blunt snout, small ear and eye), then body with a light belly and arms,
+// then legs.
 const BILLY_TOP = [
-  '..WWWW..',
-  '.WWWWWW.',
-  '.WWWKWKW',
-  '.WWWWWWW',
-  '..WWWWW.',
-  '..W.W.W.',
-  '...WW...',
-  '.WWWWWW.',
-  'W.W..W.W',
-  'W.WWWW.W',
-  'W..WW..W',
-  '..WWWW..'
+  '.D......',
+  'DBBBBBB.',
+  'BBKBBBBB',
+  'BBBBBBBN',
+  'BBBBBBBB',
+  '.BBBBDD.',
+  '.BBBBB..',
+  '.BBBBBB.',
+  'BDBLLBDB',
+  'BDBLLBDB',
+  '.NBLLBN.',
+  '.BBLLBB.'
 ]
 
 const BILLY_LEGS = {
-  stand: ['..W..W..', '..W..W..', '..W..W..', '..WW.WW.'],
-  stride: ['..W..W..', '.W....W.', '.W....W.', '.WW...WW'],
-  pass: ['...WW...', '...WW...', '..W..W..', '..WW.WW.']
+  stand: ['.BBBBBB.', '..BB.BB.', '..BB.BB.', '..NNN.NN'],
+  stride: ['.BBBBBB.', '.BB...BB', 'BB....BB', 'NN.....N'],
+  pass: ['.BBBBBB.', '..BBBB..', '...BB...', '...NNN..']
 }
 
-const BILLY_PALETTE = { W: '#f2ecd8', K: '#1a1030' }
+// B fur, D darker fur (ear, arms, mouth), L belly, N nose and paws, K eye.
+const BILLY_PALETTE = { B: '#a86e3e', D: '#7a4c28', L: '#d6aa76', N: '#3a2418', K: '#1a1030' }
 
 // The walking cycle, and the pose in mid-air.
 const WALK_CYCLE = ['stride', 'stand', 'pass', 'stand']
@@ -215,7 +218,7 @@ const GRAVE_PALETTE = { S: '#9a98b0', s: '#5e5c78', D: '#2c2a40', m: '#6b4a2e' }
 export const DEATH_FRAME_OFFSET_X = 2
 const DEATH_W = 12
 const DEATH_H = 16
-const FLASH_FRAMES = 24        // Billy blinks red and white
+const FLASH_FRAMES = 24        // Billy blinks red and his own colors
 const FLASH_EVERY = 4
 const MORPH_STEPS = 12
 const FRAMES_PER_MORPH_STEP = 4
@@ -263,8 +266,9 @@ function deathFrames(facing) {
   if (deathCache[facing]) return deathCache[facing]
   const billyRows = [...BILLY_TOP, ...BILLY_LEGS.stand]
   const flip = facing < 0
-  const white = toGrid(billyRows, BILLY_PALETTE, DEATH_FRAME_OFFSET_X, 0, flip)
-  const red = toGrid(billyRows, { W: DEATH_RED, K: BILLY_PALETTE.K }, DEATH_FRAME_OFFSET_X, 0, flip)
+  const normal = toGrid(billyRows, BILLY_PALETTE, DEATH_FRAME_OFFSET_X, 0, flip)
+  const redPalette = Object.fromEntries(Object.keys(BILLY_PALETTE).map(ch => [ch, ch === 'K' ? BILLY_PALETTE.K : DEATH_RED]))
+  const red = toGrid(billyRows, redPalette, DEATH_FRAME_OFFSET_X, 0, flip)
   const stone = toGrid(GRAVESTONE, GRAVE_PALETTE, 0, DEATH_H - GRAVESTONE.length)
 
   // When each pixel switches from Billy to stone: partly random, partly by
@@ -279,7 +283,7 @@ function deathFrames(facing) {
     morph.push(gridToCanvas(red.map((row, y) => row.map((c, x) => (switchAt[y][x] < t ? stone[y][x] : c)))))
   }
 
-  deathCache[facing] = { white: gridToCanvas(white), red: gridToCanvas(red), morph }
+  deathCache[facing] = { normal: gridToCanvas(normal), red: gridToCanvas(red), morph }
   return deathCache[facing]
 }
 
@@ -287,7 +291,7 @@ function deathFrames(facing) {
 export function deathSprite(facing, tick) {
   const frames = deathFrames(facing)
   if (tick < FLASH_FRAMES) {
-    return Math.floor(tick / FLASH_EVERY) % 2 === 0 ? frames.red : frames.white
+    return Math.floor(tick / FLASH_EVERY) % 2 === 0 ? frames.red : frames.normal
   }
   const step = Math.floor((tick - FLASH_FRAMES) / FRAMES_PER_MORPH_STEP)
   return frames.morph[Math.min(step, MORPH_STEPS - 1)]

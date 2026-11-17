@@ -8,7 +8,7 @@ const stage = ref(null)
 const canvas = ref(null)
 const inventoryBar = ref(null)
 const scale = ref(3)
-const status = ref({ state: 'playing', roomName: '', inventory: [] })
+const status = ref({ state: 'playing', roomTitle: '', roomDescription: '', inventory: [] })
 
 // The inventory always shows this many slots; items fill them from the left.
 const INVENTORY_SLOTS = 4
@@ -91,7 +91,8 @@ onUnmounted(() => {
     </div>
 
     <div class="status" :style="{ width: WIDTH * scale + 'px' }">
-      <span class="room-name">{{ status.roomName }}</span>
+      <div class="room-title">{{ status.roomTitle }}</div>
+      <div class="room-description">{{ status.roomDescription }}</div>
     </div>
 
     <div class="touch-controls">
@@ -199,15 +200,20 @@ onUnmounted(() => {
 .status {
   max-width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 4px;
   font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
   font-size: 14px;
   color: #b9b0d8;
 }
 
-.room-name {
+.room-title {
   color: #f2ecd8;
   font-weight: 700;
+}
+
+.room-description {
+  font-weight: 400;
 }
 
 .inventory {

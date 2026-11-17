@@ -6,8 +6,9 @@
 
 export const ROOMS = [
   {
-    id: 'the-way-up',
-    name: 'The Way Up',
+    id: 'the-start-of-the-journey',
+    title: 'The start of the journey',
+    description: 'Billy the capybara wakes up in an unfamiliar environment. What is going on?!?',
     colors: {
       background: '#0b0820',
       wall: '#8a2d5c',

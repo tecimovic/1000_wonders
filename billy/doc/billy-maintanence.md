@@ -3,9 +3,9 @@
 Read this before working on Billy. It's meant to replace reading the source:
 open a file only when you're about to change it.
 
-**The game:** Billy, a little skeleton, walks and jumps through tile rooms
-(retro 8-bit platformer style, our own art). In the one room so far, "The Way
-Up", he climbs two platforms, collects the key (it goes into his inventory),
+**The game:** Billy, a little cartoon capybara on two legs, walks and jumps through tile rooms
+(retro 8-bit platformer style, our own art). In the one room so far, "The start
+of the journey", he climbs two platforms, collects the key (it goes into his inventory),
 and leaves through the door in the right wall, which unlocks once he has a
 key: "Billy is free!". Touching the cactus kills him: he blinks red, then
 morphs into a "RIP" gravestone, and a "Billy has died" screen offers a retry.
@@ -23,13 +23,13 @@ URL `/billy/`. Run: `npm run dev:billy`. Build: `npm run build`.
 | `game/engine.js` | `createGame(canvas, inputState, { onStatus })` → `{ start, stop, restart }`. Fixed 60 fps loop, game states, keys/inventory, doors, hazards, drawing. |
 | `game/player.js` | `PHYSICS`, `createPlayer(room)`, `updatePlayer(p, input, room)`, `hitbox(p)`. Movement and collisions. No DOM. |
 | `game/room.js` | `TILE=8`, `COLS=32`, `ROWS=16`, the tile legend, `parseRoom(data)`. No DOM. |
-| `game/rooms.js` | `ROOMS`: the room data (name, colors, ASCII map). No DOM. |
+| `game/rooms.js` | `ROOMS`: the room data (title, description, colors, ASCII map). No DOM. |
 | `game/sprites.js` | All pixel art as strings → offscreen canvases. `billySprite`, `keySprites`, `tileSprites`, `cactusSprite`, `doorSprites`, `itemIconUrls`, `deathSprite`. |
 | `game/input.js` | `createInput()` → `state = { walk: -1/0/1 (sticky), jump: bool (held) }`, `set(action, on)`, `attach/detach`. |
-| `components/GameScreen.vue` | Inventory bar (4 slots, above the room's top-left), canvas scaled by the largest whole number that fits (`image-rendering: pixelated`), room name, win/death overlays, touch buttons (◀ ■ Jump ▶, touch screens only), Enter/R restarts. |
+| `components/GameScreen.vue` | Inventory bar (4 slots, above the room's top-left), canvas scaled by the largest whole number that fits (`image-rendering: pixelated`), the room's title (bold) and description underneath, win/death overlays, touch buttons (◀ ■ Jump ▶, touch screens only), Enter/R restarts. |
 | `App.vue` | Header: "← All apps", title, controls hint. |
 
-Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ state, roomName, inventory })` → `GameScreen.vue`. `onStatus` fires only on changes, not every frame.
+Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ state, roomTitle, roomDescription, inventory })` → `GameScreen.vue`. `onStatus` fires only on changes, not every frame.
 
 ### Loop and states (`engine.js`)
 
@@ -64,8 +64,8 @@ Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ st
 - Key touched → removed from the room, `'key'` added to the inventory, **every door in the room unlocks**. The key isn't used up.
 - Open door: Billy wins when his hitbox's middle is inside the door column.
 - Cactus hitbox: the tile inset by 2 px left and right and 1 px at the top.
-- Death animation (`deathSprite(facing, tick)` in `sprites.js`): 24 frames of blinking red and white, then a 12-step morph (4 frames each). Billy and an 11×12 gravestone share a 12×16 frame, drawn at `x - 2`. Each pixel switches at a seeded-random time, biased bottom-first.
-- Sprites are strings: `.` is transparent, other characters come from a palette, and all rows must be the same length. Billy = `BILLY_TOP` (12 rows) + `BILLY_LEGS[stand|stride|pass]` (4 rows), facing right and mirrored for left.
+- Death animation (`deathSprite(facing, tick)` in `sprites.js`): 24 frames of blinking between all-red (except his eye) and his normal colors, then a 12-step morph (4 frames each). Billy and an 11×12 gravestone share a 12×16 frame, drawn at `x - 2`. Each pixel switches at a seeded-random time, biased bottom-first.
+- Sprites are strings: `.` is transparent, other characters come from a palette, and all rows must be the same length. Billy = `BILLY_TOP` (12 rows) + `BILLY_LEGS[stand|stride|pass]` (4 rows), facing right and mirrored for left. His palette: `B` fur, `D` darker fur (ear, arms, mouth), `L` belly, `N` nose and paws, `K` eye. The app icon (`billy/favicon.svg`, copied to `public/billy.svg`) is his head: the top 8 rows of `BILLY_TOP` at 6 px per pixel.
 
 ---
 
@@ -75,8 +75,9 @@ Rooms live in `billy/src/game/rooms.js`, in the `ROOMS` array. Each room is 32 c
 
 ```js
 {
-  id: 'the-way-up',                      // unique, kebab-case
-  name: 'The Way Up',                    // shown under the game
+  id: 'the-start-of-the-journey',        // unique, kebab-case
+  title: 'The start of the journey',     // shown in bold under the room
+  description: 'Billy the capybara wakes up in an unfamiliar environment. What is going on?!?',  // shown under the title
   colors: {
     background: '#0b0820', wall: '#8a2d5c', wallMortar: '#4a1232',
     platform: '#3fbf8f', platformShade: '#1d6b52',
@@ -116,7 +117,7 @@ Rooms live in `billy/src/game/rooms.js`, in the `ROOMS` array. Each room is 32 c
 
 Steps:
 
-1. Copy the room object, give it a new `id`, `name` and `colors` (every color key above is required), and draw the map. `parseRoom` throws if the rows or columns are the wrong size or there's no `S`.
+1. Copy the room object, give it a new `id`, `title`, `description` and `colors` (every color key above is required), and draw the map. `parseRoom` throws if the rows or columns are the wrong size or there's no `S`.
 2. **Check it can be played**, using the reach numbers in section 1. Keep each step up at most 4 tiles. Gaps must fit the sideways reach (or let him jump up through a platform). The hitbox (6 px) must overlap a platform to stand on it.
 3. **Today only `ROOMS[0]` is played** (`reset()` in `engine.js`). There are no exits between rooms yet. To play a new room, put it first, or build room switching:
    - add an exit concept (e.g. a door that leads to a room `id`, or open edges);
@@ -168,5 +169,7 @@ Steps:
 4. Cactus `C` and death: blinking, then a morph into a "RIP" gravestone, then the "Billy has died" overlay.
 5. Inventory bar (4 slots), key collected into it; door `D` in the right wall, locked with a padlock until he has a key; walking out = "Billy is free!".
 6. This guide.
+7. Billy is a capybara instead of a skeleton (same 8×16 size and poses); the icon is his head.
+8. Rooms have a `title` (bold) and a `description`, both shown under the room; the first room is now "The start of the journey".
 
 **Open ideas:** room exits and switching, lives, score, patrolling enemies, more hazards, fall damage, sound.

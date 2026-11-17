@@ -25,7 +25,7 @@ export const DOOR = 'D'
 
 export function parseRoom(data) {
   if (data.map.length !== ROWS) {
-    throw new Error(`Room "${data.name}": map has ${data.map.length} rows, expected ${ROWS}`)
+    throw new Error(`Room "${data.title}": map has ${data.map.length} rows, expected ${ROWS}`)
   }
   const tiles = []
   const keys = []
@@ -35,7 +35,7 @@ export function parseRoom(data) {
   let start = null
   data.map.forEach((line, row) => {
     if (line.length !== COLS) {
-      throw new Error(`Room "${data.name}": row ${row} has ${line.length} columns, expected ${COLS}`)
+      throw new Error(`Room "${data.title}": row ${row} has ${line.length} columns, expected ${COLS}`)
     }
     const tileRow = []
     ;[...line].forEach((ch, col) => {
@@ -56,7 +56,7 @@ export function parseRoom(data) {
     })
     tiles.push(tileRow)
   })
-  if (!start) throw new Error(`Room "${data.name}": no start tile (S)`)
+  if (!start) throw new Error(`Room "${data.title}": no start tile (S)`)
 
   const room = {
     ...data,

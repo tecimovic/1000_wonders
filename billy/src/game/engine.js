@@ -21,8 +21,8 @@ const NO_INPUT = { walk: 0, jump: false }
 
 /**
  * Creates the game on `canvas`, reading the controls from `input` ({ walk,
- * jump }, see input.js). `onStatus` is called with { state, roomName,
- * inventory } whenever one of those changes. inventory is a list of item
+ * jump }, see input.js). `onStatus` is called with { state, roomTitle,
+ * roomDescription, inventory } whenever one of those changes. inventory is a list of item
  * types (e.g. ['key']). state is one of:
  *   'playing'
  *   'dying'   touched something deadly; the death animation is running
@@ -43,7 +43,8 @@ export function createGame(canvas, input, { onStatus = () => {} } = {}) {
   function status() {
     onStatus({
       state,
-      roomName: room.name,
+      roomTitle: room.title,
+      roomDescription: room.description,
       inventory: [...inventory]
     })
   }
