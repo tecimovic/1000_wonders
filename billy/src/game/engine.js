@@ -5,9 +5,10 @@
 import { TILE, COLS, ROWS, parseRoom } from './room.js'
 import { ROOMS } from './rooms.js'
 import { createPlayer, updatePlayer, hitbox } from './player.js'
+import { createMonsters, updateMonster, monsterHitbox } from './monsters.js'
 import {
   billySprite, keySprites, tileSprites, cactusSprite, doorSprites,
-  deathSprite, DEATH_ANIMATION_FRAMES, DEATH_FRAME_OFFSET_X
+  monsterSprite, deathSprite, DEATH_ANIMATION_FRAMES, DEATH_FRAME_OFFSET_X
 } from './sprites.js'
 
 export const WIDTH = COLS * TILE
@@ -35,7 +36,7 @@ export function createGame(canvas, input, { onStatus = () => {} } = {}) {
   const ctx = canvas.getContext('2d')
   const keyImages = keySprites()
 
-  let room, tiles, cactus, doorImages, player, state, frame, deathTick, inventory
+  let room, tiles, cactus, doorImages, player, monsters, state, frame, deathTick, inventory
   let rafId = null
   let lastTime = 0
   let pending = 0
@@ -55,6 +56,7 @@ export function createGame(canvas, input, { onStatus = () => {} } = {}) {
     cactus = cactusSprite(room.colors)
     doorImages = doorSprites(room.colors)
     player = createPlayer(room)
+    monsters = createMonsters(room)
     input.walk = 0
     state = 'playing'
     frame = 0
@@ -99,13 +101,23 @@ export function createGame(canvas, input, { onStatus = () => {} } = {}) {
     })
   }
 
+  function touchesMonster() {
+    const box = hitbox(player)
+    return monsters.some(m => {
+      const mb = monsterHitbox(m)
+      return box.right > mb.left && box.left < mb.right && box.bottom > mb.top && box.top < mb.bottom
+    })
+  }
+
   function update() {
     frame++
+    // Monsters keep going whatever Billy does, even after he's gone.
+    for (const m of monsters) updateMonster(m, room)
     if (state === 'playing') {
       updatePlayer(player, input, room)
       // Walking into a wall stops him: he doesn't keep pushing against it.
       if (player.blocked) input.walk = 0
-      if (touchesHazard()) {
+      if (touchesHazard() || touchesMonster()) {
         state = 'dying'
         player.moveDir = 0
         status()
@@ -156,6 +168,10 @@ export function createGame(canvas, input, { onStatus = () => {} } = {}) {
 
     for (const h of room.hazards) {
       ctx.drawImage(cactus, h.col * TILE, h.row * TILE)
+    }
+
+    for (const m of monsters) {
+      ctx.drawImage(monsterSprite(m), Math.round(m.x), Math.round(m.y))
     }
 
     const x = Math.round(player.x)

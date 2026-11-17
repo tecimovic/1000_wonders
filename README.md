@@ -25,7 +25,7 @@ Vue 3 apps:
 - **[/billy/](http://platycore.com/billy/)**: *Dead Set Billy*, a retro
   8-bit-style platformer starring a little capybara. Walk, jump from platform
   to platform, grab the key, and get out through the locked door, without
-  touching the cactus. It's one room for now, with more to come.
+  touching the cactus or the parrot. It's one room for now, with more to come.
   Tap left or right and Billy keeps walking on his own (down stops him);
   jump with ↑ or Space. On a phone there are on-screen buttons.
 

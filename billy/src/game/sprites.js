@@ -191,6 +191,54 @@ export function cactusSprite(colors) {
   return makeSprite(CACTUS, { G: colors.cactus, L: colors.cactusLight, s: colors.cactusShade })
 }
 
+// Monsters, facing right (mirrored when going left), a few animation frames
+// each. The parrot (a blue-fronted amazon: green, with a blue forehead)
+// flaps: wings up, wings down.
+const MONSTER_ART = {
+  parrot: {
+    framesEvery: 8,
+    // R body, G wings, F blue forehead, T tail, Y beak, K eye.
+    palette: { R: '#4cc35a', G: '#1f7f36', F: '#3a7bf0', Y: '#4a4a52', K: '#1a1030', T: '#9bd34f' },
+    frames: [
+      [
+        '.GG.....',
+        '..GG.RF.',
+        '..GGRRKR',
+        'TRRRRRRY',
+        'TTRRRR.Y',
+        'T.......',
+        '........',
+        '........'
+      ],
+      [
+        '........',
+        '.....RF.',
+        '...RRRKR',
+        'TRRRRRRY',
+        'TTRGGR.Y',
+        'T..GG...',
+        '...G....',
+        '........'
+      ]
+    ]
+  }
+}
+
+let monsterCache = {}
+
+/** The sprite canvas for a monster (see monsters.js) in its current state. */
+export function monsterSprite(m) {
+  const art = MONSTER_ART[m.type]
+  if (!monsterCache[m.type]) {
+    monsterCache[m.type] = art.frames.map(rows => ({
+      1: makeSprite(rows, art.palette),
+      [-1]: makeSprite(rows, art.palette, true)
+    }))
+  }
+  const frames = monsterCache[m.type]
+  return frames[Math.floor(m.tick / art.framesEvery) % frames.length][m.dir]
+}
+
 // The gravestone Billy turns into: 11×12, with "RIP" carved in it and a bit
 // of dirt at the bottom.
 const GRAVESTONE = [

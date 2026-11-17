@@ -12,6 +12,9 @@
 //       through one is the way out.
 //   S   where Billy starts: his feet rest on the bottom of this tile
 //
+// Monsters aren't in the map: a room lists them in `monsters` (see
+// monsters.js).
+//
 // See rooms.js for the rooms themselves.
 
 export const TILE = 8

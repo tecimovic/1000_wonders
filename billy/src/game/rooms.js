@@ -40,6 +40,10 @@ export const ROOMS = [
       '#..............................D',
       '#S......................C......D',
       '################################'
+    ],
+    // Monster types are in monsters.js. This parrot patrols the key's height.
+    monsters: [
+      { type: 'parrot', col: 1, row: 3, dir: 1 }
     ]
   }
 ]

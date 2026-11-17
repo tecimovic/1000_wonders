@@ -7,7 +7,8 @@ open a file only when you're about to change it.
 (retro 8-bit platformer style, our own art). In the one room so far, "The start
 of the journey", he climbs two platforms, collects the key (it goes into his inventory),
 and leaves through the door in the right wall, which unlocks once he has a
-key: "Billy is free!". Touching the cactus kills him: he blinks red, then
+key: "Billy is free!". A parrot (a green blue-fronted amazon) flies back and forth at the key's height, so
+the jump for the key needs timing. Touching the cactus or a monster kills him: he blinks red, then
 morphs into a "RIP" gravestone, and a "Billy has died" screen offers a retry.
 
 URL `/billy/`. Run: `npm run dev:billy`. Build: `npm run build`.
@@ -24,7 +25,8 @@ URL `/billy/`. Run: `npm run dev:billy`. Build: `npm run build`.
 | `game/player.js` | `PHYSICS`, `createPlayer(room)`, `updatePlayer(p, input, room)`, `hitbox(p)`. Movement and collisions. No DOM. |
 | `game/room.js` | `TILE=8`, `COLS=32`, `ROWS=16`, the tile legend, `parseRoom(data)`. No DOM. |
 | `game/rooms.js` | `ROOMS`: the room data (title, description, colors, ASCII map). No DOM. |
-| `game/sprites.js` | All pixel art as strings → offscreen canvases. `billySprite`, `keySprites`, `tileSprites`, `cactusSprite`, `doorSprites`, `itemIconUrls`, `deathSprite`. |
+| `game/monsters.js` | `MONSTER_TYPES` (size, speed, hitbox and movement per type), `createMonsters(room)`, `updateMonster(m, room)`, `monsterHitbox(m)`. No DOM. |
+| `game/sprites.js` | All pixel art as strings → offscreen canvases. `billySprite`, `keySprites`, `tileSprites`, `cactusSprite`, `doorSprites`, `itemIconUrls`, `monsterSprite`, `deathSprite`. |
 | `game/input.js` | `createInput()` → `state = { walk: -1/0/1 (sticky), jump: bool (held) }`, `set(action, on)`, `attach/detach`. |
 | `components/GameScreen.vue` | Inventory bar (4 slots, above the room's top-left), canvas scaled by the largest whole number that fits (`image-rendering: pixelated`), the room's title (bold) and description underneath, win/death overlays, touch buttons (◀ ■ Jump ▶, touch screens only), Enter/R restarts. |
 | `App.vue` | Header: "← All apps", title, controls hint. |
@@ -34,10 +36,11 @@ Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ st
 ### Loop and states (`engine.js`)
 
 - `requestAnimationFrame` accumulates real time and runs fixed 1/60 s updates (at most 5 frames of catch-up after a stall). Then it draws.
-- Each `playing` update: `updatePlayer` → if `player.blocked`, set `input.walk = 0` → `touchesHazard()` → `collectKeys()` → `walkedOut()`.
+- Every update, in every state, first moves all monsters (`updateMonster`): they keep flying while Billy dies and after.
+- Each `playing` update then: `updatePlayer` → if `player.blocked`, set `input.walk = 0` → `touchesHazard() || touchesMonster()` → `collectKeys()` → `walkedOut()`.
 - States: `playing` → `dying` (hit a cactus; if he's in mid-air he falls first; input is ignored) → `dead` (after the animation + `DEAD_PAUSE_FRAMES`). Or `playing` → `won` (walked out through an open door).
 - `restart()` = `reset()`: reloads `ROOMS[0]`, empties the inventory, sets `walk = 0`. Only one room is ever loaded today.
-- Draw order: background, tiles, keys (cycling colors), doors (brick behind them), cacti, then Billy or the death frame.
+- Draw order: background, tiles, keys (cycling colors), doors (brick behind them), cacti, monsters, then Billy or the death frame.
 
 ### Rooms at runtime (`room.js`)
 
@@ -64,6 +67,19 @@ Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ st
 - Key touched → removed from the room, `'key'` added to the inventory, **every door in the room unlocks**. The key isn't used up.
 - Open door: Billy wins when his hitbox's middle is inside the door column.
 - Cactus hitbox: the tile inset by 2 px left and right and 1 px at the top.
+- Monster hitbox: the type's `hitbox` (relative to its top-left). Touching it = same death as the cactus.
+
+### Monsters (`monsters.js`)
+
+A monster is `{ type, x, y, dir, tick }`: `x, y` its top-left in px, `dir` 1 (right) or -1 (left), `tick` frames alive (for animation). A room lists them in `monsters: [{ type, col, row, dir }]`, starting at that tile's top-left. They're not in the ASCII map, because they need parameters.
+
+| Type | Size | Moves | Hitbox |
+|---|---|---|---|
+| `parrot` | 8×8 | Flies horizontally at a constant 0.6 px/frame (~6.4 s across the room). Turns around flush against anything solid (walls, locked doors); flies through platforms, keys and cacti. | x 1–7, y 1–6 |
+
+In the first room the parrot starts at col 1, row 3 (the key's row), going right. Billy's head reaches row 3 only while jumping for the key from the upper platform. Jumping when the parrot is about to pass kills him; most moments are safe.
+
+**Adding a monster type:** add an entry to `MONSTER_TYPES` (`width`, `height`, `hitbox`, `update(m, room)`; use `room.isSolid`/`canStandOn` for collisions) and its art to `MONSTER_ART` in `sprites.js` (`palette`, `frames` facing right, `framesEvery`; it's mirrored when `dir` is -1). Then add it to a room's `monsters`.
 - Death animation (`deathSprite(facing, tick)` in `sprites.js`): 24 frames of blinking between all-red (except his eye) and his normal colors, then a 12-step morph (4 frames each). Billy and an 11×12 gravestone share a 12×16 frame, drawn at `x - 2`. Each pixel switches at a seeded-random time, biased bottom-first.
 - Sprites are strings: `.` is transparent, other characters come from a palette, and all rows must be the same length. Billy = `BILLY_TOP` (12 rows) + `BILLY_LEGS[stand|stride|pass]` (4 rows), facing right and mirrored for left. His palette: `B` fur, `D` darker fur (ear, arms, mouth), `L` belly, `N` nose and paws, `K` eye. The app icon (`billy/favicon.svg`, copied to `public/billy.svg`) is his head: the top 8 rows of `BILLY_TOP` at 6 px per pixel.
 
@@ -101,6 +117,9 @@ Rooms live in `billy/src/game/rooms.js`, in the `ROOMS` array. Each room is 32 c
     '#..............................D',
     '#S......................C......D',
     '################################'
+  ],
+  monsters: [                            // optional; types in monsters.js
+    { type: 'parrot', col: 1, row: 3, dir: 1 }
   ]
 }
 ```
@@ -124,7 +143,8 @@ Steps:
    - in `engine.js`, load that room and place Billy, keeping the inventory;
    - change `tileAt` so edges with exits aren't walls.
 4. A new tile type: add it to the legend comment and `parseRoom` in `room.js`, make it count in `isSolid`/`canStandOn` if it blocks or supports Billy, add its art to `sprites.js`, its colors to every room, and its drawing (and any touch logic) to `engine.js`.
-5. Verify the route (section 3), then update the docs (section 3).
+5. Monsters: add them to `monsters` (see "Monsters" in section 1). Check in the simulation that the route can be done with them moving.
+6. Verify the route (section 3), then update the docs (section 3).
 
 ---
 
@@ -171,5 +191,7 @@ Steps:
 6. This guide.
 7. Billy is a capybara instead of a skeleton (same 8×16 size and poses); the icon is his head.
 8. Rooms have a `title` (bold) and a `description`, both shown under the room; the first room is now "The start of the journey".
+9. Monsters (`monsters.js`): the `parrot` type, flying wall to wall; one patrols the first room at the key's height.
+10. The parrot is a blue-fronted amazon: green body, darker green wings, blue forehead, dark gray beak.
 
-**Open ideas:** room exits and switching, lives, score, patrolling enemies, more hazards, fall damage, sound.
+**Open ideas:** room exits and switching, lives, score, more monster types (walkers, droppers), more hazards, fall damage, sound.

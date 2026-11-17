@@ -71,7 +71,8 @@ billy/              "Dead Set Billy": a retro platformer on a canvas. → /billy
   doc/billy-maintanence.md   READ FIRST for Billy work: engine, rooms, testing.
   src/              App.vue, components/GameScreen.vue (inventory, canvas,
                     overlays, touch buttons), game/ (the engine, plain JS:
-                    engine.js, player.js, room.js, rooms.js, sprites.js, input.js).
+                    engine.js, player.js, room.js, rooms.js, monsters.js, sprites.js,
+                    input.js).
 doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
 doc/bkk/            Local copy of BKK's FUTÁR API docs. Start at README.md.
@@ -272,9 +273,10 @@ platycore.com also answers on plain `http://`, so `train/src/main.js` switches
 ### billy: the game engine
 
 "Dead Set Billy" is a retro platformer (our own art; Billy is a little
-capybara on two legs): walk, jump, collect the key into the inventory, leave through the
-door it unlocks, and avoid the deadly cactus. One room so far. The engine is
-plain JS in `billy/src/game/`, and Vue only wraps the canvas.
+capybara on two legs): walk, jump, collect the key into the inventory, leave
+through the door it unlocks, and avoid the deadly cactus and monsters (just a
+parrot for now). One room so far. The engine is plain JS in
+`billy/src/game/`, and Vue only wraps the canvas.
 
 **Before working on Billy, read `billy/doc/billy-maintanence.md`.** It covers
 how the engine works, how to add a room, and how to verify changes, so you
