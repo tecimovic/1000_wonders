@@ -10,5 +10,11 @@
     "title": "Public transportation",
     "subtitle": "Yay, public transportation!",
     "uri": "/train/"
+  },
+  {
+    "icon": "/billy.svg",
+    "title": "Dead Set Billy",
+    "subtitle": "A platformer. Get the key!",
+    "uri": "/billy/"
   }
 ]

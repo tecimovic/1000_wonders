@@ -27,6 +27,7 @@ public/             Static files for the landing page only, served at "/":
   apps.json         The list of apps shown on the landing page (see below).
   hexarod.png       Menu icon for lg (a copy of lg/src/assets/hexarod.png).
   tram.svg          Menu icon for train.
+  billy.svg         Menu icon for billy (same as billy/favicon.svg).
   favicon.ico
 vite.config.js      Root config: builds the landing page, and is the config for
                     `npm run dev` (which serves the landing page AND every app).
@@ -65,6 +66,22 @@ train/              Public transportation site: live transit data (Boston MBTA,
     crypto.js         encryptSecret() / decryptSecret() (Web Crypto).
     passwordCookie.js The mbtaApiKeyPassword cookie.
   scripts/encrypt-secret.mjs   Encrypts an API key for supportedTransitAuthorities.json.
+billy/              "Dead Set Billy": a retro platformer on a canvas. → /billy/
+  index.html, vite.config.js, favicon.svg     See "billy: the game engine" below.
+  src/
+    App.vue           Header ("← All apps", title, controls help) + GameScreen.
+    components/GameScreen.vue   Inventory bar, the canvas (scaled up by whole
+                      numbers, crisp pixels), room name, win/death overlays,
+                      touch buttons.
+    game/             The engine, plain JS (no Vue):
+      engine.js         createGame(): fixed 60 fps loop, inventory, doors, hazards,
+                        win/death, drawing.
+      player.js         Billy's movement and collisions; PHYSICS constants.
+      room.js           Room size, tile legend, parseRoom().
+      rooms.js          The rooms: name, colors and an ASCII map each.
+      sprites.js        Pixel art as strings (Billy, key, tiles, cactus, doors,
+                        gravestone), inventory icons and the death animation.
+      input.js          Controls: walk direction (sticky) and jump (held).
 doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
 doc/bkk/            Local copy of BKK's FUTÁR API docs. Start at README.md.
@@ -262,6 +279,39 @@ Web Crypto only works in secure contexts (HTTPS or localhost).
 platycore.com also answers on plain `http://`, so `train/src/main.js` switches
 `http://` to `https://` before the app starts.
 
+### billy: the game engine
+
+"Dead Set Billy" is a platformer in the style of the old 8-bit home computer
+games: walk left and right, jump, collect the keys. Billy is a little
+skeleton. The characters, art and rooms are our own (it's inspired by the
+genre, not a copy of any one game). For now there is one room. Billy picks
+up the key, which goes into his inventory (shown above the top-left corner of
+the room); having a key unlocks the door in the right wall (a padlock shows
+while it's locked, daylight once it's open), and walking out through it wins
+the game: "Billy is free!". More rooms will come. Touching a cactus kills
+Billy: he blinks red, then crumbles pixel by pixel into a "RIP" gravestone
+(`deathSprite()` in `sprites.js`; if he dies in mid-air, he drops to the
+ground first), and a "Billy has died" screen offers a restart.
+
+- **Rooms** are 32×16 tiles of 8×8 pixels (256×128 pixels), written as ASCII
+  maps in `billy/src/game/rooms.js`. Legend (also in `room.js`): `.` empty,
+  `#` wall (solid from every side), `=` platform (stand on it, jump up through
+  it from below), `K` key, `C` cactus (deadly to touch),
+  `D` door (a column of D's in a wall; locked and solid until Billy has a key), `S` Billy's start (his feet on the bottom of that
+  tile). Anything outside the room counts as wall, until rooms get exits.
+- **Movement** (`player.js`): constant walking speed; one press of left or
+  right keeps Billy walking that way on his own, until down stops him or he
+  walks into a wall (after a jump or fall he keeps going); every jump follows the
+  same arc, and its direction (left, right, straight up) is fixed at take-off,
+  with no steering in mid-air; walking off a ledge drops straight down;
+  hitting a wall in mid-air stops the sideways motion; holding jump jumps
+  again on landing. A jump rises about 4½ tiles. Tune it in `PHYSICS`.
+- **Loop** (`engine.js`): fixed 60 updates per second, whatever the screen's
+  refresh rate. The canvas is drawn at 256×128 and scaled up by CSS.
+- **Controls**: ← → (or A D) start walking, ↓ (or S) stop, ↑ / W / Space
+  jump; Enter restarts after a win or a death. On touch screens there are on-screen
+  buttons (◀ ■ Jump ▶).
+
 ### The app list: `public/apps.json`
 
 The landing page's menu comes from this file, an array with one entry per app:
@@ -289,7 +339,7 @@ The order in the file is the order on the page.
 |---|---|
 | `npm install` | Install dependencies (once). |
 | `npm run dev` | One dev server: landing page at `/`, apps at `/lg/`, `/train/`, ... |
-| `npm run dev:lg`, `npm run dev:train` | Dev server for a single app. |
+| `npm run dev:lg`, `npm run dev:train`, `npm run dev:billy` | Dev server for a single app. |
 | `npm run build` | Build the landing page and every app into `dist/`. |
 | `npm run preview` | Serve the built `dist/` locally, the way the server does. |
 | `./deploy` | Build, then FTP-upload `dist/` to platycore.com. Needs the `DG_FTP_USERNAME` and `DG_FTP_PASSWORD` environment variables. |

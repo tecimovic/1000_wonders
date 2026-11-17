@@ -22,6 +22,12 @@ Vue 3 apps:
   any stop or station to see its upcoming arrivals and departures and, where
   the data exists, its facilities (elevators, parking, fare machines, ...). Below that, it shows
   the current service alerts in a collapsible tree. It's password-protected.
+- **[/billy/](http://platycore.com/billy/)**: *Dead Set Billy*, a retro
+  8-bit-style platformer starring a little skeleton. Walk, jump from platform
+  to platform, grab the key, and get out through the locked door, without
+  touching the cactus. It's one room for now, with more to come.
+  Tap left or right and Billy keeps walking on his own (down stops him);
+  jump with ↑ or Space. On a phone there are on-screen buttons.
 
 The repo also keeps a few notes and assets about that Minecraft world.
 
@@ -29,7 +35,7 @@ The repo also keeps a few notes and assets about that Minecraft world.
 
 It's a private hobby project. If you'd like to join, contact the owner.
 
-Each app lives in its own folder (`lg/`, `train/`, ...) with its own
+Each app lives in its own folder (`lg/`, `train/`, `billy/`, ...) with its own
 `index.html` and Vite config. All apps share one `package.json`. The
 landing page builds its menu from `public/apps.json`, so adding an app
 means creating its folder and adding one entry (icon, title, subtitle and
@@ -44,6 +50,10 @@ needs a small adapter. Local copies of the API docs are in
 [`doc/bkk/`](doc/bkk/README.md) (BKK FUTÁR),
 [`doc/tfl/`](doc/tfl/README.md) (TfL Unified API) and
 [`doc/entur/`](doc/entur/README.md) (Entur, Norway).
+
+Working on the game? Rooms are little ASCII maps in
+`billy/src/game/rooms.js` (`#` wall, `=` platform, `K` key, `C` cactus, `D` door, `S` start), and
+the jump and walk tuning is in `billy/src/game/player.js`.
 
 Secrets (like the transit API keys) are committed only in encrypted form. The
 password is never in the repo, so ask the owner for it.
