@@ -5,11 +5,12 @@ open a file only when you're about to change it.
 
 **The game:** Billy, a little cartoon capybara on two legs, walks and jumps through tile rooms
 (retro 8-bit platformer style, our own art). In the one room so far, "The start
-of the journey", he climbs two platforms, collects the key (it goes into his inventory),
+of the journey", he climbs two platforms, collects the key (an object: it goes into his inventory),
 and leaves through the door in the right wall, which unlocks once he has a
 key: "Billy is free!". A parrot (a green blue-fronted amazon) flies back and forth at the key's height, so
-the jump for the key needs timing. Touching the cactus or a monster kills him: he blinks red, then
-morphs into a "RIP" gravestone, and a "Billy has died" screen offers a retry.
+the jump for the key needs timing. Everything deadly is a monster (the cactus too). Touching one kills him: he blinks red, then
+morphs into a "RIP" gravestone, and a "Billy has died" screen shows that
+monster's death message ("Mind the cactus.") and offers a retry.
 
 URL `/billy/`. Run: `npm run dev:billy`. Build: `npm run build`.
 
@@ -21,30 +22,31 @@ URL `/billy/`. Run: `npm run dev:billy`. Build: `npm run build`.
 
 | File | Role |
 |---|---|
-| `game/engine.js` | `createGame(canvas, inputState, { onStatus })` → `{ start, stop, restart }`. Fixed 60 fps loop, game states, keys/inventory, doors, hazards, drawing. |
+| `game/engine.js` | `createGame(canvas, inputState, { onStatus })` → `{ start, stop, restart }`. Fixed 60 fps loop, game states, object pickups/inventory, doors, monster touches, drawing. |
 | `game/player.js` | `PHYSICS`, `createPlayer(room)`, `updatePlayer(p, input, room)`, `hitbox(p)`. Movement and collisions. No DOM. |
 | `game/room.js` | `TILE=8`, `COLS=32`, `ROWS=16`, the tile legend, `parseRoom(data)`. No DOM. |
 | `game/rooms.js` | `ROOMS`: the room data (title, description, colors, ASCII map). No DOM. |
-| `game/monsters.js` | `MONSTER_TYPES` (size, speed, hitbox and movement per type), `createMonsters(room)`, `updateMonster(m, room)`, `monsterHitbox(m)`. No DOM. |
-| `game/sprites.js` | All pixel art as strings → offscreen canvases. `billySprite`, `keySprites`, `tileSprites`, `cactusSprite`, `doorSprites`, `itemIconUrls`, `monsterSprite`, `deathSprite`. |
+| `game/objects.js` | `OBJECT_TYPES` (name, size, hitbox and `onCollect` per type), `createObjects(room)`, `objectHitbox(o)`, `collectObject(o, game)`, `objectName(type)`. No DOM. |
+| `game/monsters.js` | `MONSTER_TYPES` (size, hitbox, death message and movement per type), `createMonsters(room)`, `updateMonster(m, room)`, `monsterHitbox(m)`, `deathMessage(m)`. No DOM. |
+| `game/sprites.js` | All pixel art as strings → offscreen canvases. `billySprite`, `objectSprite(o, frame)`, `objectIconUrls()`, `tileSprites`, `doorSprites`, `monsterSprites(colors)` (→ `m => canvas`), `deathSprite`. |
 | `game/input.js` | `createInput()` → `state = { walk: -1/0/1 (sticky), jump: bool (held) }`, `set(action, on)`, `attach/detach`. |
-| `components/GameScreen.vue` | Inventory bar (4 slots, above the room's top-left), canvas scaled by the largest whole number that fits (`image-rendering: pixelated`), the room's title (bold) and description underneath, win/death overlays, touch buttons (◀ ■ Jump ▶, touch screens only), Enter/R restarts. |
+| `components/GameScreen.vue` | Inventory bar (4 slots, above the room's top-left; icon and name per object type), canvas scaled by the largest whole number that fits (`image-rendering: pixelated`), the room's title (bold) and description underneath, win/death overlays (the death overlay shows `deathMessage`), touch buttons (◀ ■ Jump ▶, touch screens only), Enter/R restarts. |
 | `App.vue` | Header: "← All apps", title, controls hint. |
 
-Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ state, roomTitle, roomDescription, inventory })` → `GameScreen.vue`. `onStatus` fires only on changes, not every frame.
+Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ state, roomTitle, roomDescription, inventory, deathMessage })` → `GameScreen.vue`. `onStatus` fires only on changes, not every frame.
 
 ### Loop and states (`engine.js`)
 
 - `requestAnimationFrame` accumulates real time and runs fixed 1/60 s updates (at most 5 frames of catch-up after a stall). Then it draws.
-- Every update, in every state, first moves all monsters (`updateMonster`): they keep flying while Billy dies and after.
-- Each `playing` update then: `updatePlayer` → if `player.blocked`, set `input.walk = 0` → `touchesHazard() || touchesMonster()` → `collectKeys()` → `walkedOut()`.
-- States: `playing` → `dying` (hit a cactus; if he's in mid-air he falls first; input is ignored) → `dead` (after the animation + `DEAD_PAUSE_FRAMES`). Or `playing` → `won` (walked out through an open door).
+- Every update, in every state, first moves all monsters (`updateMonster`): moving ones keep going while Billy dies and after.
+- Each `playing` update then: `updatePlayer` → if `player.blocked`, set `input.walk = 0` → `killer = touchedMonster()` (if any: `dying`) → `collectObjects()` → `walkedOut()`.
+- States: `playing` → `dying` (touched a monster, remembered as `killer`; if he's in mid-air he falls first; input is ignored) → `dead` (after the animation + `DEAD_PAUSE_FRAMES`). Or `playing` → `won` (walked out through an open door).
 - `restart()` = `reset()`: reloads `ROOMS[0]`, empties the inventory, sets `walk = 0`. Only one room is ever loaded today.
-- Draw order: background, tiles, keys (cycling colors), doors (brick behind them), cacti, monsters, then Billy or the death frame.
+- Draw order: background, tiles, objects not yet collected, doors (brick behind them), monsters (cacti included), then Billy or the death frame.
 
 ### Rooms at runtime (`room.js`)
 
-`parseRoom` returns the data plus `tiles` (grid of `.`, `#`, `=`, `D`), `keys [{col,row,collected}]`, `hazards [{col,row,type:'cactus'}]`, `doors [{col,topRow,bottomRow,locked}]`, `start {col,row}`, and the helpers:
+`parseRoom` returns the data plus `tiles` (grid of `.`, `#`, `=`, `D`), `doors [{col,topRow,bottomRow,locked}]`, `start {col,row}`, and the helpers:
 
 - `tileAt(c, r)`: outside the grid counts as `#`.
 - `isSolid(c, r)`: walls and locked doors.
@@ -62,24 +64,34 @@ Data flow: `input.js` → `input.state` → `engine.update()` → `onStatus({ st
 - Landing checks every tile row crossed in the frame. Platforms only catch him if his feet were above them. Rising, his head bumps only solid tiles.
 - **Reach:** a jump rises 36 px (4½ tiles). Sideways it covers ~30 px when landing at the same height, ~24 px landing 3 tiles up, ~20 px landing 4 tiles up.
 
-### Items, doors, death
+### Objects, doors, death
 
-- Key touched → removed from the room, `'key'` added to the inventory, **every door in the room unlocks**. The key isn't used up.
+- Object touched → `collectObject`: it leaves the room, its type goes into the inventory, and its type's `onCollect({ room, inventory })` runs. For the key, that **unlocks every door in the room**. The key isn't used up.
 - Open door: Billy wins when his hitbox's middle is inside the door column.
-- Cactus hitbox: the tile inset by 2 px left and right and 1 px at the top.
-- Monster hitbox: the type's `hitbox` (relative to its top-left). Touching it = same death as the cactus.
+- Monster hitbox: the type's `hitbox` (relative to its top-left). Touching it kills Billy, and the death screen shows "Rest in peace." plus the type's `deathMessage`.
+
+### Objects (`objects.js`)
+
+An object is `{ type, x, y, collected }`: `x, y` its top-left in px. A room lists them in `objects: [{ type, col, row }]`, at that tile's top-left. Like monsters, they're not in the ASCII map. The inventory is a list of object types, in pickup order (`['key']`); the bar shows 4 slots.
+
+| Type | Size | Hitbox | On pickup | Art |
+|---|---|---|---|---|
+| `key` | 8×8 | x 1–7, y 0–8 | Unlocks every door in the room. | Cycles 4 colors, 6 frames each. |
+
+**Adding an object type:** add an entry to `OBJECT_TYPES` (`name` for the inventory slot, `width`, `height`, `hitbox`, and optionally `onCollect({ room, inventory })` for what picking it up does) and its art to `OBJECT_ART` in `sprites.js` (`frames` as `{ rows, palette }`, `framesEvery`; the first frame is its inventory icon; fixed palettes, since icons are made outside any room). Then add it to a room's `objects`. If it should *do* something later (e.g. be used up at a door), that logic goes in the engine, checking `inventory`.
 
 ### Monsters (`monsters.js`)
 
-A monster is `{ type, x, y, dir, tick }`: `x, y` its top-left in px, `dir` 1 (right) or -1 (left), `tick` frames alive (for animation). A room lists them in `monsters: [{ type, col, row, dir }]`, starting at that tile's top-left. They're not in the ASCII map, because they need parameters.
+A monster is `{ type, x, y, dir, tick }`: `x, y` its top-left in px, `dir` 1 (right) or -1 (left), `tick` frames alive (for animation). A room lists them in `monsters: [{ type, col, row, dir }]` (`dir` optional, default 1), starting at that tile's top-left. They're not in the ASCII map, because they need parameters.
 
-| Type | Size | Moves | Hitbox |
-|---|---|---|---|
-| `parrot` | 8×8 | Flies horizontally at a constant 0.6 px/frame (~6.4 s across the room). Turns around flush against anything solid (walls, locked doors); flies through platforms, keys and cacti. | x 1–7, y 1–6 |
+| Type | Size | Moves | Hitbox | Death message |
+|---|---|---|---|---|
+| `cactus` | 8×8 | Never. Place it on the floor (the tile's bottom is its base). Colors from the room (`cactus`, `cactusLight`, `cactusShade`). | x 2–6, y 1–8 | Mind the cactus. |
+| `parrot` | 8×8 | Flies horizontally at a constant 0.6 px/frame (~6.4 s across the room). Turns around flush against anything solid (walls, locked doors); flies through platforms, keys and other monsters. | x 1–7, y 1–6 | Mind the parrot. |
 
 In the first room the parrot starts at col 1, row 3 (the key's row), going right. Billy's head reaches row 3 only while jumping for the key from the upper platform. Jumping when the parrot is about to pass kills him; most moments are safe.
 
-**Adding a monster type:** add an entry to `MONSTER_TYPES` (`width`, `height`, `hitbox`, `update(m, room)`; use `room.isSolid`/`canStandOn` for collisions) and its art to `MONSTER_ART` in `sprites.js` (`palette`, `frames` facing right, `framesEvery`; it's mirrored when `dir` is -1). Then add it to a room's `monsters`.
+**Adding a monster type:** add an entry to `MONSTER_TYPES` (`width`, `height`, `hitbox`, `deathMessage`, `update(m, room)`, empty if it doesn't move; use `room.isSolid`/`canStandOn` for collisions) and its art to `MONSTER_ART` in `sprites.js` (`palette`, either fixed or a function of the room's `colors`, `frames` facing right, `framesEvery`; it's mirrored when `dir` is -1). Then add it to a room's `monsters`.
 - Death animation (`deathSprite(facing, tick)` in `sprites.js`): 24 frames of blinking between all-red (except his eye) and his normal colors, then a 12-step morph (4 frames each). Billy and an 11×12 gravestone share a 12×16 frame, drawn at `x - 2`. Each pixel switches at a seeded-random time, biased bottom-first.
 - Sprites are strings: `.` is transparent, other characters come from a palette, and all rows must be the same length. Billy = `BILLY_TOP` (12 rows) + `BILLY_LEGS[stand|stride|pass]` (4 rows), facing right and mirrored for left. His palette: `B` fur, `D` darker fur (ear, arms, mouth), `L` belly, `N` nose and paws, `K` eye. The app icon (`billy/favicon.svg`, copied to `public/billy.svg`) is his head: the top 8 rows of `BILLY_TOP` at 6 px per pixel.
 
@@ -104,7 +116,7 @@ Rooms live in `billy/src/game/rooms.js`, in the `ROOMS` array. Each room is 32 c
     '################################',
     '#..............................#',
     '#..............................#',
-    '#..........................K...#',
+    '#..............................#',
     '#..............................#',
     '#..............................#',
     '#..............................#',
@@ -115,10 +127,14 @@ Rooms live in `billy/src/game/rooms.js`, in the `ROOMS` array. Each room is 32 c
     '#..............................#',
     '#........========..............#',
     '#..............................D',
-    '#S......................C......D',
+    '#S.............................D',
     '################################'
   ],
+  objects: [                             // optional; types in objects.js
+    { type: 'key', col: 27, row: 3 }
+  ],
   monsters: [                            // optional; types in monsters.js
+    { type: 'cactus', col: 24, row: 14 },
     { type: 'parrot', col: 1, row: 3, dir: 1 }
   ]
 }
@@ -129,8 +145,6 @@ Rooms live in `billy/src/game/rooms.js`, in the `ROOMS` array. Each room is 32 c
 | `.` | empty |
 | `#` | wall: solid from every side |
 | `=` | platform: stand on it, jump up through it from below |
-| `K` | key |
-| `C` | cactus: deadly |
 | `D` | door: a column of exactly 2 `D`s set into a wall (the sprites are 16 px tall). Locked and solid until Billy has a key; walking through it when open wins. |
 | `S` | start: Billy's feet sit on the bottom of this tile. Exactly one per room. |
 
@@ -143,7 +157,7 @@ Steps:
    - in `engine.js`, load that room and place Billy, keeping the inventory;
    - change `tileAt` so edges with exits aren't walls.
 4. A new tile type: add it to the legend comment and `parseRoom` in `room.js`, make it count in `isSolid`/`canStandOn` if it blocks or supports Billy, add its art to `sprites.js`, its colors to every room, and its drawing (and any touch logic) to `engine.js`.
-5. Monsters: add them to `monsters` (see "Monsters" in section 1). Check in the simulation that the route can be done with them moving.
+5. Objects and monsters: add them to `objects` and `monsters` (see section 1). Check in the simulation that the route can be done with them moving.
 6. Verify the route (section 3), then update the docs (section 3).
 
 ---
@@ -178,7 +192,7 @@ Steps:
    ```
 
    (Use absolute paths in the imports if the script is outside the repo.)
-3. **The whole engine in Node** (keys, doors, cactus, states): before importing `engine.js`, set `globalThis.document = { createElement: () => ({ getContext: () => noopProxy, toDataURL: () => '' }) }`, plus `requestAnimationFrame` that stores the callback and `performance.now`. Then call the stored callback with a timestamp growing by 1000/60 per frame. `onStatus` reports `state` and `inventory`.
+3. **The whole engine in Node** (objects, doors, monsters, states): before importing `engine.js`, set `globalThis.document = { createElement: () => ({ getContext: () => noopProxy, toDataURL: () => '' }) }` and pass `{ getContext: () => noopProxy }` as the canvas, plus `requestAnimationFrame` that stores the callback and `performance.now`. Then call the stored callback with a timestamp growing by 1000/60 per frame. `onStatus` reports `state`, `inventory` and `deathMessage`.
 4. **Real browser.** Playwright's own browsers aren't installed. Use `chromium.launch({ executablePath: '/usr/bin/google-chrome' })`, and import Playwright via its absolute path (`<repo>/node_modules/playwright/index.mjs`) when the script is in the scratchpad. Serve with `npx vite preview --port 4417 --strictPort` (run in the background, then `pkill -f "vite preview --port 4417"`). Open `/billy/`. For exact timings, dispatch `KeyboardEvent`s on `window` with `setTimeout` inside `page.evaluate`; get the times from the Node simulation (frame × 1000/60 ms). Take screenshots and look at them.
 
 **History (newest last):**
@@ -193,5 +207,7 @@ Steps:
 8. Rooms have a `title` (bold) and a `description`, both shown under the room; the first room is now "The start of the journey".
 9. Monsters (`monsters.js`): the `parrot` type, flying wall to wall; one patrols the first room at the key's height.
 10. The parrot is a blue-fronted amazon: green body, darker green wings, blue forehead, dark gray beak.
+11. The cactus is a monster type (no more `C` in maps); every monster type has a death message, shown on the death screen.
+12. Objects (`objects.js`): the key is an object type (no more `K` in maps); every object can go into the inventory, and its type says what picking it up does.
 
-**Open ideas:** room exits and switching, lives, score, more monster types (walkers, droppers), more hazards, fall damage, sound.
+**Open ideas:** room exits and switching, lives, score, more monster types (walkers, droppers), fall damage, sound.

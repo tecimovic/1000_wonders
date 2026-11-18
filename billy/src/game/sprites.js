@@ -34,20 +34,6 @@ const WALK_CYCLE = ['stride', 'stand', 'pass', 'stand']
 const AIR_POSE = 'stride'
 const FRAMES_PER_STEP = 5
 
-export const KEY_ROWS = [
-  '..YYY...',
-  '.Y...Y..',
-  '.Y...Y..',
-  '..YYY...',
-  '...Y....',
-  '...YY...',
-  '...Y....',
-  '...YYY..'
-]
-
-// The key cycles through these colors, so it's easy to spot.
-export const KEY_COLORS = ['#ffe14d', '#ff8a3d', '#ff4d8b', '#7df9ff']
-
 const BRICK = [
   'RRRMRRRR',
   'RRRMRRRR',
@@ -109,10 +95,6 @@ export function billySprite(player) {
   return billySprites()[pose][player.facing]
 }
 
-export function keySprites() {
-  return KEY_COLORS.map(color => makeSprite(KEY_ROWS, { Y: color }))
-}
-
 export function tileSprites(colors) {
   return {
     '#': makeSprite(BRICK, { R: colors.wall, M: colors.wallMortar }),
@@ -168,33 +150,67 @@ export function doorSprites(colors) {
   }
 }
 
-/** Icons for the inventory, as image URLs, by item type. */
-export function itemIconUrls() {
-  return {
-    key: makeSprite(KEY_ROWS, { Y: KEY_COLORS[0] }).toDataURL()
+// Objects (see objects.js): animation frames, each { rows, palette }. The
+// first frame is also the object's icon in the inventory.
+const KEY_ROWS = [
+  '..YYY...',
+  '.Y...Y..',
+  '.Y...Y..',
+  '..YYY...',
+  '...Y....',
+  '...YY...',
+  '...Y....',
+  '...YYY..'
+]
+
+const OBJECT_ART = {
+  // The key cycles through these colors, so it's easy to spot.
+  key: {
+    framesEvery: 6,
+    frames: ['#ffe14d', '#ff8a3d', '#ff4d8b', '#7df9ff'].map(color => ({ rows: KEY_ROWS, palette: { Y: color } }))
   }
 }
 
-// A little saguaro, 8×8, sitting on the floor.
-const CACTUS = [
-  '...LG...',
-  '.L.LG...',
-  '.L.LG.G.',
-  '.LGLG.G.',
-  '..GLGGG.',
-  '...LG...',
-  '...LG...',
-  '..sLGs..'
-]
+let objectCache = {}
 
-export function cactusSprite(colors) {
-  return makeSprite(CACTUS, { G: colors.cactus, L: colors.cactusLight, s: colors.cactusShade })
+function objectFrames(type) {
+  if (!objectCache[type]) objectCache[type] = OBJECT_ART[type].frames.map(f => makeSprite(f.rows, f.palette))
+  return objectCache[type]
 }
 
-// Monsters, facing right (mirrored when going left), a few animation frames
-// each. The parrot (a blue-fronted amazon: green, with a blue forehead)
+/** The sprite canvas for an object, `frame` frames into the game (for animation). */
+export function objectSprite(o, frame) {
+  const frames = objectFrames(o.type)
+  return frames[Math.floor(frame / OBJECT_ART[o.type].framesEvery) % frames.length]
+}
+
+/** Inventory icons, as image URLs, by object type. */
+export function objectIconUrls() {
+  return Object.fromEntries(Object.keys(OBJECT_ART).map(type => [type, objectFrames(type)[0].toDataURL()]))
+}
+
+// Monsters (see monsters.js), facing right (mirrored when going left), one
+// or more animation frames each. A palette can be a function of the room's
+// colors. The parrot (a blue-fronted amazon: green, with a blue forehead)
 // flaps: wings up, wings down.
 const MONSTER_ART = {
+  // A little saguaro, sitting on the floor.
+  cactus: {
+    framesEvery: 1,
+    palette: colors => ({ G: colors.cactus, L: colors.cactusLight, s: colors.cactusShade }),
+    frames: [
+      [
+        '...LG...',
+        '.L.LG...',
+        '.L.LG.G.',
+        '.LGLG.G.',
+        '..GLGGG.',
+        '...LG...',
+        '...LG...',
+        '..sLGs..'
+      ]
+    ]
+  },
   parrot: {
     framesEvery: 8,
     // R body, G wings, F blue forehead, T tail, Y beak, K eye.
@@ -224,19 +240,24 @@ const MONSTER_ART = {
   }
 }
 
-let monsterCache = {}
-
-/** The sprite canvas for a monster (see monsters.js) in its current state. */
-export function monsterSprite(m) {
-  const art = MONSTER_ART[m.type]
-  if (!monsterCache[m.type]) {
-    monsterCache[m.type] = art.frames.map(rows => ({
-      1: makeSprite(rows, art.palette),
-      [-1]: makeSprite(rows, art.palette, true)
-    }))
+/**
+ * The monster sprites in a room's colors. Returns `m => canvas`: the sprite
+ * for monster `m` in its current state (animation frame and direction).
+ */
+export function monsterSprites(colors) {
+  const cache = {}
+  return m => {
+    const art = MONSTER_ART[m.type]
+    if (!cache[m.type]) {
+      const palette = typeof art.palette === 'function' ? art.palette(colors) : art.palette
+      cache[m.type] = art.frames.map(rows => ({
+        1: makeSprite(rows, palette),
+        [-1]: makeSprite(rows, palette, true)
+      }))
+    }
+    const frames = cache[m.type]
+    return frames[Math.floor(m.tick / art.framesEvery) % frames.length][m.dir]
   }
-  const frames = monsterCache[m.type]
-  return frames[Math.floor(m.tick / art.framesEvery) % frames.length][m.dir]
 }
 
 // The gravestone Billy turns into: 11×12, with "RIP" carved in it and a bit

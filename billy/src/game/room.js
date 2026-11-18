@@ -4,16 +4,15 @@
 //   .   empty
 //   #   wall: solid from every side
 //   =   platform: you can stand on it, and jump up through it from below
-//   K   a key (empty space with a key in it)
-//   C   a cactus: deadly to touch (empty space with a cactus in it)
 //   D   a door. Put it in a wall, as a column of D tiles (two, for Billy's
 //       height); each column of D's is one door. Doors start locked and
 //       are solid until Billy has a key; then they open, and walking
 //       through one is the way out.
 //   S   where Billy starts: his feet rest on the bottom of this tile
 //
-// Monsters aren't in the map: a room lists them in `monsters` (see
-// monsters.js).
+// Monsters (cacti, parrots, ...) and objects (keys, ...) aren't in the map:
+// a room lists them in `monsters` (see monsters.js) and `objects` (see
+// objects.js).
 //
 // See rooms.js for the rooms themselves.
 
@@ -31,8 +30,6 @@ export function parseRoom(data) {
     throw new Error(`Room "${data.title}": map has ${data.map.length} rows, expected ${ROWS}`)
   }
   const tiles = []
-  const keys = []
-  const hazards = []
   const doors = []
   const doorAt = {}   // "col,row" → door
   let start = null
@@ -42,8 +39,6 @@ export function parseRoom(data) {
     }
     const tileRow = []
     ;[...line].forEach((ch, col) => {
-      if (ch === 'K') keys.push({ col, row, collected: false })
-      if (ch === 'C') hazards.push({ col, row, type: 'cactus' })
       if (ch === 'S') start = { col, row }
       if (ch === DOOR) {
         // Continue the door right above, or start a new one.
@@ -64,8 +59,6 @@ export function parseRoom(data) {
   const room = {
     ...data,
     tiles,
-    keys,
-    hazards,
     doors,
     start,
     // Anything outside the room counts as wall, until rooms get exits.

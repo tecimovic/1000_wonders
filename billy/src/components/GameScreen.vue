@@ -2,18 +2,18 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { createGame, WIDTH, HEIGHT } from '../game/engine.js'
 import { createInput } from '../game/input.js'
-import { itemIconUrls } from '../game/sprites.js'
+import { objectIconUrls } from '../game/sprites.js'
+import { objectName } from '../game/objects.js'
 
 const stage = ref(null)
 const canvas = ref(null)
 const inventoryBar = ref(null)
 const scale = ref(3)
-const status = ref({ state: 'playing', roomTitle: '', roomDescription: '', inventory: [] })
+const status = ref({ state: 'playing', roomTitle: '', roomDescription: '', inventory: [], deathMessage: null })
 
 // The inventory always shows this many slots; items fill them from the left.
 const INVENTORY_SLOTS = 4
-const itemIcons = itemIconUrls()
-const ITEM_NAMES = { key: 'Key' }
+const objectIcons = objectIconUrls()
 
 const input = createInput()
 let game = null
@@ -68,9 +68,9 @@ onUnmounted(() => {
           v-for="i in INVENTORY_SLOTS"
           :key="i"
           class="slot"
-          :title="ITEM_NAMES[status.inventory[i - 1]] ?? ''"
+          :title="objectName(status.inventory[i - 1])"
         >
-          <img v-if="status.inventory[i - 1]" :src="itemIcons[status.inventory[i - 1]]" :alt="ITEM_NAMES[status.inventory[i - 1]]" class="slot-icon" />
+          <img v-if="status.inventory[i - 1]" :src="objectIcons[status.inventory[i - 1]]" :alt="objectName(status.inventory[i - 1])" class="slot-icon" />
         </span>
       </div>
       <div class="screen" :style="{ width: WIDTH * scale + 'px', height: HEIGHT * scale + 'px' }">
@@ -83,7 +83,7 @@ onUnmounted(() => {
         </div>
         <div v-else-if="status.state === 'dead'" class="overlay overlay--dead">
           <div class="overlay-title">Billy has died.</div>
-          <div class="overlay-text">Rest in peace. And mind the cactus.</div>
+          <div class="overlay-text">Rest in peace. {{ status.deathMessage }}</div>
           <button type="button" class="again" @click="game.restart()">Try again</button>
           <div class="overlay-hint">or press Enter</div>
         </div>

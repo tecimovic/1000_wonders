@@ -27,7 +27,7 @@ export const ROOMS = [
       '################################',
       '#..............................#',
       '#..............................#',
-      '#..........................K...#',
+      '#..............................#',
       '#..............................#',
       '#..............................#',
       '#..............................#',
@@ -38,11 +38,17 @@ export const ROOMS = [
       '#..............................#',
       '#........========..............#',
       '#..............................D',
-      '#S......................C......D',
+      '#S.............................D',
       '################################'
     ],
-    // Monster types are in monsters.js. This parrot patrols the key's height.
+    // Object types are in objects.js.
+    objects: [
+      { type: 'key', col: 27, row: 3 }
+    ],
+    // Monster types are in monsters.js. A cactus on the floor, and a parrot
+    // patrolling the key's height.
     monsters: [
+      { type: 'cactus', col: 24, row: 14 },
       { type: 'parrot', col: 1, row: 3, dir: 1 }
     ]
   }
