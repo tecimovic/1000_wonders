@@ -14,7 +14,9 @@ The site is a landing page with a menu of apps, plus several independent
 Vue 3 apps:
 
 - **[/lg/](http://platycore.com/lg/)**: *World of 1000 Wonders*, an
-  interactive map of a Minecraft world (Overworld, Nether and End).
+  interactive map of a Minecraft world (Overworld, Nether and End), with
+  the world's Constitution one click away (or share it directly:
+  [platycore.com/lg/constitution](http://platycore.com/lg/constitution)).
 - **[/train/](http://platycore.com/train/)**: live public transportation
   data for **Boston (MBTA)**, **Budapest (BKK)**, **London (TfL)** and **Oslo (Ruter)**. A picker at the top
   chooses the city, and more transit systems can be added. For the chosen system it

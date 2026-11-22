@@ -1,6 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import WorldMap from './components/WorldMap.vue'
+import ConstitutionOverlay from './components/ConstitutionOverlay.vue'
 import places from '../places.json'
 
 const tabs = [
@@ -33,6 +34,44 @@ const selectedCoords = ref(initial)
 const highlightedTypes = ref([])
 const highlightPanelOpen = ref(true)
 
+// The Constitution overlay has its own URL, /lg/constitution/ (built as a
+// copy of this page by lg/pages.js), so it can be shared.
+// The app's own folder ('/lg/'), from the path (BASE_URL is '/' under `npm run dev`).
+const BASE = window.location.pathname.replace(/constitution\/?$/, '').replace(/[^/]*$/, '')
+const CONSTITUTION_URL = BASE + 'constitution/'
+const isConstitutionPath = () => /\/constitution\/?$/.test(window.location.pathname)
+
+const showConstitution = ref(isConstitutionPath())
+let pushedConstitution = false
+
+function openConstitution() {
+  if (showConstitution.value) return
+  showConstitution.value = true
+  if (!isConstitutionPath()) {
+    history.pushState(null, '', CONSTITUTION_URL + window.location.search)
+    pushedConstitution = true
+  }
+}
+
+function closeConstitution() {
+  showConstitution.value = false
+  if (!isConstitutionPath()) return
+  if (pushedConstitution) {
+    // We added the history entry: going back removes it again.
+    pushedConstitution = false
+    history.back()
+  } else {
+    history.replaceState(null, '', BASE + window.location.search)
+  }
+}
+
+function onPopState() {
+  showConstitution.value = isConstitutionPath()
+  if (!showConstitution.value) pushedConstitution = false
+}
+onMounted(() => window.addEventListener('popstate', onPopState))
+onBeforeUnmount(() => window.removeEventListener('popstate', onPopState))
+
 watch(selectedCoords, (val) => {
   if (val) {
     const url = new URL(window.location.href)
@@ -63,6 +102,12 @@ watch(selectedCoords, (val) => {
       </span>
       <span v-else class="selected-coords selected-coords--empty"></span>
       <div class="site-title-block">
+        <a
+          :href="CONSTITUTION_URL"
+          class="constitution-link"
+          title="The Constitution of the World of 1000 Wonders"
+          @click.prevent="openConstitution"
+        >⚜ Constitution</a>
         <div class="site-title-text">
           <span class="site-title">World of 1000 wonders</span>
           <span class="site-subtitle">- by the grace of the Lighthing God</span>
@@ -91,6 +136,8 @@ watch(selectedCoords, (val) => {
         v-model:highlightPanelOpen="highlightPanelOpen"
       />
     </div>
+
+    <ConstitutionOverlay :open="showConstitution" @close="closeConstitution" />
   </div>
 </template>
 
@@ -163,6 +210,29 @@ body {
   align-items: stretch;
   margin-left: auto;
   margin-right: -12px;
+}
+
+.constitution-link {
+  align-self: center;
+  margin-right: 18px;
+  padding: 0.25em 0.8em;
+  font-family: 'Cinzel', 'Trajan Pro', serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #e9c85a;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 3px;
+  text-shadow: 0 0 6px rgba(212, 175, 55, 0.35);
+  transition: color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.constitution-link:hover {
+  color: #fff3b0;
+  border-color: #d4af37;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
 }
 
 .site-title-text {

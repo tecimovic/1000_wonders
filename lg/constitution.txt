@@ -1,0 +1,40 @@
+﻿Constitution of 
+The World of 1000 Wonders
+
+
+Preamble: The World of 1000 Wonders is committed to following these rules:
+1. Everyone in the world is created equal.
+2. Don’t break other players’ stuff.
+3. Don’t be mean.
+4. Create rather than destroy.
+5. Have fun.
+6. Do try to defeat the dragon.
+
+
+Article 0: Responsibilities of the signatories to the constitution
+
+
+All signatories agree to uphold the rules of the world and advance the cause of players on the server. Anyone, including the signatories can be held accountable for breaking the spirit of the rules by being banned from the server, or even removed as a signatory of the constitution.
+
+
+Article 1:  Rules of Stoppage
+
+
+“Stoppage” is a mechanism of conflict resolution on the server, adopted to prevent people from fighting and arguing. It works like this:
+1. At any point, any player can declare stoppage by calling out “stoppage!”. That can be done in person or via the in-game chat.
+2. Stopped is declared by the “declarer” of the stoppage, and is active against a “causer” of the stoppage. 
+3. When stoppage is declared BOTH the declarer and the causer need to immediately stop changing the world: that includes building blocks, breaking blocks, placing items, killing or wounding other players, mobs or anything else. Players are basically allowed only to be spectators in the world, they can walk around, they can eat. If they get attacked, they are allowed to defend themselves against the attacker, and even kill them. They are also allowed to use doors and walk wherever they want, as long as they are not changing the world by building, breaking or doing other invasive actions.
+4. At this point, “declarer” of the stoppage is required to notify all active players and all signatories to the constitution that “stoppage” has been declared. The players notified then have a right to participate in stoppage as “participants”, or excuse themselves out of the stoppage. If they participate, they are also prevented from actions as described in point 3. If they excuse themselves from it, then they can continue playing undisturbed.
+5. Stoppage will be resolved as soon as “declarer”, “causer” and all “participants” agree that stoppage is resolved. At that point, stoppage resolution is declared, restrictions are lifted and the game moves on.
+6. Multiple stoppages can be declared at the same time
+7. Any player who does not obey these rules, will be immediately banned for 1 week.
+
+
+
+
+
+
+Signatories to the constitution,
+Timotej Ecimovic
+Dylan Ecimovic
+Julia Ecimovic

@@ -35,7 +35,17 @@ vite.config.js      Root config: builds the landing page, and is the config for
 lg/                 "World of 1000 Wonders": a map of a Minecraft world. → /lg/
   index.html, vite.config.js, favicon.ico
   places.json       The map data. Edit this to add or move places.
-  src/              App.vue, main.js, components/WorldMap.vue, assets/
+  constitution.txt  The server's constitution, shown verbatim in a pompous
+                    overlay ("⚜ Constitution" link in the top bar). Edit the
+                    text here; src/constitution.js parses its structure.
+                    Shareable URL: /lg/constitution (opens the overlay).
+  pages.js          Extra URLs of the app (today: constitution). The build
+                    copies index.html to dist/lg/<page>/index.html (Apache
+                    redirects /lg/constitution to /lg/constitution/); in dev
+                    a middleware serves them. App.vue reads the path and keeps
+                    it in sync with the overlay (pushState, Back closes it).
+  src/              App.vue, main.js, constitution.js, components/WorldMap.vue,
+                    components/ConstitutionOverlay.vue, assets/
 train/              Public transportation site: live transit data (Boston MBTA,
   index.html,       Budapest BKK, London TfL, Oslo Ruter), behind a password page. The URL stays
   vite.config.js,   /train/ even though the topic is public transportation in
