@@ -16,5 +16,11 @@
     "title": "Dead Set Billy",
     "subtitle": "A platformer. Get the key!",
     "uri": "/billy/"
+  },
+  {
+    "icon": "/tommix.svg",
+    "title": "Tommix",
+    "subtitle": "A rock opera for kernel hackers",
+    "uri": "/tommix/"
   }
 ]

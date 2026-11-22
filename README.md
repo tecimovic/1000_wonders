@@ -28,6 +28,11 @@ Vue 3 apps:
   touching the cactus or the parrot. It's one room for now, with more to come.
   Tap left or right and Billy keeps walking on his own (down stops him);
   jump with ↑ or Space. On a phone there are on-screen buttons.
+- **[/tommix/](http://platycore.com/tommix/)**: *Tommix*, a psychedelic
+  songbook for a late-1990s filk that turned The Who's *Tommy* into a rock
+  opera about Linux, kernels and core dumps. All 23 songs, word for word, over
+  a swirling background and a pinball table that plays itself until you grab
+  the flippers (`Z` / `M`). Try "Smash the mirror".
 
 The repo also keeps a few notes and assets about that Minecraft world.
 
@@ -35,7 +40,7 @@ The repo also keeps a few notes and assets about that Minecraft world.
 
 It's a private hobby project. If you'd like to join, contact the owner.
 
-Each app lives in its own folder (`lg/`, `train/`, `billy/`, ...) with its own
+Each app lives in its own folder (`lg/`, `train/`, `billy/`, `tommix/`, ...) with its own
 `index.html` and Vite config. All apps share one `package.json`. The
 landing page builds its menu from `public/apps.json`, so adding an app
 means creating its folder and adding one entry (icon, title, subtitle and
@@ -55,6 +60,10 @@ Working on the game? Start with
 [`billy/doc/billy-maintanence.md`](billy/doc/billy-maintanence.md): how the
 engine works, how to add a room, and how to test changes. Rooms are little
 ASCII maps in `billy/src/game/rooms.js`.
+
+Working on Tommix? The songs are in `tommix/src/tommix.txt`, in a simple
+plain-text format. The words are kept exactly as originally written, typos
+included, so leave them alone and play with everything around them.
 
 Secrets (like the transit API keys) are committed only in encrypted form. The
 password is never in the repo, so ask the owner for it.

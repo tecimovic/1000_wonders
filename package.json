@@ -7,7 +7,8 @@
     "dev:lg": "vite --config lg/vite.config.js",
     "dev:train": "vite --config train/vite.config.js",
     "dev:billy": "vite --config billy/vite.config.js",
-    "build": "vite build && vite build --config lg/vite.config.js && vite build --config train/vite.config.js && vite build --config billy/vite.config.js",
+    "dev:tommix": "vite --config tommix/vite.config.js",
+    "build": "vite build && vite build --config lg/vite.config.js && vite build --config train/vite.config.js && vite build --config billy/vite.config.js && vite build --config tommix/vite.config.js",
     "preview": "vite preview"
   },
   "dependencies": {

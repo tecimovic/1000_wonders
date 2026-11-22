@@ -1,0 +1,441 @@
+This filk was made sometimes back in the late 1990s. I had time. I had zeal. Internet was young. I was a budding Linux crusader. I loved Linux, I liked other Unixes and Windows was just plain evil. Even OS/2 existed. So I sat down for a week and filked the whole Tommy, by The Who. You should be able to sing this to the music of the Tommy. I sometimes did. Lately I forgot about this, but I dug it out few weeks ago, and decided to put it on my blog. I always loved The Who, and I always loved The Tommy. So why not spend a week filking it. If you listen to the Tommy, and you’re a computer geek, this is for you! Here it goes….
+
+## It’s a fault
+fork() returned and then core was dumped, his newborn child will never know him.
+Believe him zombie with all his streams closed, don’t expect to run him again.
+It’s a fault, Mr. Kernel, it’s a fault.
+It’s a fault, Mr. Kernel, it’s a fault.
+A fault, a fault, a fault…..
+
+## Signal 9
+Got a feeling signal 9 is gonna be a good one.
+Especially if handler traps it and halts forever.
+So you think that sending KILL is gonna be a good one?
+Could be you don’t know that KILL can’t be caught ever?
+
+I had no reason to be over-optimistic,
+But somehow when you code I can brave core dumping.
+
+What about the KILL? What about the STOP?
+What about the handler, he caught them all!
+
+You didn’t trap it! You didn’t stat it! You won’t send nothing to no one
+never in your life. You never dumped core. How absurd it all seems
+Without any source.
+
+You didn’t trap it! You didn’t stat it! You won’t send nothing to no one
+not a singe bit! No one’s gonna know you caught the KILL.
+
+## Internet journey
+Deaf, dumb and blind code, it’s in a quiet daemon land.
+Strange as it seems, his exclusive streams ain’t quite so bad.
+
+Sharing memory as bold as share can be.
+Stating files and becoming wise through IPC.
+
+Signals will surely take the life, some just can’t be caught,
+Come on the Internet journey and learn all you should know.
+
+Strange deamons resolving addresses for me,
+All at once signals charging I see,
+Some systems won’t take me, they’d rather go down,
+But I’d caught ’em all ‘n’ new child I would spawn.
+
+Nothing to send, nothing to swap, nothing to share.
+Each new signal makes a byte in my memory.
+
+His pipes are the pipes that transmit all they know
+Shared memory filled with unthinkable flow
+He is your deamon, he’s your guide,
+On the Internet journey together you’ll ride.
+
+## Sparks
+(instrumental)
+
+## ID for the blind
+You talk about your server. I wish you could see mine.
+Yeah, you talk about your server. I wish you could see mine.
+Every time request’s resolved, she makes client’s handler blind.
+
+You know she’s niced to -20, I can tell by the load she makes,
+She’s niced to -20, I can tell by the load she makes.
+Every time she spawns new child, the deamons all awake.
+
+She’s got the power to debug you. Never fear.
+Yeah she’s got the power to debug you. Never fear.
+Just a signal from her code and the deaf begin to hear.
+
+## Event loop
+Did you ever see event loops of the programs, they get so excited.
+Waking up at system boot, instructions after CPU ignited.
+They believe in pipes and all they mean, including IPC ferrocity.
+Peeping at the queues to see what messages are for their curiosity.
+
+And Tommix doesn’t know what time() it is.
+He doesn’t know who Kernel is, or what SIGKILL does.
+How can he be trapped, without kernel hack?
+
+Surrounded by the deamons, he sits silently and unaware of everything.
+Shifting bits and bytes, trapping signals, poking kernel segment memory.
+I believe in IPC, but how can blind code without it be rightened?
+Only if he’s hacked will his future nice level ever heighten.
+
+And Tommix doesn’t know what time() it is.
+He doesn’t know who Kernel is, or what SIGKILL does.
+How can he be trapped, without kernel hack?
+
+Tommix can you hear me? Tommix can you hear me? Tommix can you hear me?
+Tommix can you hear me? Tommix can you hear me? Tommix can you hear me?
+How can he be trapped?
+
+Swap me. Trap me. Touch me. Hack me.
+Swap me. Trap me. Touch me. Hack me.
+
+## Cousin Dirty Hack
+We’re on our own cousin. All alone cousin.
+Let’s think of a code to play, now the deamons have all gone away.
+You’ll be of much help being blind deaf and dumb, you’ll help me crash kernel today. Do you know how to poke at his code? Together we’ll bring down this node.
+But tied to address you won’t go anywhere. Now we will skyrocket the load.
+
+How would you feel if I flushed all your queues,
+disk-swapped your code, made you of no use.
+What would you do if I moved all your files,
+and wiped all your code and the source so you die?
+
+I’m the system bully. The segment cheat.
+The nastiest process you ever could meet.
+I’ll poke in your bites, remove all your files.
+
+Maybe a gigabyte into your pipes,
+would cause your dump core and handle traps right.
+Swap you around back and forth to a disk.
+Or running your sick code using a RISC.
+
+I’m the system bully. The segment cheat.
+The nastiest process you ever could meet.
+I’ll poke in your bites, remove all your files.
+
+## Debugger
+If your code ain’t what it should be now, this hack can put it right.
+I’ll show it what it could be now, just give me few more bytes.
+
+I’m debugger, profiler, abort before we start.
+I’m debugger, I’m guaranteed, to tear your code apart.
+
+Give us access, close the pipes, leave us for awhile.
+Your stack won’t overflow no more. You won’t swap to a file.
+
+Gather your bits and hold your queues. Your code must learn to roam.
+Just as debugger must do, you’re gonna leave your $HOME.
+
+My hack is done. Now poke at him. He’s never caused more load.
+His children spawn, he’s using cron, watch this roaming code.
+
+I’m debugger, profiler, abort before we start.
+I’m debugger, I’m guaranteed, to tear your code apart.
+
+## Underture
+(instrumental)
+
+## Do You Think It’s Alright
+Do you think it’s allright, to leave this code with super-server?
+Do you think it’s allright? He transmited many megabytes tonight.
+Yes I think it’s allright. Do you think it’s allright?
+Yes I think it’s allright.
+
+## Fiddle About
+I’m your wicked super-server, I’m glad if you connect my ports,
+then I fiddle about, fiddle about, fiddle about.
+
+Kernel left me here to mind you. Now I reach all ports I want to.
+Fiddling about, fiddle about, fiddle about.
+
+Down with the telnetd, up with the fingerd.
+Fiddle about, fiddle about, fiddle about.
+
+You won’t halt as I fiddle about.
+Fiddle about, fiddle about, fiddle about.
+
+Fiddle, fiddle, fiddle…..
+
+## Kernel Wizard
+Ever since my process started,
+I’ve monitored’em all,
+from deamons to the kernel,
+I must detect their fault.
+But I ain’t seen nothing like him,
+On systems large and small
+That sneaky, swapping blind code,
+sure makes a fatal call!
+
+He’s swift like a kernel,
+becomes part of the machine,
+feeling all the deamons,
+knows their hidden means,
+forks by intuition,
+makes devices dream,
+That sneaky, swapping blind code,
+sure makes a kernel scream!
+
+He’s a kernel wizard,
+I can’t get him right,
+A kernel wizard,
+I lose just every fight!
+
+How do you think he does it? I don’t know!
+What makes him so good?
+
+Ain’t got no distractions
+Don’t hear no beeps or bells
+Don’t see no lights a flashin’
+Ignores his sense of smell
+Patches running kernels
+Dumps no core at all,
+That sneaky, swapping blind code,
+sure makes a fatal call!
+
+I thought I was the time-slice table king!
+but I just handled my stream ids to him!
+
+Even with my favourite deamon,
+his hacks can beat my best.
+He makes the sockets open
+he just does the rest,
+He’s got crazy socket handlers,
+never closes streams,
+That sneaky, swapping blind code,
+sure makes a kernel scream!
+
+## There’s a Program I’ve Found
+There’s a program I’ve found, could bring up this node.
+there’s a program I’ve found could cure the code.
+
+There’s a program I’ve found, could set things right.
+He’s in public domain let’s find him tonight!
+
+## Go To The Server Boy
+He seems to be completely unreceptive.
+The patches don’t improve his code at all.
+His streams react to bytes device detected.
+He traps but can’t return from system call!
+
+Swap me. Trap me. Touch me. Hack me.
+Swap me. Trap me. Touch me. Hack me.
+
+There is no chance for kernel alterations.
+All hope is in his core and none in mine.
+Imagine, though, the shock from isolation.
+When sudenly each deamon wants his fine!
+
+Swap me. Trap me. Touch me. Hack me.
+Swap me. Trap me. Touch me. Hack me.
+
+His code can’t see, his handlers dead, his core dumped.
+All the time the kernel traps and halts.
+No code is smart enough to patch all his event loops.
+Nothing can be done to kill his code.
+
+Go to the server boy.
+
+Kernel often wonders how to trap him.
+Has he ever handled his request.
+Look at him at server wildly forking.
+What is happening in his core.
+
+What is happening in his core?
+Ooh, I wish I knew. I wish I knew.
+
+## Tommix, Can You Hear Me
+Tommix can you halt me?
+Can you let me nice you?
+Tommix can you fork me?
+Can I help to wipe you?
+Ooh, Tommix.
+
+## Shut the System
+You don’t return from my call with even a log or an int, but you
+make the load increasing.
+
+You don’t handle my signals but you exercise streams,
+how can the kernel affect you?
+
+Can you debug me, now I realize,
+That you swap me, see the CPU load…
+rise, rise, rise, rise, rise, rise, rise, rise, rise, rise, rise, rise, rise.
+
+Do you hear or fear, or do I shut the system?
+
+## Initialization
+Your logfile grows as I approach you,
+sockets stop transmitting bytes.
+Traces stop, addresses for me,
+Load increased when I’ve gone by.
+
+You log me comming. Some disk vibration.
+From afar you’ll seek me. Initialization. Initialization.
+
+They worship me, and my processes.
+Hazy eyed, they catch my system calls.
+Fine devices shake their handlers,
+let me through their firewalls.
+
+You log me comming. Some disk vibration.
+From afar you’ll seek me. Initialization. Initialization.
+
+Soon you’ll run me. Can’t you ban be? I’m comming.
+Send your programs dancing, I’ll do the branching. I’m comming.
+I’m comming. Initialization.
+
+I leave a trail of zombie kernels.
+Opened socket at their foot.
+The few I’ve patched have my internals.
+We all are one. I am their root.
+
+## Miracle Cure
+Hex dump, hex dump, open and read it!
+Tommix code is available now.
+Hex dump, hex dump, open and read it!
+Hex dump!
+
+## Process child
+Inside the function the proccess anounced, his child couldn’t go to the meeting.
+He went on performing his matrix inversion,and the child opened /dev/sound for beeping.
+He peeked at the bytes allocated for matrix, and filled them with random doubles.
+Into endless loop his father went promptly, with child causing him all the troubles.
+
+He knew from the start, deep in his flow chart, he and Tommix were nodes apart.
+But the kernel said: “Never mind. Your code is to be in his process tree.”
+
+The MOTD was “Run under me and code will find the way.”
+So child decided to ingnore his dad and transfer his code anyway.
+He spend all the afternoon uploading his sources, and decided he’d try to touch him.
+Maybe he’d see his resources were free, and in next version he would add him.
+
+He knew from the start, deep in his flow chart, he and Tommix were nodes apart.
+But the kernel said: “Never mind. Your code is to be in his process tree.”
+
+He compiled himself and was ready to run, as the load was still increasing.
+Code after code compiled and installed, there was no header missing.
+He was put on the DAT tape among other archives in the /dat filesystem.
+Then a deamon transmitted some signals and logged: We’re ready now to run them.
+
+The load went crazy as Tommix ran the code.
+Little process got stopped as some deamons tried hastily to decrease the load.
+
+Soon the system went more idle and Tommix ran some demos.
+Child had to let him know he wants to peek him and tried to make his streams close.
+He tried to write some data to NULL and right-shifted his proces table.
+Tommix detected segment violation, and promptly the child was disabled.
+
+He knew from the start, deep in his flow chart, he and Tommix were nodes apart.
+But the kernel said: “Never mind. Your code is to be in his process tree.”
+
+Core was dumped and all his files closed, his source was patched with some checkups.
+Tommix continued to run other programs, just in case did some backups.
+The child recompiled and tried it again but his UID won’t change.
+His process was finished and the monitoring deamon send him out of range.
+
+The load went crazy as Tommix ran the code.
+Little process was lost for the price of his source and some
+coredumps on the node.
+
+Sixten patches put him right and his dad said “Don’t say I didn’t warn you!”
+Child went and ran on some network computer somewhere in California.
+Tommix still has logs about the day the load went wild.
+And little process sometimes still dumps core whenever he spawns new child.
+
+## I’m Free
+I’m free. I’m free.
+And network tastes of reality.
+I’m free. I’m free.
+I’m waiting for you, to transfer me.
+
+If I told you what it takes to crack the toughest node,
+You’d laugh and say: ‘No hack is that simple!’
+But you’ve been told many times before, hackers always dumping core,
+no one tried to follow their example.
+
+I’m free. I’m free.
+And network tastes of reality.
+
+## Welcome
+Come to this node, be one of the comfortable programs.
+Lovely bright node, we’re running all night never sleep()ing.
+Emacs come in. And compiler.
+Little old hack welcome. And you profiler.
+
+Come to this node, be one of us.
+Come into this node, be one of us.
+You can help download some more in.
+Young and old programs, let’s get them all in.
+Come to this node, into this node.
+
+Ask along that hack, who’s crashing in coredump.
+Bring every single program who is using a longjump.
+Find ftp server, bring utilities, demos.
+Everyone go home, and fetch your old versions.
+
+Come to this node, be one of the comfortable programs.
+Lovely bright node, we’re running all night never sleep()ing.
+
+Excuse me kernel, there’s more at the pipe,
+there’s more at the pipe…
+There’s more at the pine, there’s more!
+
+We need more disk, mount an extension.
+magnetic tape, CDs, spare no expense now.
+
+Come to this node, be one of us.
+Come to this node, be one of us.
+
+## Tommix Holiday Node
+Good morning programs!
+
+I’m your disk driver, and I welcome you to Tommix Holiday Node.
+The node with the difference, never mind the passwords.
+When you come to Tommix, the holiday’s forever!
+
+## We’re Not Gonna Take It
+Welcome to the node, I guess you all know why you’re here.
+My name is Tommix, and I’ve recompiled this year.
+If you want to run me, you’ve got to use some hacks.
+And use many deamons, ignore some of signals,
+and use all the load you get.
+
+Hey you, zero division, I’ve got you trapped.
+Hey you, violating sengments, this is core dump.
+Hey hung up accounting program, don’t try to use my load.
+Cos you ain’t gonna use resources in any of those ways,
+although you think you must.
+
+We’re not gonna run it.
+We’re not gonna run it. Never did and never will.
+We’re not gonna run it, gonna STOP it, gonna wipe it,
+let’s forget it better still.
+
+Now you can’t read me, you’re streams are truly sealed.
+You can’t write either, cause you’re pipes are filled.
+You can’t swap nothing, you think this is a RISC.
+Here comes disk driver to guide you to, your very own disk.
+
+We’re not gonna run it. Never did and never will.
+We’re not gonna run it. As far as we can tell.
+We’re not gonna run it. Never did and never will.
+We’re not gonna run it, gonna HALT it, gonna dump it,
+let’s forget it better still.
+
+We recheck you, gonna hack you,
+let’s forget it better still.
+
+Swap me. Trap me. Touch me. Hack me.
+Swap me. Trap me. Touch me. Hack me.
+
+Hacking your code, I get the signals.
+Halting the node, I swap my heap.
+Droping the load, I dump the deamons.
+I get exitement while I sleep()!
+
+Right behind you, I see the zombies.
+On you, I see your childs.
+From you, I get the forking.
+From you, I loose my bytes.

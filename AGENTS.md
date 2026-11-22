@@ -28,6 +28,7 @@ public/             Static files for the landing page only, served at "/":
   hexarod.png       Menu icon for lg (a copy of lg/src/assets/hexarod.png).
   tram.svg          Menu icon for train.
   billy.svg         Menu icon for billy (same as billy/favicon.svg).
+  tommix.svg        Menu icon for tommix (same as tommix/favicon.svg).
   favicon.ico
 vite.config.js      Root config: builds the landing page, and is the config for
                     `npm run dev` (which serves the landing page AND every app).
@@ -73,6 +74,16 @@ billy/              "Dead Set Billy": a retro platformer on a canvas. → /billy
                     overlays, touch buttons), game/ (the engine, plain JS:
                     engine.js, player.js, room.js, rooms.js, objects.js,
                     monsters.js, sprites.js, input.js).
+tommix/             "Tommix": a psychedelic songbook for the Tommix filk (a
+  index.html,       1990s Linux parody of The Who's Tommy, originally posted at
+  vite.config.js,   https://platycore.org/?p=396), over a self-playing pinball
+  favicon.svg       table. → /tommix/
+  src/
+    tommix.txt        THE TEXT: intro + every song, verbatim (see below).
+    songs.js          Parses tommix.txt into { intro, songs }.
+    pinball.js        The canvas pinball engine (plain JS, no Vue).
+    App.vue           Everything else: background, score display, songs.
+    components/PinballLayer.vue   Wraps pinball.js; keyboard controls.
 doc/mbta/           Local copy of the MBTA V3 API and GTFS docs (development
                     reference, not part of the website). Start at README.md.
 doc/bkk/            Local copy of BKK's FUTÁR API docs. Start at README.md.
@@ -283,6 +294,31 @@ how the engine works, how to add a room, and how to verify changes, so you
 don't need to read the source first. Keep it up to date with every change to
 Billy.
 
+### tommix: the songbook
+
+The words are the owner's own filk and must stay **verbatim**: never fix
+spelling, punctuation or line breaks in `tommix/src/tommix.txt` (typos like
+"deamons" and "comming" are part of the original). Be creative with
+everything around the words instead.
+
+Format of `tommix.txt`: everything before the first `## ` line is the intro.
+Each `## <title>` line starts a song; the lines after it are the lyrics, one
+line per sung line, with blank lines between stanzas. A song whose only text
+is `(instrumental)` is shown as an instrumental (a spinning record).
+
+The text was extracted from a PDF print of the blog post using the PDF's
+tag structure (one tag per original line, one paragraph per stanza), and
+every word was checked against the PDF.
+
+The page itself: a rotating, hue-shifting conic swirl with op-art rings
+behind a canvas pinball table (`pinball.js`) whose flippers play themselves
+until you use them (`Z`/`M` or the Shift keys, `N` nudges and too much
+nudging tilts, `B` adds a ball; ◀ ▶ buttons on touch screens). Bumpers score
+on the backglass display at the top. "Smash the mirror" shatters the screen
+and turns the psychedelia up; "Calm down" pauses all motion (also the
+default with `prefers-reduced-motion`). The song on screen is highlighted in
+the track list and kept in the URL hash (`#kernel-wizard`).
+
 ### The app list: `public/apps.json`
 
 The landing page's menu comes from this file, an array with one entry per app:
@@ -310,7 +346,7 @@ The order in the file is the order on the page.
 |---|---|
 | `npm install` | Install dependencies (once). |
 | `npm run dev` | One dev server: landing page at `/`, apps at `/lg/`, `/train/`, ... |
-| `npm run dev:lg`, `npm run dev:train`, `npm run dev:billy` | Dev server for a single app. |
+| `npm run dev:lg`, `npm run dev:train`, `npm run dev:billy`, `npm run dev:tommix` | Dev server for a single app. |
 | `npm run build` | Build the landing page and every app into `dist/`. |
 | `npm run preview` | Serve the built `dist/` locally, the way the server does. |
 | `./deploy` | Build, then FTP-upload `dist/` to platycore.com. Needs the `DG_FTP_USERNAME` and `DG_FTP_PASSWORD` environment variables. |
