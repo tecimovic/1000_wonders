@@ -51,6 +51,14 @@
     ],
     "nether": [
         {
+            "name": "Lave Ravine portal",
+            "x": 751,
+            "y": 85,
+            "z": 36,
+            "type": "portal",
+            "features": []
+        },
+        {
             "name": "Barkand Dulgur portal",
             "x": 461,
             "y": 36,
@@ -721,6 +729,14 @@
             "x": -243,
             "y": 65,
             "z": 1406,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "Rock House",
+            "x": 9858,
+            "y": 73,
+            "z": -160,
             "type": "house",
             "features": []
         },
@@ -1407,9 +1423,17 @@
         {
             "name": "Lou Reed Hole and Pit of Doom",
             "x": 14462,
-            "y": 69,
-            "z": -229,
-            "type": "hole",
+            "y": 65,
+            "z": -209,
+            "type": "house",
+            "features": []
+        },
+        {
+            "name": "LGS Lou Reed",
+            "x": 14453,
+            "y": 71,
+            "z": -246,
+            "type": "ship",
             "features": []
         },
         {
@@ -1417,7 +1441,7 @@
             "x": 12543,
             "y": 66,
             "z": 59,
-            "type": "hole",
+            "type": "house",
             "features": []
         },
         {
@@ -1866,6 +1890,14 @@
             "y": 78,
             "z": 2436,
             "type": "house",
+            "features": []
+        },
+        {
+            "name": "Eastern Ruins",
+            "x": 9392,
+            "y": 64,
+            "z": 116,
+            "type": "trail ruin",
             "features": []
         },
         {
@@ -2362,6 +2394,46 @@
             "y": 110,
             "z": 262,
             "type": "monument",
+            "features": []
+        },
+        {
+            "name": "Vertigo Verticalis",
+            "x": -3616,
+            "y": 122,
+            "z": 325,
+            "type": "village",
+            "features": []
+        },
+        {
+            "name": "Baubles in the sky",
+            "x": -157,
+            "y": 62,
+            "z": -34,
+            "type": "monument",
+            "features": []
+        },
+        {
+            "name": "LGS Essex",
+            "x": 4392,
+            "y": 64,
+            "z": 415,
+            "type": "ship",
+            "features": []
+        },
+        {
+            "name": "Lava Ravine Portal",
+            "x": 5973,
+            "y": 67,
+            "z": 170,
+            "type": "portal",
+            "features": []
+        },
+        {
+            "name": "Viribus Portal",
+            "x": 8359,
+            "y": 69,
+            "z": 84,
+            "type": "portal",
             "features": []
         },
         {
